@@ -106,6 +106,11 @@ class Watch extends AbstractService
         }
     }
 
+    /**
+     * @return \CoderBeams\MemberWatch:MemberWatch|\XF\Mvc\Entity\Entity|null
+     * @throws \XF\PrintableException
+     */
+
     public function unwatch()
     {
         $memberWatch = $this->em()->findOne('CoderBeams\MemberWatch:MemberWatch', [
