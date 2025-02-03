@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<phrases>
+  <phrase title="alert_opt_out.user_watch" version_id="1" version_string="1.0.0"><![CDATA[[cb] Recieve alert when someone watch me]]></phrase>
+  <phrase title="alert_opt_out.user_watched_member_post_reply" version_id="1" version_string="1.0.0"><![CDATA[[cb] Recieve alerts when watched members post reply]]></phrase>
+  <phrase title="alert_opt_out.user_watched_member_post_thread" version_id="1" version_string="1.0.0"><![CDATA[[cb] Recieve alerts when watched members post thread]]></phrase>
+  <phrase title="alert_user_watching" version_id="1" version_string="1.0.0"><![CDATA[{username} is now watching you.]]></phrase>
+  <phrase title="cb_all_forums" version_id="5" version_string="1.0.5"><![CDATA[All Threads]]></phrase>
+  <phrase title="cb_business_forum" version_id="5" version_string="1.0.5"><![CDATA[Business Threads]]></phrase>
+  <phrase title="cb_follower_home_page_title" version_id="7" version_string="1.0.7"><![CDATA[Member's Watch List]]></phrase>
+  <phrase title="cb_interest_in_type" version_id="5" version_string="1.0.5"><![CDATA[Interest Type]]></phrase>
+  <phrase title="cb_interest_type" version_id="7" version_string="1.0.7"><![CDATA[Interest Type]]></phrase>
+  <phrase title="cb_interest_type_all" version_id="9" version_string="1.0.9"><![CDATA[All]]></phrase>
+  <phrase title="cb_interest_type_normal" version_id="9" version_string="1.0.9"><![CDATA[Normal]]></phrase>
+  <phrase title="cb_intrest_type_business" version_id="9" version_string="1.0.9"><![CDATA[Business]]></phrase>
+  <phrase title="cb_normal_forums" version_id="5" version_string="1.0.5"><![CDATA[Normal Threads]]></phrase>
+  <phrase title="cb_selected_all_type" version_id="5" version_string="1.0.5"><![CDATA[You will be notified when user will create/reply on Any thread.]]></phrase>
+  <phrase title="cb_selected_business_type" version_id="5" version_string="1.0.5"><![CDATA[You will be notified when user will create/reply in Business Threads.]]></phrase>
+  <phrase title="cb_selected_normal_type" version_id="5" version_string="1.0.5"><![CDATA[You will be notified when user will create/reply in Normal threads.]]></phrase>
+  <phrase title="cb_start_watching" version_id="1" version_string="1.0.0"><![CDATA[Start Watching]]></phrase>
+  <phrase title="cb_stop_stop_x" version_id="1" version_string="1.0.0"><![CDATA[Stop Watching]]></phrase>
+  <phrase title="cb_unwatch" version_id="5" version_string="1.0.5"><![CDATA[Unwatch user]]></phrase>
+  <phrase title="cb_watch" version_id="5" version_string="1.0.5"><![CDATA[Watch user]]></phrase>
+  <phrase title="cb_watched_to" version_id="6" version_string="1.0.6"><![CDATA[Watching To]]></phrase>
+  <phrase title="option.cb_business_forum" version_id="5" version_string="1.0.5"><![CDATA[Business Threads]]></phrase>
+  <phrase title="option.cb_min_follower_to_show" version_id="5" version_string="1.0.5"><![CDATA[Follower Limit]]></phrase>
+  <phrase title="option.cb_mod_forum" version_id="13" version_string="2.3.0"><![CDATA[Moderator Forums]]></phrase>
+  <phrase title="option.cb_normal_forum" version_id="5" version_string="1.0.5"><![CDATA[Normal Threads]]></phrase>
+  <phrase title="option.cb_reply_alert_enable" version_id="5" version_string="1.0.5"><![CDATA[Reply Alert]]></phrase>
+  <phrase title="option.cb_show_followers" version_id="3" version_string="1.0.2"><![CDATA[Show Followers in member view page.]]></phrase>
+  <phrase title="option.cb_show_followers_on_thread_view" version_id="5" version_string="1.0.5"><![CDATA[Show Followers in thread view page.]]></phrase>
+  <phrase title="option_explain.cb_business_forum" version_id="5" version_string="1.0.5"><![CDATA[Please select business forums.]]></phrase>
+  <phrase title="option_explain.cb_min_follower_to_show" version_id="5" version_string="1.0.5"><![CDATA[If user have equal or greater follower then it will show on the thread view page.]]></phrase>
+  <phrase title="option_explain.cb_mod_forum" version_id="13" version_string="2.3.0"><![CDATA[If selected, these forums creation and reply alerts will not sent to followers.]]></phrase>
+  <phrase title="option_explain.cb_normal_forum" version_id="5" version_string="1.0.5"><![CDATA[Please select normal forums.]]></phrase>
+  <phrase title="option_explain.cb_reply_alert_enable" version_id="5" version_string="1.0.5"><![CDATA[If enabled, follower will get alert when user reply any thread.]]></phrase>
+  <phrase title="option_explain.cb_show_followers" version_id="3" version_string="1.0.2"><![CDATA[]]></phrase>
+  <phrase title="option_explain.cb_show_followers_on_thread_view" version_id="5" version_string="1.0.5"><![CDATA[]]></phrase>
+  <phrase title="option_group.cb_member_watch" version_id="3" version_string="1.0.2"><![CDATA[[CB]- MemberWatch]]></phrase>
+  <phrase title="option_group_description.cb_member_watch" version_id="3" version_string="1.0.2"><![CDATA[All settings regarding member watch are listed here.]]></phrase>
+  <phrase title="you_already_watching_this_member" version_id="1" version_string="1.0.0"><![CDATA[You are already watching this member.]]></phrase>
+  <phrase title="you_may_not_watch_yourself" version_id="1" version_string="1.0.0"><![CDATA[You may not watch yourself.]]></phrase>
+</phrases>

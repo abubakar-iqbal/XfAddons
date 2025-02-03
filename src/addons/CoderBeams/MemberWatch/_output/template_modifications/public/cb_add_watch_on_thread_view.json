@@ -1,0 +1,9 @@
+{
+    "template": "post_macros",
+    "description": "Add watch member button on thread view page.",
+    "execution_order": 10,
+    "enabled": false,
+    "action": "str_replace",
+    "find": "<xf:macro template=\"message_macros\" name=\"user_info\" arg-user=\"{$post.User}\"\n\t\t\t\t\t\t\targ-fallbackName=\"{$post.username}\"/>",
+    "replace": "$0\t\t\n<xf:if is=\"$post.post_id==$thread.first_post_id\">\n\t\t\t\t\t\t<xf:button style=\"margin: 6px;\" href=\"{{ link('members/watch', $post.User) }}\"\n\t\t\t\t\tclass=\"button--link cb_tw_button\"\n\t\t\t\t\tdata-xf-click=\"overlay\"\n\t\t\t\t\t>\n\t\t\t\t\t{{ $xf.visitor.isWatching($post.User) ? phrase('cb_unwatch') : phrase('cb_watch') }}\n\t\t\t\t</xf:button>\n\t\t\t\t\t\t</xf:if>"
+}

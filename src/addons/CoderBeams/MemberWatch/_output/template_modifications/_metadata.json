@@ -1,0 +1,11 @@
+{
+    "public/cb_add_post_data_to_message_info.json": {
+        "hash": "e273a8c642fa4d6e21bd59074aee898d"
+    },
+    "public/cb_add_watch_on_thread_view.json": {
+        "hash": "6a18f9d89da2c8310321598d080a677d"
+    },
+    "public/cb_recieve_post_variable_in_message_template.json": {
+        "hash": "1c9051d50d40cdca064587680f351118"
+    }
+}

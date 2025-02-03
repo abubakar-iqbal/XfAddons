@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<option_groups>
+  <group group_id="af_paidads_general" display_order="1" debug_only="0"/>
+  <group group_id="af_paidads_management" display_order="1" debug_only="0"/>
+  <group group_id="af_paidads_purchase" display_order="1" debug_only="0"/>
+</option_groups>

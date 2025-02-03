@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<code_event_listeners>
+  <listener event_id="app_pub_complete" execute_order="10" callback_class="AddonFlare\PaidAds\Listener" callback_method="appPubComplete" active="1" description="Completion tasks"/>
+  <listener event_id="app_setup" execute_order="10" callback_class="AddonFlare\PaidAds\Listener" callback_method="appSetup" active="1" description="Sets up"/>
+  <listener event_id="controller_post_dispatch" execute_order="10" callback_class="AddonFlare\PaidAds\Listener" callback_method="adminOptionControllerPostDispatch" active="1" hint="XF\Admin\Controller\Option" description="Change section context for admin options page"/>
+</code_event_listeners>

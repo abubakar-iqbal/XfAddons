@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<phrases>
+  <phrase title="admin_navigation.af_paidads" version_id="1000070" version_string="1.0.0"><![CDATA[Paid Ads]]></phrase>
+  <phrase title="admin_navigation.af_paidads_ads" version_id="1000070" version_string="1.0.0"><![CDATA[Ads]]></phrase>
+  <phrase title="admin_navigation.af_paidads_adsActive" version_id="1000070" version_string="1.0.0"><![CDATA[Active ads]]></phrase>
+  <phrase title="admin_navigation.af_paidads_adsExpired" version_id="1000070" version_string="1.0.0"><![CDATA[Expired ads]]></phrase>
+  <phrase title="admin_navigation.af_paidads_adsInactive" version_id="1000070" version_string="1.0.0"><![CDATA[Inactive ads]]></phrase>
+  <phrase title="admin_navigation.af_paidads_adsPending" version_id="1000070" version_string="1.0.0"><![CDATA[Pending ads]]></phrase>
+  <phrase title="admin_navigation.af_paidads_adsRejected" version_id="1000070" version_string="1.0.0"><![CDATA[Rejected ads]]></phrase>
+  <phrase title="admin_navigation.af_paidads_locations" version_id="1000070" version_string="1.0.0"><![CDATA[Ad Locations]]></phrase>
+  <phrase title="admin_navigation.af_paidads_locationsAdd" version_id="1000070" version_string="1.0.0"><![CDATA[Create new ad location]]></phrase>
+  <phrase title="admin_navigation.af_paidads_locationsList" version_id="1000070" version_string="1.0.0"><![CDATA[List all ad locations]]></phrase>
+  <phrase title="admin_navigation.af_paidads_options_gen" version_id="1000070" version_string="1.0.0"><![CDATA[General options]]></phrase>
+  <phrase title="admin_navigation.af_paidads_options_manage" version_id="1000070" version_string="1.0.0"><![CDATA[Management options]]></phrase>
+  <phrase title="admin_navigation.af_paidads_options_pur" version_id="1000070" version_string="1.0.0"><![CDATA[Purchase options]]></phrase>
+  <phrase title="af_paidads" version_id="1000070" version_string="1.0.0"><![CDATA[Paid Ads]]></phrase>
+  <phrase title="af_paidads_1_ad_pending" version_id="1000070" version_string="1.0.0"><![CDATA[1 Ad Pending]]></phrase>
+  <phrase title="af_paidads_activate" version_id="1000070" version_string="1.0.0"><![CDATA[Activate]]></phrase>
+  <phrase title="af_paidads_active" version_id="1000070" version_string="1.0.0"><![CDATA[Active]]></phrase>
+  <phrase title="af_paidads_active_ads" version_id="1000070" version_string="1.0.0"><![CDATA[Active ads]]></phrase>
+  <phrase title="af_paidads_active_rotations" version_id="1000070" version_string="1.0.0"><![CDATA[Active rotations]]></phrase>
+  <phrase title="af_paidads_ad_daysremaining_notification_body" version_id="1000070" version_string="1.0.0"><![CDATA[Your ad "{title}" has {days} days remaining. If you would like to add more time please go to your "Manage Ads" page or click <a href="{manage_ads_url}">here</a>.]]></phrase>
+  <phrase title="af_paidads_ad_daysremaining_notification_subject" version_id="1000070" version_string="1.0.0"><![CDATA[Your ad is expiring soon]]></phrase>
+  <phrase title="af_paidads_ad_expired_notification_body" version_id="1000070" version_string="1.0.0"><![CDATA[Your ad "{title}" has expired. Click <a href="{buy_ads_url}">here</a> to buy it again.]]></phrase>
+  <phrase title="af_paidads_ad_expired_notification_subject" version_id="1000070" version_string="1.0.0"><![CDATA[Your ad has expired]]></phrase>
+  <phrase title="af_paidads_ad_location" version_id="1000070" version_string="1.0.0"><![CDATA[Ad Location]]></phrase>
+  <phrase title="af_paidads_ad_locations" version_id="1000070" version_string="1.0.0"><![CDATA[Ad Locations]]></phrase>
+  <phrase title="af_paidads_ad_options" version_id="1000070" version_string="1.0.0"><![CDATA[Ad options]]></phrase>
+  <phrase title="af_paidads_add_to_cart" version_id="1000070" version_string="1.0.0"><![CDATA[Add to cart]]></phrase>
+  <phrase title="af_paidads_addedToCart_viewCart" version_id="1000070" version_string="1.0.0"><![CDATA[Added To Cart - <a href="{cartUrl}">View Cart</a>]]></phrase>
+  <phrase title="af_paidads_ads_cart" version_id="1000070" version_string="1.0.0"><![CDATA[Ads cart]]></phrase>
+  <phrase title="af_paidads_alignment" version_id="1000070" version_string="1.0.0"><![CDATA[Alignment]]></phrase>
+  <phrase title="af_paidads_all_locations" version_id="1000070" version_string="1.0.0"><![CDATA[All locations]]></phrase>
+  <phrase title="af_paidads_allow_forum_purchases" version_id="1000070" version_string="1.0.0"><![CDATA[Allow forum purchases]]></phrase>
+  <phrase title="af_paidads_allow_non_forum_purchases" version_id="1000070" version_string="1.0.0"><![CDATA[Allow non-forum purchases]]></phrase>
+  <phrase title="af_paidads_allowed_extensions" version_id="1000070" version_string="1.0.0"><![CDATA[Allowed extensions]]></phrase>
+  <phrase title="af_paidads_allowed_file_extensions" version_id="1000070" version_string="1.0.0"><![CDATA[Allowed file extensions]]></phrase>
+  <phrase title="af_paidads_banner" version_id="1000070" version_string="1.0.0"><![CDATA[Banner]]></phrase>
+  <phrase title="af_paidads_banner_height_must_be_x_px" version_id="1000070" version_string="1.0.0"><![CDATA[Banner height must be {height}px]]></phrase>
+  <phrase title="af_paidads_banner_url" version_id="1000070" version_string="1.0.0"><![CDATA[Banner/URL]]></phrase>
+  <phrase title="af_paidads_banner_width_must_be_x_px" version_id="1000070" version_string="1.0.0"><![CDATA[Banner width must be {width}px]]></phrase>
+  <phrase title="af_paidads_basic" version_id="1000070" version_string="1.0.0"><![CDATA[Basic]]></phrase>
+  <phrase title="af_paidads_basic_hint" version_id="1000070" version_string="1.0.0"><![CDATA[When the ad is rendered on the page (includes adblock views)<br>
+(No additional resources used)]]></phrase>
+  <phrase title="af_paidads_both" version_id="1000070" version_string="1.0.0"><![CDATA[Both]]></phrase>
+  <phrase title="af_paidads_both_hint" version_id="1000070" version_string="1.0.0"><![CDATA[Shown on all pages.]]></phrase>
+  <phrase title="af_paidads_buy_ads" version_id="1000070" version_string="1.0.0"><![CDATA[Buy ads]]></phrase>
+  <phrase title="af_paidads_buy_now_x" version_id="1000070" version_string="1.0.0"><![CDATA[Buy Now - {price}]]></phrase>
+  <phrase title="af_paidads_cart" version_id="1000070" version_string="1.0.0"><![CDATA[Cart]]></phrase>
+  <phrase title="af_paidads_cart_has_expired" version_id="1000070" version_string="1.0.0"><![CDATA[Cart has expired]]></phrase>
+  <phrase title="af_paidads_choose_ad_location" version_id="1000070" version_string="1.0.0"><![CDATA[Choose Ad Location]]></phrase>
+  <phrase title="af_paidads_choose_forum_explain" version_id="1000070" version_string="1.0.0"><![CDATA[Choose a forum for the "forum" related pages.]]></phrase>
+  <phrase title="af_paidads_click_track_threshold" version_id="1000070" version_string="1.0.0"><![CDATA[Click track threshold]]></phrase>
+  <phrase title="af_paidads_click_track_threshold_explain" version_id="1000070" version_string="1.0.0"><![CDATA[Minimum time between to track clicks by the same user. Set to 0 to track all clicks.]]></phrase>
+  <phrase title="af_paidads_create_ad_location" version_id="1000070" version_string="1.0.0"><![CDATA[Create ad location]]></phrase>
+  <phrase title="af_paidads_currency" version_id="1000070" version_string="1.0.0"><![CDATA[Currency]]></phrase>
+  <phrase title="af_paidads_custom_tier_prices" version_id="1000070" version_string="1.0.0"><![CDATA[Custom tier prices]]></phrase>
+  <phrase title="af_paidads_day_active" version_id="1000070" version_string="1.0.0"><![CDATA[Active]]></phrase>
+  <phrase title="af_paidads_day_not_available" version_id="1000070" version_string="1.0.0"><![CDATA[This day is not available]]></phrase>
+  <phrase title="af_paidads_day_open" version_id="1000070" version_string="1.0.0"><![CDATA[Open]]></phrase>
+  <phrase title="af_paidads_day_purchased" version_id="1000070" version_string="1.0.0"><![CDATA[Purchased]]></phrase>
+  <phrase title="af_paidads_days_must_be_within_min_and_max" version_id="1000070" version_string="1.0.0"><![CDATA[The number of days added must be within the minimum ({min}) and maximum ({max})]]></phrase>
+  <phrase title="af_paidads_days_remaining" version_id="1000070" version_string="1.0.0"><![CDATA[Days remaining]]></phrase>
+  <phrase title="af_paidads_different_dimensions_x" version_id="1000070" version_string="1.0.0"><![CDATA[You selected ads with different dimensions: {dimensions}. Multiple submission only allows ads of the same dimension]]></phrase>
+  <phrase title="af_paidads_dimensions" version_id="1000070" version_string="1.0.0"><![CDATA[Dimensions]]></phrase>
+  <phrase title="af_paidads_dimensions_explain" version_id="1000070" version_string="1.0.0"><![CDATA[Leave blank or use 0 to allow any dimensions.]]></phrase>
+  <phrase title="af_paidads_dynamic_pricing_based_forum_post_count" version_id="1000070" version_string="1.0.0"><![CDATA[Dynamic pricing (based on forum post count)]]></phrase>
+  <phrase title="af_paidads_edit_ad" version_id="1000070" version_string="1.0.0"><![CDATA[Edit ad]]></phrase>
+  <phrase title="af_paidads_excluded_forums" version_id="1000070" version_string="1.0.0"><![CDATA[Excluded Forums]]></phrase>
+  <phrase title="af_paidads_excluded_templates" version_id="1000070" version_string="1.0.0"><![CDATA[Excluded templates]]></phrase>
+  <phrase title="af_paidads_existing_banner_image" version_id="1000070" version_string="1.0.0"><![CDATA[Existing banner image]]></phrase>
+  <phrase title="af_paidads_fixed_pricing" version_id="1000070" version_string="1.0.0"><![CDATA[Fixed pricing]]></phrase>
+  <phrase title="af_paidads_forum" version_id="1000070" version_string="1.0.0"><![CDATA[Forum]]></phrase>
+  <phrase title="af_paidads_forum_ads" version_id="1000070" version_string="1.0.0"><![CDATA[Forum ads]]></phrase>
+  <phrase title="af_paidads_forum_days_remaining" version_id="1000070" version_string="1.0.0"><![CDATA[Forum days remaining]]></phrase>
+  <phrase title="af_paidads_forum_only" version_id="1000070" version_string="1.0.0"><![CDATA[Forum Only]]></phrase>
+  <phrase title="af_paidads_forum_only_hint" version_id="1000070" version_string="1.0.0"><![CDATA[Shown only in "forum" related pages such as when viewing a forum's threads and within a thread.]]></phrase>
+  <phrase title="af_paidads_forum_pages" version_id="1000070" version_string="1.0.0"><![CDATA[Forum pages]]></phrase>
+  <phrase title="af_paidads_forum_price" version_id="1000070" version_string="1.0.0"><![CDATA[Forum price]]></phrase>
+  <phrase title="af_paidads_forum_rotations" version_id="1000070" version_string="1.0.0"><![CDATA[Forum rotations]]></phrase>
+  <phrase title="af_paidads_forum_specific_prices_per_day" version_id="1000070" version_string="1.0.0"><![CDATA[Forum specific prices per day]]></phrase>
+  <phrase title="af_paidads_include_child_nodes" version_id="1000070" version_string="1.0.0"><![CDATA[Include child nodes]]></phrase>
+  <phrase title="af_paidads_inline_css" version_id="1000070" version_string="1.0.0"><![CDATA[Inline CSS]]></phrase>
+  <phrase title="af_paidads_invalid_cart_ad" version_id="1000070" version_string="1.0.0"><![CDATA[Invalid cart ad]]></phrase>
+  <phrase title="af_paidads_invalid_date" version_id="1000070" version_string="1.0.0"><![CDATA[Invalid date]]></phrase>
+  <phrase title="af_paidads_invalid_forum_dynamic_custom_prices" version_id="1000070" version_string="1.0.0"><![CDATA[Invalid forum dynamic custom tier prices]]></phrase>
+  <phrase title="af_paidads_invalid_forum_dynamic_price_for_x" version_id="1000070" version_string="1.0.0"><![CDATA[Invalid forum dynamic tier price for: {x}]]></phrase>
+  <phrase title="af_paidads_invalid_forum_dynamic_price_tiers" version_id="1000070" version_string="1.0.0"><![CDATA[Invalid forum dynamic price tiers]]></phrase>
+  <phrase title="af_paidads_invalid_forum_fixed_prices_per_day" version_id="1000070" version_string="1.0.0"><![CDATA[Invalid forum fixed specific prices per day.]]></phrase>
+  <phrase title="af_paidads_invalid_forum_price_per_day" version_id="1000070" version_string="1.0.0"><![CDATA[Invalid forum price per day]]></phrase>
+  <phrase title="af_paidads_invalid_inline_css" version_id="1000070" version_string="1.0.0"><![CDATA[Invalid Inline CSS]]></phrase>
+  <phrase title="af_paidads_invalid_non_forum_price_per_day" version_id="1000070" version_string="1.0.0"><![CDATA[Invalid non-forum price per day]]></phrase>
+  <phrase title="af_paidads_invalid_placeholder_url" version_id="1000070" version_string="1.0.0"><![CDATA[Invalid placeholder URL]]></phrase>
+  <phrase title="af_paidads_is_active" version_id="1000070" version_string="1.0.0"><![CDATA[Is active]]></phrase>
+  <phrase title="af_paidads_is_purchasable" version_id="1000070" version_string="1.0.0"><![CDATA[Is purchasable]]></phrase>
+  <phrase title="af_paidads_location" version_id="1000070" version_string="1.0.0"><![CDATA[Location]]></phrase>
+  <phrase title="af_paidads_manage_ads" version_id="1000070" version_string="1.0.0"><![CDATA[Manage ads]]></phrase>
+  <phrase title="af_paidads_manage_your_ads" version_id="1000070" version_string="1.0.0"><![CDATA[Manage your ads]]></phrase>
+  <phrase title="af_paidads_mass_set_banner_url" version_id="1000070" version_string="1.0.0"><![CDATA[Mass Set Banner/URL]]></phrase>
+  <phrase title="af_paidads_max_amount_days_is_x" version_id="1000070" version_string="1.0.0"><![CDATA[The maximum amount of days is {days}]]></phrase>
+  <phrase title="af_paidads_max_days" version_id="1000070" version_string="1.0.0"><![CDATA[Max days]]></phrase>
+  <phrase title="af_paidads_max_days_explain" version_id="1000070" version_string="1.0.0"><![CDATA[Maximum days allowed for purchase]]></phrase>
+  <phrase title="af_paidads_max_file_size" version_id="1000070" version_string="1.0.0"><![CDATA[Max file size]]></phrase>
+  <phrase title="af_paidads_max_file_size_explain" version_id="1000070" version_string="1.0.0"><![CDATA[Provide the maximum file size in kilobytes (KB). The configuration of this server limits this value to <b>{serverMaxFileSize}</b> KB.]]></phrase>
+  <phrase title="af_paidads_max_rotations" version_id="1000070" version_string="1.0.0"><![CDATA[Max rotations]]></phrase>
+  <phrase title="af_paidads_min_amount_days_is_x" version_id="1000070" version_string="1.0.0"><![CDATA[The minimum amount of days is {days}]]></phrase>
+  <phrase title="af_paidads_min_days" version_id="1000070" version_string="1.0.0"><![CDATA[Min days]]></phrase>
+  <phrase title="af_paidads_min_days_explain" version_id="1000070" version_string="1.0.0"><![CDATA[Minimum days allowed for purchase]]></phrase>
+  <phrase title="af_paidads_misc_options" version_id="1000070" version_string="1.0.0"><![CDATA[Misc options]]></phrase>
+  <phrase title="af_paidads_new_banner_could_not_be_applied_try_later" version_id="1000070" version_string="1.0.0"><![CDATA[The new banner could not be applied. Please try again later.]]></phrase>
+  <phrase title="af_paidads_next_month" version_id="1000070" version_string="1.0.0"><![CDATA[Next month]]></phrase>
+  <phrase title="af_paidads_no_ads_available_for_purchase" version_id="1000070" version_string="1.0.0"><![CDATA[There are currently no ads available for purchase]]></phrase>
+  <phrase title="af_paidads_no_ads_can_be_purchased_at_this_time" version_id="1000070" version_string="1.0.0"><![CDATA[No ads can be purchased at this time. Please check back later.]]></phrase>
+  <phrase title="af_paidads_no_results" version_id="1000070" version_string="1.0.0"><![CDATA[No results]]></phrase>
+  <phrase title="af_paidads_non_forum" version_id="1000070" version_string="1.0.0"><![CDATA[Non-Forum]]></phrase>
+  <phrase title="af_paidads_non_forum_ads" version_id="1000070" version_string="1.0.0"><![CDATA[Non-forum ads]]></phrase>
+  <phrase title="af_paidads_non_forum_days_remaining" version_id="1000070" version_string="1.0.0"><![CDATA[Non-Forum days remaining]]></phrase>
+  <phrase title="af_paidads_non_forum_only" version_id="1000070" version_string="1.0.0"><![CDATA[Non-Forum Only]]></phrase>
+  <phrase title="af_paidads_non_forum_only_hint" version_id="1000070" version_string="1.0.0"><![CDATA[Shown only in "non forum" related pages such as the homepage, conversations, user profiles, etc. Basically any page that's not included in the "forum only" option.]]></phrase>
+  <phrase title="af_paidads_non_forum_pages" version_id="1000070" version_string="1.0.0"><![CDATA[Non-Forum pages]]></phrase>
+  <phrase title="af_paidads_non_forum_price" version_id="1000070" version_string="1.0.0"><![CDATA[Non-Forum price]]></phrase>
+  <phrase title="af_paidads_non_forum_rotations" version_id="1000070" version_string="1.0.0"><![CDATA[Non-forum rotations]]></phrase>
+  <phrase title="af_paidads_one_per_line" version_id="1000070" version_string="1.0.0"><![CDATA[One per line]]></phrase>
+  <phrase title="af_paidads_pending_approval" version_id="1000070" version_string="1.0.0"><![CDATA[Pending approval]]></phrase>
+  <phrase title="af_paidads_placeholder" version_id="1000070" version_string="1.0.0"><![CDATA[Placeholder]]></phrase>
+  <phrase title="af_paidads_placeholder_display_probabilities" version_id="1000070" version_string="1.0.0"><![CDATA[Placeholder display probabilities]]></phrase>
+  <phrase title="af_paidads_placeholder_type_explain" version_id="1000070" version_string="1.0.0"><![CDATA[The placeholder will rotate with purchased ads, if there are no purchased ads it will always appear.]]></phrase>
+  <phrase title="af_paidads_please_choose_price_type_forum" version_id="1000070" version_string="1.0.0"><![CDATA[Please choose a price type for forum purchases]]></phrase>
+  <phrase title="af_paidads_please_select_action" version_id="1000070" version_string="1.0.0"><![CDATA[Please select an action]]></phrase>
+  <phrase title="af_paidads_please_select_at_least_one_ad_submit" version_id="1000070" version_string="1.0.0"><![CDATA[Please select at least one ad to submit the banner/URL for]]></phrase>
+  <phrase title="af_paidads_post_counts" version_id="1000070" version_string="1.0.0"><![CDATA[Post counts]]></phrase>
+  <phrase title="af_paidads_previous_month" version_id="1000070" version_string="1.0.0"><![CDATA[Previous month]]></phrase>
+  <phrase title="af_paidads_price_per_day" version_id="1000070" version_string="1.0.0"><![CDATA[Price per day]]></phrase>
+  <phrase title="af_paidads_price_tiers" version_id="1000070" version_string="1.0.0"><![CDATA[Price tiers]]></phrase>
+  <phrase title="af_paidads_purchasable_by_user_groups" version_id="1000070" version_string="1.0.0"><![CDATA[Purchasable by user groups]]></phrase>
+  <phrase title="af_paidads_purchasable_forums" version_id="1000070" version_string="1.0.0"><![CDATA[Purchasable forums]]></phrase>
+  <phrase title="af_paidads_purchase" version_id="1000070" version_string="1.0.0"><![CDATA[Paid Ads Purchase]]></phrase>
+  <phrase title="af_paidads_purchase_date" version_id="1000070" version_string="1.0.0"><![CDATA[Purchase date]]></phrase>
+  <phrase title="af_paidads_purchase_options" version_id="1000070" version_string="1.0.0"><![CDATA[Purchase options]]></phrase>
+  <phrase title="af_paidads_real" version_id="1000070" version_string="1.0.0"><![CDATA[Real]]></phrase>
+  <phrase title="af_paidads_real_hint" version_id="1000070" version_string="1.0.0"><![CDATA[When the ad is rendered + displayed on the page (excludes adblock views)]]></phrase>
+  <phrase title="af_paidads_real_scroll" version_id="1000070" version_string="1.0.0"><![CDATA[Real + scroll]]></phrase>
+  <phrase title="af_paidads_real_scroll_hint" version_id="1000070" version_string="1.0.0"><![CDATA[When the ad is rendered + displayed on the page and the user scrolls to it (excludes adblock views)]]></phrase>
+  <phrase title="af_paidads_receipt_for_your_ads_purchase_at_x" version_id="1000070" version_string="1.0.0"><![CDATA[Receipt for your ads purchase at {board_title}]]></phrase>
+  <phrase title="af_paidads_removed" version_id="1000070" version_string="1.0.0"><![CDATA[Removed]]></phrase>
+  <phrase title="af_paidads_select_days_info" version_id="1000070" version_string="1.0.0"><![CDATA[ Please select the days you wish to display your ad on by clicking on the open spots.<br>
+You may also select/deselect the entire month by using the checkboxes above the calendar.]]></phrase>
+  <phrase title="af_paidads_separate_multiple_with_comma" version_id="1000070" version_string="1.0.0"><![CDATA[Separate multiple with comma]]></phrase>
+  <phrase title="af_paidads_stats" version_id="1000070" version_string="1.0.0"><![CDATA[Stats]]></phrase>
+  <phrase title="af_paidads_submit_banner_url" version_id="1000070" version_string="1.0.0"><![CDATA[Submit Banner/URL]]></phrase>
+  <phrase title="af_paidads_thank_you_for_your_ads_purchase" version_id="1000070" version_string="1.0.0"><![CDATA[Thank you for your ads purchase.<br />
+<br />
+To setup your ads, please go <a href="{manage_ads_url}">here</a>.
+
+Note: Payments can take a few seconds to a few minutes to process.]]></phrase>
+  <phrase title="af_paidads_thank_you_for_your_ads_purchase_at_x" version_id="1000070" version_string="1.0.0"><![CDATA[Thank you for your ads purchase at <a href="{board_url}">{board_title}</a>.]]></phrase>
+  <phrase title="af_paidads_thread_ids" version_id="1000070" version_string="1.0.0"><![CDATA[Thread IDs]]></phrase>
+  <phrase title="af_paidads_tier_prices_for_node_x_mismatch" version_id="1000070" version_string="1.0.0"><![CDATA[The amount of tier prices for Node ID ({node_id}) don't match the amount of price tiers available]]></phrase>
+  <phrase title="af_paidads_time_remaining" version_id="1000070" version_string="1.0.0"><![CDATA[Time remaining]]></phrase>
+  <phrase title="af_paidads_time_remaining_tooltip" version_id="1000070" version_string="1.0.0"><![CDATA[The days selected will be held for this amount of time. After this time is up, you will have to start over.]]></phrase>
+  <phrase title="af_paidads_total_amount" version_id="1000070" version_string="1.0.0"><![CDATA[Total amount]]></phrase>
+  <phrase title="af_paidads_total_clicks" version_id="1000070" version_string="1.0.0"><![CDATA[Total clicks]]></phrase>
+  <phrase title="af_paidads_total_clicks_in_last_24hrs" version_id="1000070" version_string="1.0.0"><![CDATA[Total clicks in the last 24 hours]]></phrase>
+  <phrase title="af_paidads_total_days" version_id="1000070" version_string="1.0.0"><![CDATA[Total days]]></phrase>
+  <phrase title="af_paidads_total_days_added" version_id="1000070" version_string="1.0.0"><![CDATA[Total days added]]></phrase>
+  <phrase title="af_paidads_total_views" version_id="1000070" version_string="1.0.0"><![CDATA[Total views]]></phrase>
+  <phrase title="af_paidads_unable_to_add_days" version_id="1000070" version_string="1.0.0"><![CDATA[Unable to add days]]></phrase>
+  <phrase title="af_paidads_upload_banner_image" version_id="1000070" version_string="1.0.0"><![CDATA[Upload banner image]]></phrase>
+  <phrase title="af_paidads_view_track_method" version_id="1000070" version_string="1.0.0"><![CDATA[View track method]]></phrase>
+  <phrase title="af_paidads_view_track_threshold" version_id="1000070" version_string="1.0.0"><![CDATA[View track threshold]]></phrase>
+  <phrase title="af_paidads_view_track_threshold_explain" version_id="1000070" version_string="1.0.0"><![CDATA[Minimum time between to track views by the same user. Set to 0 to track all views.]]></phrase>
+  <phrase title="af_paidads_x_ads_pending" version_id="1000070" version_string="1.0.0"><![CDATA[{count} Ads Pending]]></phrase>
+  <phrase title="af_paidads_your_ad_has_been_approved_x" version_id="1000070" version_string="1.0.0"><![CDATA[Your ad has been approved: {ad_link}]]></phrase>
+  <phrase title="af_paidads_your_ad_has_been_rejected_x" version_id="1000070" version_string="1.0.0"><![CDATA[Your ad has been rejected: {ad_link}]]></phrase>
+  <phrase title="af_paidads_your_ad_has_expired_x" version_id="1000070" version_string="1.0.0"><![CDATA[Your ad has expired: {ad_link}]]></phrase>
+  <phrase title="af_paidads_your_ad_has_x_days_remaining" version_id="1000070" version_string="1.0.0"><![CDATA[Your ad {ad_link} has {days} days remaining]]></phrase>
+  <phrase title="af_paidads_z" version_id="1000170" version_string="1.0.1"><![CDATA[No license found for add-on: Paid Ads. <br>Please <a href="https://www.addonflare.com/xenforo-2-addons/paid-ads-powerful-ad-rotation-system.11/" rel="nofollow" target="_blank">purchase a license</a> or <a href="admin.php?add-ons/AddonFlare-PaidAds/uninstall" rel="nofollow" target="_blank">uninstall</a> the add-on.<br>
+If you have a valid license, please <a href="admin.php?add-ons/" rel="nofollow" target="_blank">disable</a> the add-on to remove this message and <a href="https://www.addonflare.com/licenses/" rel="nofollow" target="_blank">submit a support ticket</a>.]]></phrase>
+  <phrase title="cron_entry.afpaidadsCleanUpHourly" version_id="1000070" version_string="1.0.0"><![CDATA[AddonFlare Paid Ads: Hourly clean up]]></phrase>
+  <phrase title="nav.af_paidads_buy" version_id="1000070" version_string="1.0.0"><![CDATA[Buy ads]]></phrase>
+  <phrase title="nav.af_paidads_cart" version_id="1000070" version_string="1.0.0"><![CDATA[Cart]]></phrase>
+  <phrase title="nav.af_paidads_main" version_id="1000070" version_string="1.0.0"><![CDATA[Advertising]]></phrase>
+  <phrase title="nav.af_paidads_manage" version_id="1000070" version_string="1.0.0"><![CDATA[Manage ads]]></phrase>
+  <phrase title="option.af_paidads_ad_daysremaining_alert" version_id="1000070" version_string="1.0.0"><![CDATA[Ad days remaining (Alert Notification)]]></phrase>
+  <phrase title="option.af_paidads_ad_daysremaining_email" version_id="1000070" version_string="1.0.0"><![CDATA[Ad days remaining (Email Notification)]]></phrase>
+  <phrase title="option.af_paidads_ad_expiry_notifications" version_id="1000070" version_string="1.0.0"><![CDATA[Ad expiry notifications]]></phrase>
+  <phrase title="option.af_paidads_ad_terms" version_id="1000070" version_string="1.0.0"><![CDATA[Ad default terms and rules]]></phrase>
+  <phrase title="option.af_paidads_cal_shortDayNames" version_id="1000070" version_string="1.0.0"><![CDATA[Use short day names]]></phrase>
+  <phrase title="option.af_paidads_cal_startOfWeek" version_id="1000070" version_string="1.0.0"><![CDATA[Calendar start of week]]></phrase>
+  <phrase title="option.af_paidads_cartExpireMinutes" version_id="1000070" version_string="1.0.0"><![CDATA[Cart Expiration]]></phrase>
+  <phrase title="option.af_paidads_currency" version_id="1000070" version_string="1.0.0"><![CDATA[Currency]]></phrase>
+  <phrase title="option.af_paidads_disallowedTemplates" version_id="1000070" version_string="1.0.0"><![CDATA[Globally disable ads in these templates]]></phrase>
+  <phrase title="option.af_paidads_exclude_in_paidads_pages" version_id="1000070" version_string="1.0.0"><![CDATA[Disable ads in paid ads system pages]]></phrase>
+  <phrase title="option.af_paidads_excluded_node_ids" version_id="1000070" version_string="1.0.0"><![CDATA[Globally disable ads in these forums]]></phrase>
+  <phrase title="option.af_paidads_payment_profile_ids" version_id="1000070" version_string="1.0.0"><![CDATA[Payment Profiles]]></phrase>
+  <phrase title="option.af_paidads_ugs_allowed_purchase" version_id="1000070" version_string="1.0.0"><![CDATA[User groups allowed to purchase ads]]></phrase>
+  <phrase title="option.af_paidads_ugs_auto_approve" version_id="1000070" version_string="1.0.0"><![CDATA[Auto approve user groups]]></phrase>
+  <phrase title="option.af_paidads_ugs_auto_reapprove" version_id="1000070" version_string="1.0.0"><![CDATA[Auto re-approve user groups]]></phrase>
+  <phrase title="option.af_paidads_ugs_excluded_view_ads" version_id="1000070" version_string="1.0.0"><![CDATA[Globally disable ads for these user groups]]></phrase>
+  <phrase title="option_explain.af_paidads_ad_daysremaining_alert" version_id="1000070" version_string="1.0.0"><![CDATA[Send alert notification when there are this many days remaining. Use 0 to disable.]]></phrase>
+  <phrase title="option_explain.af_paidads_ad_daysremaining_email" version_id="1000070" version_string="1.0.0"><![CDATA[Send email notification when there are this many days remaining. Use 0 to disable.]]></phrase>
+  <phrase title="option_explain.af_paidads_ad_expiry_notifications" version_id="1000070" version_string="1.0.0"><![CDATA[Notifications to send when ad expires]]></phrase>
+  <phrase title="option_explain.af_paidads_ad_terms" version_id="1000070" version_string="1.0.0"><![CDATA[(HTML Allowed)]]></phrase>
+  <phrase title="option_explain.af_paidads_cal_shortDayNames" version_id="1000070" version_string="1.0.0"><![CDATA[If enabled, short day names will be used instead of the full names.<br>
+Example: Sunday => Sun, Monday => Mon, Tuesday => Tue, etc]]></phrase>
+  <phrase title="option_explain.af_paidads_cal_startOfWeek" version_id="1000070" version_string="1.0.0"><![CDATA[]]></phrase>
+  <phrase title="option_explain.af_paidads_cartExpireMinutes" version_id="1000070" version_string="1.0.0"><![CDATA[Must be at least 1 minute]]></phrase>
+  <phrase title="option_explain.af_paidads_currency" version_id="1000070" version_string="1.0.0"><![CDATA[]]></phrase>
+  <phrase title="option_explain.af_paidads_disallowedTemplates" version_id="1000070" version_string="1.0.0"><![CDATA[You may want to prevent all ads from showing within certain templates, such as errors or other pages that may be against your ad provider's ToS. List them above.]]></phrase>
+  <phrase title="option_explain.af_paidads_exclude_in_paidads_pages" version_id="1000070" version_string="1.0.0"><![CDATA[Don't show ads in Paid Ads system templates.<br>
+Ex. Buy Ads Page, Manage Ads Page, Cart Page, etc]]></phrase>
+  <phrase title="option_explain.af_paidads_excluded_node_ids" version_id="1000070" version_string="1.0.0"><![CDATA[These forums will never show ads]]></phrase>
+  <phrase title="option_explain.af_paidads_payment_profile_ids" version_id="1000070" version_string="1.0.0"><![CDATA[]]></phrase>
+  <phrase title="option_explain.af_paidads_ugs_allowed_purchase" version_id="1000070" version_string="1.0.0"><![CDATA[]]></phrase>
+  <phrase title="option_explain.af_paidads_ugs_auto_approve" version_id="1000070" version_string="1.0.0"><![CDATA[User groups to auto approve ads for]]></phrase>
+  <phrase title="option_explain.af_paidads_ugs_auto_reapprove" version_id="1000070" version_string="1.0.0"><![CDATA[User groups to auto re-approve ads for]]></phrase>
+  <phrase title="option_explain.af_paidads_ugs_excluded_view_ads" version_id="1000070" version_string="1.0.0"><![CDATA[These user groups will never see ads]]></phrase>
+  <phrase title="option_group.af_paidads_general" version_id="1000070" version_string="1.0.0"><![CDATA[[AddonFlare] Paid Ads: General]]></phrase>
+  <phrase title="option_group.af_paidads_management" version_id="1000070" version_string="1.0.0"><![CDATA[[AddonFlare] Paid Ads: Management]]></phrase>
+  <phrase title="option_group.af_paidads_purchase" version_id="1000070" version_string="1.0.0"><![CDATA[[AddonFlare] Paid Ads: Purchase]]></phrase>
+  <phrase title="option_group_description.af_paidads_general" version_id="1000070" version_string="1.0.0"><![CDATA[]]></phrase>
+  <phrase title="option_group_description.af_paidads_management" version_id="1000070" version_string="1.0.0"><![CDATA[]]></phrase>
+  <phrase title="option_group_description.af_paidads_purchase" version_id="1000070" version_string="1.0.0"><![CDATA[]]></phrase>
+  <phrase title="style_prop.afPaidAdsCalDayContainer" version_id="1000070" version_string="1.0.0"><![CDATA[Calendar day rotations container]]></phrase>
+  <phrase title="style_prop.afPaidAdsCalForumDayBg" version_id="1000070" version_string="1.0.0"><![CDATA[Forum day background color]]></phrase>
+  <phrase title="style_prop.afPaidAdsCalForumDayColor" version_id="1000070" version_string="1.0.0"><![CDATA[Forum day color]]></phrase>
+  <phrase title="style_prop.afPaidAdsCalForumDayHoverBg" version_id="1000070" version_string="1.0.0"><![CDATA[(Hovered) Forum day background color]]></phrase>
+  <phrase title="style_prop.afPaidAdsCalForumDayHoverColor" version_id="1000070" version_string="1.0.0"><![CDATA[(Hovered) Forum day color]]></phrase>
+  <phrase title="style_prop.afPaidAdsCalForumDaySelectedBg" version_id="1000070" version_string="1.0.0"><![CDATA[(Selected) Forum day background color]]></phrase>
+  <phrase title="style_prop.afPaidAdsCalForumDaySelectedColor" version_id="1000070" version_string="1.0.0"><![CDATA[(Selected) Forum day color]]></phrase>
+  <phrase title="style_prop.afPaidAdsCalHeader" version_id="1000070" version_string="1.0.0"><![CDATA[Calendar header]]></phrase>
+  <phrase title="style_prop.afPaidAdsCalNonForumDayBg" version_id="1000070" version_string="1.0.0"><![CDATA[Non-forum day background color]]></phrase>
+  <phrase title="style_prop.afPaidAdsCalNonForumDayColor" version_id="1000070" version_string="1.0.0"><![CDATA[Non-forum day color]]></phrase>
+  <phrase title="style_prop.afPaidAdsCalNonForumDayHoverBg" version_id="1000070" version_string="1.0.0"><![CDATA[(Hovered) Non-forum day background color]]></phrase>
+  <phrase title="style_prop.afPaidAdsCalNonForumDayHoverColor" version_id="1000070" version_string="1.0.0"><![CDATA[(Hovered) Non-forum day color]]></phrase>
+  <phrase title="style_prop.afPaidAdsCalNonForumDaySelectedBg" version_id="1000070" version_string="1.0.0"><![CDATA[(Selected) Non-forum day background color]]></phrase>
+  <phrase title="style_prop.afPaidAdsCalNonForumDaySelectedColor" version_id="1000070" version_string="1.0.0"><![CDATA[(Selected) Non-forum day color]]></phrase>
+  <phrase title="style_prop.afPaidAdsCalUnavailableDayBg" version_id="1000070" version_string="1.0.0"><![CDATA[Unavailable day background color]]></phrase>
+  <phrase title="style_prop.afPaidAdsCalUnavailableDayColor" version_id="1000070" version_string="1.0.0"><![CDATA[Unavailable day color]]></phrase>
+  <phrase title="style_prop.afPaidAdsRowAltBg" version_id="1000070" version_string="1.0.0"><![CDATA[Alternate row background color]]></phrase>
+  <phrase title="style_prop_desc.afPaidAdsCalDayContainer" version_id="1000070" version_string="1.0.0"><![CDATA[The container which holds the number of open days]]></phrase>
+  <phrase title="style_prop_desc.afPaidAdsCalForumDayBg" version_id="1000070" version_string="1.0.0"><![CDATA[]]></phrase>
+  <phrase title="style_prop_desc.afPaidAdsCalForumDayColor" version_id="1000070" version_string="1.0.0"><![CDATA[]]></phrase>
+  <phrase title="style_prop_desc.afPaidAdsCalForumDayHoverBg" version_id="1000070" version_string="1.0.0"><![CDATA[]]></phrase>
+  <phrase title="style_prop_desc.afPaidAdsCalForumDayHoverColor" version_id="1000070" version_string="1.0.0"><![CDATA[]]></phrase>
+  <phrase title="style_prop_desc.afPaidAdsCalForumDaySelectedBg" version_id="1000070" version_string="1.0.0"><![CDATA[]]></phrase>
+  <phrase title="style_prop_desc.afPaidAdsCalForumDaySelectedColor" version_id="1000070" version_string="1.0.0"><![CDATA[]]></phrase>
+  <phrase title="style_prop_desc.afPaidAdsCalHeader" version_id="1000070" version_string="1.0.0"><![CDATA[]]></phrase>
+  <phrase title="style_prop_desc.afPaidAdsCalNonForumDayBg" version_id="1000070" version_string="1.0.0"><![CDATA[]]></phrase>
+  <phrase title="style_prop_desc.afPaidAdsCalNonForumDayColor" version_id="1000070" version_string="1.0.0"><![CDATA[]]></phrase>
+  <phrase title="style_prop_desc.afPaidAdsCalNonForumDayHoverBg" version_id="1000070" version_string="1.0.0"><![CDATA[]]></phrase>
+  <phrase title="style_prop_desc.afPaidAdsCalNonForumDayHoverColor" version_id="1000070" version_string="1.0.0"><![CDATA[]]></phrase>
+  <phrase title="style_prop_desc.afPaidAdsCalNonForumDaySelectedBg" version_id="1000070" version_string="1.0.0"><![CDATA[]]></phrase>
+  <phrase title="style_prop_desc.afPaidAdsCalNonForumDaySelectedColor" version_id="1000070" version_string="1.0.0"><![CDATA[]]></phrase>
+  <phrase title="style_prop_desc.afPaidAdsCalUnavailableDayBg" version_id="1000070" version_string="1.0.0"><![CDATA[]]></phrase>
+  <phrase title="style_prop_desc.afPaidAdsCalUnavailableDayColor" version_id="1000070" version_string="1.0.0"><![CDATA[]]></phrase>
+  <phrase title="style_prop_desc.afPaidAdsRowAltBg" version_id="1000070" version_string="1.0.0"><![CDATA[]]></phrase>
+  <phrase title="style_prop_group.afPaidAds" version_id="1000070" version_string="1.0.0"><![CDATA[[AddonFlare] Paid Ads]]></phrase>
+  <phrase title="style_prop_group_desc.afPaidAds" version_id="1000070" version_string="1.0.0"><![CDATA[A number of properties to control the appearance of the Paid Ads add-on]]></phrase>
+</phrases>

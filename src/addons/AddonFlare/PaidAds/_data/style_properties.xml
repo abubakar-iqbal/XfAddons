@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<style_properties>
+  <style_property property_name="afPaidAdsCalDayContainer" group_name="afPaidAds" title="Calendar day rotations container" description="The container which holds the number of open days" property_type="css" has_variations="0" display_order="30" css_components="text,border,border_color_simple,padding">
+    <value>{
+    "border-top-width": "1px",
+    "border-bottom-width": "1px",
+    "padding": "2px"
+}</value>
+  </style_property>
+  <style_property property_name="afPaidAdsCalForumDayBg" group_name="afPaidAds" title="Forum day background color" property_type="value" value_type="color" has_variations="0" value_group="forumday" display_order="30">
+    <value>"@xf-paletteColor5"</value>
+  </style_property>
+  <style_property property_name="afPaidAdsCalForumDayColor" group_name="afPaidAds" title="Forum day color" property_type="value" value_type="color" has_variations="0" value_group="forumday" display_order="20">
+    <value>"@xf-paletteColor2"</value>
+  </style_property>
+  <style_property property_name="afPaidAdsCalForumDayHoverBg" group_name="afPaidAds" title="(Hovered) Forum day background color" property_type="value" value_type="color" has_variations="0" value_group="forumday" display_order="50">
+    <value>"@xf-paletteAccent2"</value>
+  </style_property>
+  <style_property property_name="afPaidAdsCalForumDayHoverColor" group_name="afPaidAds" title="(Hovered) Forum day color" property_type="value" value_type="color" has_variations="0" value_group="forumday" display_order="40">
+    <value>"@xf-paletteNeutral1"</value>
+  </style_property>
+  <style_property property_name="afPaidAdsCalForumDaySelectedBg" group_name="afPaidAds" title="(Selected) Forum day background color" property_type="value" value_type="color" has_variations="0" value_group="forumday" display_order="70">
+    <value>"@xf-paletteAccent2"</value>
+  </style_property>
+  <style_property property_name="afPaidAdsCalForumDaySelectedColor" group_name="afPaidAds" title="(Selected) Forum day color" property_type="value" value_type="color" has_variations="0" value_group="forumday" display_order="60">
+    <value>"@xf-paletteNeutral1"</value>
+  </style_property>
+  <style_property property_name="afPaidAdsCalHeader" group_name="afPaidAds" title="Calendar header" property_type="css" has_variations="0" display_order="20" css_components="text,background,padding">
+    <value>{
+    "font-size": "@xf-fontSizeNormal",
+    "color": "@xf-textColorEmphasized",
+    "font-weight": "@xf-fontWeightHeavy",
+    "background-color": "@xf-contentHighlightBg",
+    "padding": "10px"
+}</value>
+  </style_property>
+  <style_property property_name="afPaidAdsCalNonForumDayBg" group_name="afPaidAds" title="Non-forum day background color" property_type="value" value_type="color" has_variations="0" value_group="nonforumday" display_order="90">
+    <value>"@xf-contentAccentBg"</value>
+  </style_property>
+  <style_property property_name="afPaidAdsCalNonForumDayColor" group_name="afPaidAds" title="Non-forum day color" property_type="value" value_type="color" has_variations="0" value_group="nonforumday" display_order="80">
+    <value>"@xf-textColorAccentContent"</value>
+  </style_property>
+  <style_property property_name="afPaidAdsCalNonForumDayHoverBg" group_name="afPaidAds" title="(Hovered) Non-forum day background color" property_type="value" value_type="color" has_variations="0" value_group="nonforumday" display_order="110">
+    <value>"@xf-paletteAccent2"</value>
+  </style_property>
+  <style_property property_name="afPaidAdsCalNonForumDayHoverColor" group_name="afPaidAds" title="(Hovered) Non-forum day color" property_type="value" value_type="color" has_variations="0" value_group="nonforumday" display_order="100">
+    <value>"@xf-paletteNeutral1"</value>
+  </style_property>
+  <style_property property_name="afPaidAdsCalNonForumDaySelectedBg" group_name="afPaidAds" title="(Selected) Non-forum day background color" property_type="value" value_type="color" has_variations="0" value_group="nonforumday" display_order="130">
+    <value>"@xf-paletteAccent2"</value>
+  </style_property>
+  <style_property property_name="afPaidAdsCalNonForumDaySelectedColor" group_name="afPaidAds" title="(Selected) Non-forum day color" property_type="value" value_type="color" has_variations="0" value_group="nonforumday" display_order="120">
+    <value>"@xf-paletteNeutral1"</value>
+  </style_property>
+  <style_property property_name="afPaidAdsCalUnavailableDayBg" group_name="afPaidAds" title="Unavailable day background color" property_type="value" value_type="color" has_variations="0" value_group="unavailable" display_order="150">
+    <value>"@xf-contentAltBg"</value>
+  </style_property>
+  <style_property property_name="afPaidAdsCalUnavailableDayColor" group_name="afPaidAds" title="Unavailable day color" property_type="value" value_type="color" has_variations="0" value_group="unavailable" display_order="140">
+    <value>"@xf-textColor"</value>
+  </style_property>
+  <style_property property_name="afPaidAdsRowAltBg" group_name="afPaidAds" title="Alternate row background color" property_type="value" value_type="color" has_variations="0" value_group="row" display_order="10">
+    <value>"@xf-contentAltBg"</value>
+  </style_property>
+</style_properties>

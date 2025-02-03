@@ -1,0 +1,14 @@
+{
+    "legacy_addon_id": "",
+    "title": "[CB]-MemberWatch",
+    "description": "This addon is used for watching the members and generate the alerts if watched member post or reply to thread",
+    "version_id": 14,
+    "version_string": "2.3.1",
+    "dev": "",
+    "dev_url": "https://www.coderbeams.com/",
+    "faq_url": "",
+    "support_url": "https://www.coderbeams.com/",
+    "extra_urls": [],
+    "require": [],
+    "icon": "logo.png"
+}

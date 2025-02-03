@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<admin_navigation>
+  <admin_navigation_entry navigation_id="af_paidads" display_order="2500" link="paid-ads" icon="fa-money-bill" admin_permission_id="advertising" debug_only="0" development_only="0" hide_no_children="0"/>
+  <admin_navigation_entry navigation_id="af_paidads_ads" parent_navigation_id="af_paidads" display_order="20" link="paid-ads/ads" debug_only="0" development_only="0" hide_no_children="0"/>
+  <admin_navigation_entry navigation_id="af_paidads_adsActive" parent_navigation_id="af_paidads_ads" display_order="10" link="paid-ads/ads/&amp;status=active" debug_only="0" development_only="0" hide_no_children="0"/>
+  <admin_navigation_entry navigation_id="af_paidads_adsExpired" parent_navigation_id="af_paidads_ads" display_order="40" link="paid-ads/ads/&amp;status=expired" debug_only="0" development_only="0" hide_no_children="0"/>
+  <admin_navigation_entry navigation_id="af_paidads_adsInactive" parent_navigation_id="af_paidads_ads" display_order="50" link="paid-ads/ads/&amp;status=inactive" debug_only="0" development_only="0" hide_no_children="0"/>
+  <admin_navigation_entry navigation_id="af_paidads_adsPending" parent_navigation_id="af_paidads_ads" display_order="20" link="paid-ads/ads/&amp;status=pending" debug_only="0" development_only="0" hide_no_children="0"/>
+  <admin_navigation_entry navigation_id="af_paidads_adsRejected" parent_navigation_id="af_paidads_ads" display_order="30" link="paid-ads/ads/&amp;status=rejected" debug_only="0" development_only="0" hide_no_children="0"/>
+  <admin_navigation_entry navigation_id="af_paidads_locations" parent_navigation_id="af_paidads" display_order="10" link="paid-ads/locations" debug_only="0" development_only="0" hide_no_children="0"/>
+  <admin_navigation_entry navigation_id="af_paidads_locationsAdd" parent_navigation_id="af_paidads_locations" display_order="20" link="paid-ads/locations/add" debug_only="0" development_only="0" hide_no_children="0"/>
+  <admin_navigation_entry navigation_id="af_paidads_locationsList" parent_navigation_id="af_paidads_locations" display_order="10" link="paid-ads/locations" debug_only="0" development_only="0" hide_no_children="0"/>
+  <admin_navigation_entry navigation_id="af_paidads_options_gen" parent_navigation_id="af_paidads" display_order="5" link="options/groups/af_paidads_general/" debug_only="0" development_only="0" hide_no_children="0"/>
+  <admin_navigation_entry navigation_id="af_paidads_options_manage" parent_navigation_id="af_paidads" display_order="8" link="options/groups/af_paidads_management/" debug_only="0" development_only="0" hide_no_children="0"/>
+  <admin_navigation_entry navigation_id="af_paidads_options_pur" parent_navigation_id="af_paidads" display_order="7" link="options/groups/af_paidads_purchase/" debug_only="0" development_only="0" hide_no_children="0"/>
+</admin_navigation>

@@ -1,0 +1,14 @@
+{
+    "option.cb_mod_forum.txt": {
+        "global_cache": false,
+        "version_id": 13,
+        "version_string": "2.3.0",
+        "hash": "e71a5a5e90ef224e5b83d97e932dbfa1"
+    },
+    "option_explain.cb_mod_forum.txt": {
+        "global_cache": false,
+        "version_id": 13,
+        "version_string": "2.3.0",
+        "hash": "c1ee8483ac4111c4fb94d8808b31ea3c"
+    }
+}

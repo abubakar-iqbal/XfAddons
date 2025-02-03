@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<routes>
+  <route route_type="admin" route_prefix="paid-ads" controller="AddonFlare\PaidAds:Ad" context="af_paidads"/>
+  <route route_type="admin" route_prefix="paid-ads" sub_name="ads" format="ads/:int&lt;ad_id&gt;/" controller="AddonFlare\PaidAds:Ad" context="af_paidads_ads"/>
+  <route route_type="admin" route_prefix="paid-ads" sub_name="locations" format="locations/:int&lt;location_id,title&gt;/" controller="AddonFlare\PaidAds:Location" context="af_paidads_locationsList"/>
+  <route route_type="public" route_prefix="paid-ads" controller="AddonFlare\PaidAds:Buy" context="af_paidads_main"/>
+  <route route_type="public" route_prefix="paid-ads" sub_name="manage" format="manage/:int&lt;ad_id&gt;/" controller="AddonFlare\PaidAds:Manage" context="af_paidads_main"/>
+  <route route_type="public" route_prefix="paid-ads" sub_name="tracker" format="tracker/:int&lt;ad_id&gt;/" controller="AddonFlare\PaidAds:Tracker"/>
+</routes>

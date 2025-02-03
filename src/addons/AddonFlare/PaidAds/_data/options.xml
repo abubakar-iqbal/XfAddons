@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<options>
+  <option option_id="af_paidads_ad_daysremaining_alert" edit_format="spinbox" data_type="unsigned_integer" advanced="0">
+    <default_value>5</default_value>
+    <relation group_id="af_paidads_management" display_order="40"/>
+  </option>
+  <option option_id="af_paidads_ad_daysremaining_email" edit_format="spinbox" data_type="unsigned_integer" advanced="0">
+    <default_value>5</default_value>
+    <relation group_id="af_paidads_management" display_order="30"/>
+  </option>
+  <option option_id="af_paidads_ad_expiry_notifications" edit_format="checkbox" data_type="array" advanced="0">
+    <default_value>{"emails":"1","alerts":"1"}</default_value>
+    <edit_format_params>emails={{ phrase('emails') }}
+alerts={{ phrase('alerts') }}</edit_format_params>
+    <sub_options>emails
+alerts</sub_options>
+    <relation group_id="af_paidads_management" display_order="50"/>
+  </option>
+  <option option_id="af_paidads_ad_terms" edit_format="textbox" data_type="string" advanced="0">
+    <default_value></default_value>
+    <edit_format_params>rows=3</edit_format_params>
+    <relation group_id="af_paidads_management" display_order="60"/>
+  </option>
+  <option option_id="af_paidads_cal_shortDayNames" edit_format="onoff" data_type="boolean" advanced="0">
+    <default_value>0</default_value>
+    <relation group_id="af_paidads_general" display_order="40"/>
+  </option>
+  <option option_id="af_paidads_cal_startOfWeek" edit_format="select" data_type="string" advanced="0">
+    <default_value>sunday</default_value>
+    <edit_format_params>sunday={{ phrase('day_sunday') }}
+monday={{ phrase('day_monday') }}</edit_format_params>
+    <relation group_id="af_paidads_general" display_order="30"/>
+  </option>
+  <option option_id="af_paidads_cartExpireMinutes" edit_format="spinbox" data_type="positive_integer" advanced="0">
+    <default_value>10</default_value>
+    <edit_format_params>units={{ phrase('minutes') }}
+min="1"</edit_format_params>
+    <relation group_id="af_paidads_purchase" display_order="30"/>
+  </option>
+  <option option_id="af_paidads_currency" edit_format="callback" data_type="string" advanced="0">
+    <default_value>USD</default_value>
+    <edit_format_params>AddonFlare\PaidAds\Option\Currency::renderSelect</edit_format_params>
+    <relation group_id="af_paidads_purchase" display_order="10"/>
+  </option>
+  <option option_id="af_paidads_disallowedTemplates" edit_format="textbox" data_type="string" advanced="0">
+    <default_value>error
+login
+login_password_confirm
+login_two_step
+message_page
+register_complete
+register_connected_account
+register_confirm
+register_form</default_value>
+    <edit_format_params>rows=3</edit_format_params>
+    <relation group_id="af_paidads_general" display_order="10"/>
+  </option>
+  <option option_id="af_paidads_exclude_in_paidads_pages" edit_format="onoff" data_type="boolean" advanced="0">
+    <default_value>1</default_value>
+    <relation group_id="af_paidads_general" display_order="17"/>
+  </option>
+  <option option_id="af_paidads_excluded_node_ids" edit_format="callback" data_type="array" advanced="0">
+    <default_value>[]</default_value>
+    <edit_format_params>XF\Option\Forum::renderSelectMultiple</edit_format_params>
+    <sub_options>*</sub_options>
+    <relation group_id="af_paidads_general" display_order="16"/>
+  </option>
+  <option option_id="af_paidads_payment_profile_ids" edit_format="callback" data_type="array" advanced="0">
+    <default_value>[1]</default_value>
+    <edit_format_params>AddonFlare\PaidAds\Option\PaymentProfile::renderCheckbox</edit_format_params>
+    <sub_options>*</sub_options>
+    <relation group_id="af_paidads_purchase" display_order="20"/>
+  </option>
+  <option option_id="af_paidads_ugs_allowed_purchase" edit_format="callback" data_type="array" advanced="0">
+    <default_value>[2,3,4]</default_value>
+    <edit_format_params>XF\Option\UserGroup::renderSelectMultiple</edit_format_params>
+    <sub_options>*</sub_options>
+    <relation group_id="af_paidads_purchase" display_order="40"/>
+  </option>
+  <option option_id="af_paidads_ugs_auto_approve" edit_format="callback" data_type="array" advanced="0">
+    <default_value>[]</default_value>
+    <edit_format_params>XF\Option\UserGroup::renderSelectMultiple</edit_format_params>
+    <sub_options>*</sub_options>
+    <relation group_id="af_paidads_management" display_order="10"/>
+  </option>
+  <option option_id="af_paidads_ugs_auto_reapprove" edit_format="callback" data_type="array" advanced="0">
+    <default_value>[]</default_value>
+    <edit_format_params>XF\Option\UserGroup::renderSelectMultiple</edit_format_params>
+    <sub_options>*</sub_options>
+    <relation group_id="af_paidads_management" display_order="20"/>
+  </option>
+  <option option_id="af_paidads_ugs_excluded_view_ads" edit_format="callback" data_type="array" advanced="0">
+    <default_value>[]</default_value>
+    <edit_format_params>XF\Option\UserGroup::renderSelectMultiple</edit_format_params>
+    <sub_options>*</sub_options>
+    <relation group_id="af_paidads_general" display_order="15"/>
+  </option>
+</options>

@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates>
+  <template type="public" title="alert_user_watching" version_id="1" version_string="1.0.0"><![CDATA[{{ phrase('alert_user_watching', {'username': username_link($user, false, {'defaultname': $alert.username})}) }}
+<xf:if is="$user"><a href="{{ link('members', $user) }}" class="fauxBlockLink-blockLink"></a></xf:if>]]></template>
+  <template type="public" title="cb_followers_list" version_id="11" version_string="1.0.11"><![CDATA[<xf:title>{{ phrase('cb_follower_home_page_title') }}</xf:title>
+<xf:css src="member.less" />
+
+<div class="block-container">
+		<div class="block-body">
+<xf:if is="$followers is not empty">
+		
+		<section class="block">
+		
+<xf:foreach loop="$followers"  value="$follower">
+<li class="block-row block-row--separated">
+<div class="contentRow">
+		<div class="contentRow-figure">
+			<xf:avatar user="$follower.User" size="s" notooltip="true" />
+		</div>
+		<div class="contentRow-main">
+		
+			<h3 class="contentRow-header"><xf:username user="$follower.User" rich="true" notooltip="true" /></h3>
+
+			<xf:userblurb user="$follower.User" class="contentRow-lesser" />
+
+			<div class="contentRow-minor">
+				<ul class="listInline listInline--bullet">
+					<!--[XF:stats:start]-->
+					<li><dl class="pairs pairs--inline">
+						<dt>{{ phrase('messages') }}</dt>
+						<dd>{$follower.User.message_count|number}</dd>
+					</dl></li>
+					<!--[XF:stats:after_messages]-->
+					<xf:if is="$user.question_solution_count">
+						<li><dl class="pairs pairs--inline">
+							<dt>{{ phrase('solutions') }}</dt>
+							<dd>{$follower.User.question_solution_count|number}</dd>
+						</dl></li>
+					</xf:if>
+					<!--[XF:stats:after_solutions]-->
+					<li><dl class="pairs pairs--inline">
+						<dt>{{ phrase('reaction_score') }}</dt>
+						<dd>{$follower.User.reaction_score|number}</dd>
+					</dl></li>
+					<!--[XF:stats:after_likes]-->
+					<!--[XF:stats:after_reactions]-->
+					<xf:if is="$xf.options.enableTrophies">
+						<li><dl class="pairs pairs--inline">
+							<dt>{{ phrase('points') }}</dt>
+							<dd>{$follower.User.trophy_points|number}</dd>
+						</dl></li>
+					</xf:if>
+					<!--[XF:stats:after_trophypoints]-->
+					<xf:if is="$follower.interest_type">
+						<li><dl class="pairs pairs--inline">
+							<dt>{{ phrase('cb_interest_type') }}</dt>
+							<xf:if is="$follower.interest_type=='business'">
+							<dd>{{ phrase('cb_intrest_type_business') }}</dd>
+							<xf:elseif is="$follower.interest_type=='normal'"/>
+							<dd>{{ phrase('cb_interest_type_normal') }}</dd>
+							<xf:else/>
+							<dd>{{ phrase('cb_interest_type_all') }}</dd>
+							</xf:if>
+						</dl></li>
+					</xf:if>
+					<!--[XF:stats:end]-->
+				</ul>
+			</div>
+		</div>
+	</div>
+
+
+</li>
+	
+		</xf:foreach>
+		
+		<xf:pagenav page="{$page}" perpage="{$perPage}" total="{$total}"
+		link="members/watched" data="{$user}" 
+		wrapperclass="block-outer block-outer--after" />
+<xf:else/>
+		<div class="blockMessage">{{ phrase('no_notable_members_can_currently_be_shown') }}</div>
+			
+			
+			
+	</section>
+</xf:if>
+	</div>			
+</div>]]></template>
+  <template type="public" title="cb_following_list" version_id="11" version_string="1.0.11"><![CDATA[<xf:title>{{ phrase('cb_follower_home_page_title') }}</xf:title>
+<xf:css src="member.less" />
+
+<div class="block-container">
+		<div class="block-body">
+<xf:if is="$followers is not empty">
+		
+		<section class="block">
+		
+<xf:foreach loop="$followers"  value="$follower">
+<li class="block-row block-row--separated">
+<div class="contentRow">
+		<div class="contentRow-figure">
+			<xf:avatar user="$follower.MemberWatch" size="s" notooltip="true" />
+		</div>
+		<div class="contentRow-main">
+		
+			<h3 class="contentRow-header"><xf:username user="$follower.MemberWatch" rich="true" notooltip="true" /></h3>
+
+			<xf:userblurb user="$follower.User" class="contentRow-lesser" />
+
+			<div class="contentRow-minor">
+				<ul class="listInline listInline--bullet">
+					<!--[XF:stats:start]-->
+					<li><dl class="pairs pairs--inline">
+						<dt>{{ phrase('messages') }}</dt>
+						<dd>{$follower.User.message_count|number}</dd>
+					</dl></li>
+					<!--[XF:stats:after_messages]-->
+					<xf:if is="$user.question_solution_count">
+						<li><dl class="pairs pairs--inline">
+							<dt>{{ phrase('solutions') }}</dt>
+							<dd>{$follower.User.question_solution_count|number}</dd>
+						</dl></li>
+					</xf:if>
+					<!--[XF:stats:after_solutions]-->
+					<li><dl class="pairs pairs--inline">
+						<dt>{{ phrase('reaction_score') }}</dt>
+						<dd>{$follower.User.reaction_score|number}</dd>
+					</dl></li>
+					<!--[XF:stats:after_likes]-->
+					<!--[XF:stats:after_reactions]-->
+					<xf:if is="$xf.options.enableTrophies">
+						<li><dl class="pairs pairs--inline">
+							<dt>{{ phrase('points') }}</dt>
+							<dd>{$follower.User.trophy_points|number}</dd>
+						</dl></li>
+					</xf:if>
+					<!--[XF:stats:after_trophypoints]-->
+				<xf:if is="$follower.interest_type">
+						<li><dl class="pairs pairs--inline">
+							<dt>{{ phrase('cb_interest_type') }}</dt>
+							<xf:if is="$follower.interest_type=='business'">
+							<dd>{{ phrase('cb_intrest_type_business') }}</dd>
+							<xf:elseif is="$follower.interest_type=='normal'"/>
+							<dd>{{ phrase('cb_interest_type_normal') }}</dd>
+							<xf:else/>
+							<dd>{{ phrase('cb_interest_type_all') }}</dd>
+							</xf:if>
+						</dl></li>
+					</xf:if>
+					<!--[XF:stats:end]-->
+				</ul>
+			</div>
+		</div>
+	</div>
+
+
+</li>
+	
+		</xf:foreach>
+		
+		<xf:pagenav page="{$page}" perpage="{$perPage}" total="{$total}"
+		link="members/watchedto" data="{$user}" 
+		wrapperclass="block-outer block-outer--after" />
+<xf:else/>
+		<div class="blockMessage">{{ phrase('no_notable_members_can_currently_be_shown') }}</div>
+			
+			
+			
+	</section>
+</xf:if>
+	</div>			
+</div>]]></template>
+  <template type="public" title="cb_member_watch" version_id="5" version_string="1.0.5"><![CDATA[<xf:title>{{ $isWatching ? phrase('cb_stop_stop_x', {'name': $user.username}) : phrase('cb_start_watching', {'name': $user.username}) }}</xf:title>
+
+<xf:breadcrumb href="{{ link('members', $user) }}">{$user.username}</xf:breadcrumb>
+
+<xf:form action="{{ link('members/watch', $user) }}" ajax="true" class="block">
+	<div class="block-container">
+		<div class="block-body">
+			<xf:inforow rowtype="confirm">
+				<xf:if is="$isWatching">
+					{{ phrase('please_confirm_that_you_wish_to_stop_following_this_user:') }}
+				<xf:else />
+					{{ phrase('please_confirm_that_you_wish_to_start_following_this_user:') }}
+				</xf:if>
+				<strong><a href="{{ link('members', $user) }}">{$user.username}</a></strong>
+			</xf:inforow>
+			<xf:if is="!$isWatching">
+				<xf:radiorow name="interest_type" value="{$user.getInterestType()}"
+				label="{{ phrase('cb_interest_in_type') }}">
+	             
+				<xf:option value="normal" checked="checked"
+					label="{{ phrase('cb_normal_forums') }}"
+					hint="{{ phrase('cb_selected_normal_type') }}" />
+				
+				<xf:option value="business" 
+					label="{{ phrase('cb_business_forum') }}"
+					hint="{{ phrase('cb_selected_business_type') }}" />
+
+			
+				<xf:option value="all"
+					label="{{ phrase('cb_all_forums') }}"
+					hint="{{ phrase('cb_selected_all_type') }}" />
+			</xf:radiorow>
+			</xf:if>
+		</div>
+		<xf:submitrow submit="{{ $isWatching ? phrase('Unwatch') : phrase('Watch') }}" rowtype="simple" />
+	</div>
+
+	<xf:redirect />
+</xf:form>]]></template>
+</templates>

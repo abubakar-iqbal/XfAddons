@@ -1,0 +1,1968 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates>
+  <template type="admin" title="af_paidads_ad_edit" version_id="1000070" version_string="1.0.0"><![CDATA[<xf:title>{{ phrase('af_paidads_edit_ad:') }} {$title}</xf:title>
+
+<xf:form action="{{ link('paid-ads/ads/' . ($multiple ? 'edit-multiple' : 'save'), $ad) }}" ajax="true" upload="true" class="block">
+
+    <div class="block-container">
+        <div class="block-body">
+
+            <xf:textboxrow name="url" value="{$ad.url}" maxlength="{{ max_length($ad, 'url') }}" type="url"
+                label="{{ phrase('url') }}"
+                dir="ltr" />
+
+            <xf:if is="$ad.banner_url">
+                <xf:formrow label="{{ phrase('af_paidads_existing_banner_image') }}">
+                    <img src="{$ad.banner_url}" />
+                </xf:formrow>
+            </xf:if>
+
+            <xf:uploadrow name="upload" accept=".{$extensions|join(',.')}"
+                label="{{ phrase('af_paidads_upload_banner_image') }}">
+                <xf:explain>
+                    {{ phrase('af_paidads_allowed_extensions:') }} .{$extensions|join(' .')}<br>
+                    {{ phrase('af_paidads_max_file_size:') }} {$adOptions.max_file_size} {{ phrase('units_kb') }}<br>
+                    {{ phrase('af_paidads_dimensions:') }} {$adOptions.ad_width} x {$adOptions.ad_height} {{ phrase('units_pixels') }}
+                </xf:explain>
+            </xf:uploadrow>
+
+        </div>
+
+        <xf:if is="$multiple">
+            <xf:foreach loop="$adIds" value="$adId">
+                <xf:hiddenval name="ad_ids[]">{$adId}</xf:hiddenval>
+            </xf:foreach>
+        </xf:if>
+
+        <xf:hiddenval name="submit">1</xf:hiddenval>
+
+        <xf:submitrow icon="save" rowtype="simple" />
+    </div>
+</xf:form>]]></template>
+  <template type="admin" title="af_paidads_ad_list" version_id="1020073" version_string="1.2.0.3"><![CDATA[<xf:title>{$pageTitle}</xf:title>
+
+<xf:css src="public:af_paidads_banner_preview.less" />
+
+<xf:if is="$ads is not empty">
+    <xf:form action="{{ link('paid-ads/ads/update-status') }}" ajax="true">
+        <div class="block-outer">
+            <div class="block-outer-main">
+                <xf:button class="button--link menuTrigger" data-xf-click="menu" aria-expanded="false" aria-haspopup="true">
+                    {{ phrase('show:') }} {$showLocations.{$showLocationId}}
+                </xf:button>
+
+                <div class="menu" data-menu="menu" aria-hidden="true">
+                    <div class="menu-content">
+                        <h3 class="menu-header">{{ phrase('show...') }}</h3>
+                        <xf:foreach loop="$showLocations" key="$locationId" value="$locationTitle">
+                            <a href="{{ link('paid-ads/ads', null, {'status': $status, 'location_id': $locationId}) }}"
+                                class="menu-linkRow {{ $showLocationId == $locationId ? 'is-selected' : '' }}">
+                                {$locationTitle}
+                            </a>
+                        </xf:foreach>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="block-container">
+            <div class="block-body">
+                <xf:datalist data-xf-init="responsive-data-list">
+                    <colgroup>
+                        <col style="width: 12%">
+                        <col style="width: 12%">
+                        <col style="width: 12%">
+                        <col style="width: 12%">
+                        <col style="width: 12%">
+                        <col style="width: 12%">
+                        <col style="width: 12%">
+                        <col style="width: 5%">
+                        <xf:if is="$actions"><col style="width: 1%"></xf:if>
+                    </colgroup>
+                    <thead>
+                    <xf:datarow rowtype="header">
+                        <xf:cell>{{ phrase('af_paidads_purchase_date') }}</xf:cell>
+                        <xf:cell>{{ phrase('user') }}</xf:cell>
+                        <xf:cell>{{ phrase('af_paidads_location') }}</xf:cell>
+                        <xf:cell>{{ phrase('af_paidads_forum') }}</xf:cell>
+                        <xf:cell>{{ phrase('af_paidads_non_forum') }}</xf:cell>
+                        <xf:cell>
+                            {{ phrase('af_paidads_price_per_day') }}<br>
+                            ({{ phrase('af_paidads_forum') }} | {{ phrase('af_paidads_non_forum') }})
+                        </xf:cell>
+                        <xf:cell>
+                            {{ phrase('af_paidads_days_remaining') }}<br>
+                            ({{ phrase('af_paidads_forum') }} | {{ phrase('af_paidads_non_forum') }})
+                        </xf:cell>
+                        <xf:cell>{{ phrase('af_paidads_banner_url') }}</xf:cell>
+                        <xf:cell></xf:cell>
+                        <xf:if is="$actions">
+                            <xf:cell><xf:checkbox standalone="true"><xf:option check-all="< .block-container" data-xf-init="tooltip" title="{{ phrase('select_all')|for_attr }}" /></xf:checkbox></xf:cell>
+                        </xf:if>
+                    </xf:datarow>
+                    </thead>
+                    <xf:set var="$counter" value="0" />
+                    <xf:foreach loop="$ads" key="$ad_id" value="$ad">
+                        <xf:set var="$counter" value="{{ $counter + 1 }}" />
+                        <xf:set var="$location" value="{$ad.Location}" />
+                        <xf:set var="$pricesPerDay" value="{$ad.prices_per_day}" />
+                        <xf:set var="$isForumType" value="{{ in_array($ad.type, ['forum', 'both']) }}" />
+                        <xf:set var="$isNonForumType" value="{{ in_array($ad.type, ['non_forum', 'both']) }}" />
+                        <xf:datarow>
+                            <xf:cell>{{ date($ad.create_date) }}</xf:cell>
+                            <xf:cell><xf:username user="{$ad.User}" /></xf:cell>
+                            <xf:cell href="{{ link('paid-ads/locations/edit', $ad.Location) }}">{{ $ad.Location.active ? '' : '<s>' }}{$ad.Location.title}{{ $ad.Location.active ? '' : '</s>' }}</xf:cell>
+                            <xf:cell>
+                                <xf:if is="$isForumType">
+                                    <a target="_blank" href="{{ link_type('public', 'forums', $ad.Forum) }}">{$ad.Forum.title}</a>
+                                <xf:else />
+                                    {{ phrase('n_a') }}
+                                </xf:if>
+                            </xf:cell>
+                            <xf:cell>
+                                <xf:if is="$isNonForumType">
+                                    {{ phrase('yes') }}
+                                <xf:else />
+                                    {{ phrase('no') }}
+                                </xf:if>
+                            </xf:cell>
+                            <xf:cell>{{ $isForumType ? $location.getCostPhrase($pricesPerDay.forum) : phrase('n_a') }} | {{ $isNonForumType ? $location.getCostPhrase($pricesPerDay.non_forum) : phrase('n_a') }}</xf:cell>
+
+                            <xf:action href="{{ link('paid-ads/ads/calendar', $ad) }}" overlay="true" overlaycache="false">
+                                <span id="js-ad-daysRemainingForum-{$ad.ad_id}">{$ad.days_remaining_forum|number}</span> | <span id="js-ad-daysRemainingNonForum-{$ad.ad_id}">{$ad.days_remaining_non_forum|number}</span> {{ phrase('(edit)') }}
+                            </xf:action>
+
+                            <xf:cell class="dataList-cell--action">
+                                <a class="bannerPrev" href="{{ link('paid-ads/ads/edit', $ad) }}" data-xf-click="overlay" data-cache="false">{{ phrase('edit') }}<xf:if is="$ad.banner_url"><span><img src="{$ad.banner_url}" /></span></xf:if></a>
+                            </xf:cell>
+
+                            <xf:cell>
+                                <xf:button href="{{ link('paid-ads/ads/stats', $ad) }}" overlay="true" data-cache="false"
+                                class="button--link">
+									<xf:fa icon="fa-chart-bar" />
+                                </xf:button>
+                            </xf:cell>
+
+                            <xf:if is="$actions">
+                                <xf:toggle name="ad_ids[]" value="{$ad.ad_id}" />
+                            </xf:if>
+                        </xf:datarow>
+                    </xf:foreach>
+                </xf:datalist>
+            </div>
+
+            <xf:if is="$actions">
+                <div class="block-footer block-footer--split">
+                    <span class="block-footer-counter">{{ display_totals($ads, $total) }}</span>
+                    <span class="block-footer-select"><xf:checkbox standalone="true"><xf:option check-all="< .block-container" label="{{ phrase('select_all') }}" /></xf:checkbox></span>
+                    <span class="block-footer-controls">
+                        <xf:select name="status" class="input--inline">
+                            <xf:option>{{ phrase('with_selected...') }}</xf:option>
+                            <xf:if is="in_array('approve', $actions)">
+                                <xf:option value="active">{{ phrase('approve') }}</xf:option>
+                            </xf:if>
+                            <xf:if is="in_array('activate', $actions)">
+                                <xf:option value="active">{{ phrase('af_paidads_activate') }}</xf:option>
+                            </xf:if>
+                            <xf:if is="in_array('pending', $actions)">
+                                <xf:option value="pending">{{ phrase('pending') }}</xf:option>
+                            </xf:if>
+                            <xf:if is="in_array('reject', $actions)">
+                                <xf:option value="rejected">{{ phrase('reject') }}</xf:option>
+                            </xf:if>
+                            <xf:if is="in_array('deactivate', $actions)">
+                                <xf:option value="inactive">{{ phrase('deactivate') }}</xf:option>
+                            </xf:if>
+                            <xf:option value="submit_multiple">{{ phrase('af_paidads_mass_set_banner_url') }}</xf:option>
+                        </xf:select>
+                        <xf:button type="submit">{{ phrase('go') }}</xf:button>
+                    </span>
+                </div>
+            <xf:else />
+                <div class="block-footer">
+                    <span class="block-footer-counter">{{ display_totals($ads, $total) }}</span>
+                </div>
+            </xf:if>
+        </div>
+        <xf:pagenav page="{$page}" perpage="{$perPage}" total="{$total}"
+            link="paid-ads/ads"
+            params="{{ {'status': $status, 'location_id': $showLocationId ?: null} }}"
+            wrapperclass="js-filterHide block-outer block-outer--after" />
+    </xf:form>
+<xf:else />
+    <div class="blockMessage">{{ phrase('no_items_to_display') }}</div>
+</xf:if>]]></template>
+  <template type="admin" title="af_paidads_ad_stats" version_id="1000070" version_string="1.0.0"><![CDATA[<xf:title>{{ phrase('af_paidads_stats:') }} {$ad.title}</xf:title>
+
+<xf:form action="" class="block" ajax="true">
+    <div class="block-container">
+        <div class="block-body">
+            <xf:formrow label="{{ phrase('af_paidads_total_views') }}">{$ad.total_views|number}</xf:formrow>
+            <xf:formrow label="{{ phrase('af_paidads_total_clicks') }}">{$ad.total_clicks|number}</xf:formrow>
+            <xf:formrow label="{{ phrase('af_paidads_total_clicks_in_last_24hrs') }}">{$last24HrsClickCount|number}</xf:formrow>
+        </div>
+    </div>
+</xf:form>]]></template>
+  <template type="admin" title="af_paidads_location_delete" version_id="1000070" version_string="1.0.0"><![CDATA[<xf:title>{{ phrase('confirm_action') }}</xf:title>
+
+<xf:form action="{{ link('paid-ads/locations/delete', $location) }}" ajax="true" class="block">
+    <div class="block-container">
+        <div class="block-body">
+            <xf:inforow rowtype="confirm">
+                {{ phrase('please_confirm_that_you_want_to_delete_following:') }}
+                <strong><a href="{{ link('paid-ads/locations/edit', $location) }}">{$location.title}</a></strong>
+            </xf:inforow>
+        </div>
+        <xf:submitrow rowtype="simple" icon="delete" />
+    </div>
+</xf:form>]]></template>
+  <template type="admin" title="af_paidads_location_edit" version_id="1020073" version_string="1.2.0.3"><![CDATA[<xf:if is="$location.isInsert()">
+    <xf:title>{{ phrase('new:') }} {{ phrase('af_paidads_ad_location') }}</xf:title>
+<xf:else />
+    <xf:title>{{ phrase('edit:') }} {{ phrase('af_paidads_ad_location') }}</xf:title>
+</xf:if>
+
+<xf:pageaction if="$location.isUpdate()">
+    <xf:button href="{{ link('paid-ads/locations/delete', $location) }}" icon="delete" overlay="true" />
+</xf:pageaction>
+
+<xf:form action="{{ link('paid-ads/locations/save', $location) }}" ajax="true" upload="true" class="block">
+    <div class="block-container">
+        <div class="block-body">
+
+            <xf:textboxrow name="title" value="{$location.MasterTitle.phrase_text}"
+                label="{{ phrase('title') }}" />
+
+            <xf:codeeditorrow name="description" value="{$location.MasterDescription.phrase_text}"
+                mode="html" data-line-wrapping="true"
+                class="codeEditor--autoSize codeEditor--proportional"
+                label="{{ phrase('description') }}"
+                hint="{{ phrase('you_may_use_html') }}" />
+
+            <xf:selectrow id="position_id" name="position_id" value="{$location.position_id}"
+                data-xf-init="desc-loader"
+                data-desc-url="{{ link('advertising/get-position-description') }}"
+                label="{{ phrase('position') }}">
+                <xf:option />
+                <xf:options source="{$advertisingPositions}" />
+                <xf:html>
+                    <div class="js-descTarget formRow-explain">{$location.AdvertisingPosition.description|raw}</div>
+                </xf:html>
+            </xf:selectrow>
+
+            <xf:macro template="display_order_macros" name="row"
+                arg-value="{$location.display_order}" />
+
+            <xf:checkboxrow>
+                <xf:option name="active" selected="$location.active">{{ phrase('af_paidads_is_active') }}</xf:option>
+            </xf:checkboxrow>
+
+            <h3 class="block-formSectionHeader">
+                <span class="collapseTrigger collapseTrigger--block is-active" data-xf-click="toggle" data-target="< :up:next">
+                    <span class="block-formSectionHeader-aligner">{{ phrase('af_paidads_ad_options') }}</span>
+                </span>
+            </h3>
+            <div class="block-body block-body--collapsible is-active">
+                <xf:radiorow name="ad_type" value="banner" label="Ad type">
+                    <xf:option value="banner">{{ phrase('af_paidads_banner') }}</xf:option>
+                </xf:radiorow>
+                <xf:formrow rowtype="input"
+                    label="{{ phrase('af_paidads_dimensions') }}"
+                    hint=""
+                    explain="{{ phrase('af_paidads_dimensions_explain') }}"
+                    html="">
+
+                    <div class="inputGroup inputGroup--numbers">
+                        <xf:numberbox style="width:60px;" name="ad_options[ad_width]" min="0" required="{{ false }}" value="{{ $location.ad_options.ad_width ?: '' }}" placeholder="{{ phrase('width') }}" />
+                        <span class="inputGroup-text">x</span>
+                        <xf:numberbox style="width:60px;" name="ad_options[ad_height]" min="0" required="{{ false }}" value="{{ $location.ad_options.ad_height ?: '' }}" placeholder="{{ phrase('height') }}" />
+                        <span class="inputGroup-text">{{ phrase('units_pixels') }}</span>
+                    </div>
+                </xf:formrow>
+                <xf:formrow rowtype="input"
+                    label="{{ phrase('af_paidads_max_file_size') }}"
+                    hint=""
+                    explain="{{ phrase('af_paidads_max_file_size_explain', {'serverMaxFileSize' : number($serverMaxFileSize)}) }}"
+                    html="">
+
+                    <div class="inputGroup inputGroup--numbers">
+                        <xf:numberbox name="ad_options[max_file_size]" min="0" required="{{ false }}" value="{$location.ad_options.max_file_size}" placeholder="{{ phrase('width') }}" />
+                        <span class="inputGroup-text">{{ phrase('units_kb') }}</span>
+                    </div>
+                </xf:formrow>
+                <xf:checkboxrow name="ad_options[file_extensions]" value="{$location.ad_options.file_extensions}" listclass="listColumns"
+                    label="{{ phrase('af_paidads_allowed_file_extensions') }}">
+
+                    <xf:foreach loop="$location.extensions" key="$key" value="$extension">
+                        <xf:option value="{$key}">{$extension}</xf:option>
+                    </xf:foreach>
+                </xf:checkboxrow>
+
+                <xf:selectrow label="{{ phrase('af_paidads_alignment') }}" name="ad_options[alignment]" value="{$location.ad_options.alignment}">
+                    <xf:option value="">{{ phrase('none') }}</xf:option>
+                    <xf:option value="left">{{ phrase('align_left') }}</xf:option>
+                    <xf:option value="center">{{ phrase('align_center') }}</xf:option>
+                    <xf:option value="right">{{ phrase('align_right') }}</xf:option>
+                </xf:selectrow>
+                <xf:codeeditorrow name="ad_options[inline_css]" value="{$location.ad_options.inline_css}"
+                    mode="css" data-line-wrapping="true"
+                    class="codeEditor--autoSize"
+                    label="{{ phrase('af_paidads_inline_css') }}" />
+
+                <xf:radiorow name="ad_options[placeholder_type]" value="{{ $location.placeholder_banner_url ? 'existing_upload' : $location.ad_options.placeholder_type }}"
+                    label="{{ phrase('af_paidads_placeholder') }}"
+                    explain="{{ phrase('af_paidads_placeholder_type_explain') }}">
+                    <xf:option value=""
+                        label="{{ phrase('none') }}">
+                    </xf:option>
+                    <xf:if is="$location.placeholder_banner_url">
+                        <xf:option value="existing_upload"
+                            label="{{ phrase('existing') }}">
+                            <xf:dependent>
+                                <img src="{$location.placeholder_banner_url}" />
+                                <xf:textbox name="ad_options[placeholder_url]" type="url" value="{$location.ad_options.placeholder_url}" placeholder="{{ phrase('url') }}" dir="ltr" />
+                            </xf:dependent>
+                        </xf:option>
+                    </xf:if>
+                    <xf:option value="upload_image"
+                        label="{{ phrase('upload_image') }}">
+                        <xf:dependent>
+                            <xf:upload name="placeholder_upload_image" />
+                            <xf:textbox name="ad_options[placeholder_url]" type="url" value="" placeholder="{{ phrase('url') }}" dir="ltr" />
+                        </xf:dependent>
+                    </xf:option>
+                    <xf:option value="html"
+                        label="{{ phrase('html') }}">
+                        <xf:dependent>
+                            <xf:textarea name="ad_options[placeholder_html]" value="{$location.ad_options.placeholder_html}"
+                            rows="5" autosize="true" />
+                        </xf:dependent>
+                    </xf:option>
+                </xf:radiorow>
+
+                <xf:checkboxrow name="ad_options[placeholder_show][]" value="{$location.ad_options.placeholder_show}"
+                    label="Show placeholder in">
+                    <xf:option value="forum">{{ phrase('af_paidads_forum_ads') }}</xf:option>
+                    <xf:option value="non_forum">{{ phrase('af_paidads_non_forum_ads') }}</xf:option>
+                </xf:checkboxrow>
+
+            </div>
+
+            <h3 class="block-formSectionHeader">
+                <span class="collapseTrigger collapseTrigger--block is-active" data-xf-click="toggle" data-target="< :up:next">
+                    <span class="block-formSectionHeader-aligner">{{ phrase('display_criteria') }}</span>
+                </span>
+            </h3>
+            <div class="block-body block-body--collapsible is-active">
+
+                <xf:textboxrow name="display_criteria[thread_ids]" value="{$location.display_criteria.thread_ids}"
+                label="{{ phrase('af_paidads_thread_ids') }}"
+                explain="{{ phrase('af_paidads_separate_multiple_with_comma') }}" />
+
+                <xf:textboxrow name="display_criteria[post_counts]" value="{$location.display_criteria.post_counts}"
+                label="{{ phrase('af_paidads_post_counts') }}">
+                    <xf:explain>
+                        Example: 1,3  That would show ads on the first and third posts of every page in a thread<br>
+                        {{ phrase('af_paidads_separate_multiple_with_comma') }}
+                    </xf:explain>
+                </xf:textboxrow>
+
+                <xf:checkboxrow
+                    label="{{ phrase('user_groups') }}">
+
+                    <xf:option selected="{$location.display_criteria.user_groups}"
+                        label="{{ phrase('user_is_member_of_any_of_selected_user_groups:') }}">
+
+                        <xf:select name="display_criteria[user_groups]" size="4" multiple="true" value="{$location.display_criteria.user_groups}">
+                            <xf:foreach loop="$userGroups" key="$userGroupId" value="$userGroupTitle">
+                                <xf:option value="{$userGroupId}">{$userGroupTitle}</xf:option>
+                            </xf:foreach>
+                        </xf:select>
+                    </xf:option>
+
+                    <xf:option selected="{$location.display_criteria.not_user_groups}"
+                        label="{{ phrase('user_is_not_member_of_any_of_selected_user_groups:') }}">
+
+                        <xf:select name="display_criteria[not_user_groups]" size="4" multiple="true" value="{$location.display_criteria.not_user_groups}">
+                            <xf:foreach loop="$userGroups" key="$userGroupId" value="$userGroupTitle">
+                                <xf:option value="{$userGroupId}">{$userGroupTitle}</xf:option>
+                            </xf:foreach>
+                        </xf:select>
+                    </xf:option>
+                </xf:checkboxrow>
+
+                <xf:formrow rowtype="input" label="{{ phrase('af_paidads_excluded_forums') }}">
+                    <xf:macro template="forum_selection_macros" name="select_forums"
+                        arg-nodeIds="{$location.display_criteria.excluded_node_ids}"
+                        arg-nodeTree="{$nodeTree}"
+                        arg-withRow="0"
+                        arg-selectName="display_criteria[excluded_node_ids]" />
+                </xf:formrow>
+
+                <xf:textarearow name="display_criteria[excluded_templates]" value="{$location.display_criteria.excluded_templates}"
+                    rows="5" autosize="true"
+                    label="{{ phrase('af_paidads_excluded_templates') }}"
+                    explain="{{ phrase('af_paidads_one_per_line') }}" />
+            </div>
+
+            <h3 class="block-formSectionHeader">
+                <span class="collapseTrigger collapseTrigger--block is-active" data-xf-click="toggle" data-target="< :up:next">
+                    <span class="block-formSectionHeader-aligner">{{ phrase('af_paidads_purchase_options') }}</span>
+                </span>
+            </h3>
+            <div class="block-body block-body--collapsible is-active">
+
+                <xf:checkboxrow label="{{ phrase('can_be_purchased') }}">
+                    <xf:option name="can_purchase" selected="$location.can_purchase"
+                        label="{{ phrase('yes') }}" />
+                </xf:checkboxrow>
+
+                <xf:macro template="helper_user_group_edit" name="checkboxes"
+                    arg-label="{{ phrase('af_paidads_purchasable_by_user_groups') }}"
+                    arg-id="purchase_user_group"
+                    arg-selectedUserGroups="{{ $location.location_id ? $location.purchase_user_group_ids : [-1] }}" />
+
+                <xf:numberboxrow name="purchase_options[min_days]" value="{$location.purchase_options.min_days}" min="1"
+                    label="{{ phrase('af_paidads_min_days') }}" explain="{{ phrase('af_paidads_min_days_explain') }}" />
+                <xf:numberboxrow name="purchase_options[max_days]" value="{$location.purchase_options.max_days}" min="1"
+                    label="{{ phrase('af_paidads_max_days') }}" explain="{{ phrase('af_paidads_max_days_explain') }}" />
+
+                <xf:textarearow name="purchase_options[terms]" value="{$location.purchase_options.terms}"
+                    rows="5" autosize="true"
+                    label="{{ phrase('terms_and_rules') }}">
+                    <xf:explain>
+                        Leave blank to use default <a target="_blank" href="{{ link('options/groups', {'group_id': 'af_paidads_management'}) }}">{{ phrase('terms_and_rules') }}</a>
+                    </xf:explain>
+                </xf:textarearow>
+
+                <hr class="formRowSep" />
+
+                <xf:checkboxrow label="{{ phrase('af_paidads_allow_forum_purchases') }}" rowclass="js-forumOptionsRow">
+                    <xf:option name="can_purchase_forum" selected="$location.can_purchase_forum"
+                        label="{{ phrase('yes') }}">
+                        <xf:dependent>
+                            <div>{{ phrase('af_paidads_max_rotations') }}</div>
+                            <xf:numberbox name="max_rotations_forum" value="{$location.max_rotations_forum}" min="1"
+                                label="{{ phrase('af_paidads_max_rotations') }}" />
+
+                            <xf:macro name="placeholder_display_probabilities" arg-type="forum"
+                                arg-probabilities="{$location.display_criteria.placeholder_probabilities.forum}" />
+
+                            <div>{{ phrase('af_paidads_purchasable_forums') }}</div>
+                            <ul class="inputList">
+                                <li><xf:select name="purchase_options[forum][node_ids][]" value="{$location.purchase_options.forum.node_ids}" size="7" multiple="multiple" id="js-applicableForums">
+
+                                    <xf:option value="-1" selected="!{$location.purchase_options.forum.node_ids}">{{ phrase('(none)') }}</xf:option>
+                                    <xf:option value="-2">{{ phrase('all_forums') }}</xf:option>
+
+                                    <xf:foreach loop="$nodeTree.getFlattened(0)" value="$treeEntry">
+                                        <xf:option value="{$treeEntry.record.node_id}">{{ repeat('&nbsp;&nbsp;', $treeEntry.depth)|raw }} {$treeEntry.record.title}</xf:option>
+                                    </xf:foreach>
+
+                                </xf:select></li>
+
+                                <li><xf:checkbox>
+                                    <xf:option value="1" name="purchase_options[forum][include_child_nodes]" checked="{$location.purchase_options.forum.include_child_nodes}" label="{{ phrase('af_paidads_include_child_nodes') }}" />
+                                </xf:checkbox></li>
+                            </ul>
+
+                            <xf:radio name="purchase_options[forum][price_type]" value="{$location.purchase_options.forum.price_type}">
+                                <xf:option value="fixed"
+                                    label="{{ phrase('af_paidads_fixed_pricing') }}">
+                                    <xf:dependent>
+                                        <div>{{ phrase('af_paidads_price_per_day:') }}</div>
+                                        <xf:textbox name="purchase_options[forum][fixed_price]" value="{{ $location.purchase_options.forum.fixed_price ?: '' }}"
+                                            size="5" class="input--autoSize" dir="ltr" />
+                                    </xf:dependent>
+                                    <xf:dependent>
+                                        <div>{{ phrase('af_paidads_forum_specific_prices_per_day:') }}</div>
+                                        <xf:textarea name="purchase_options[forum][fixed_custom_forum_prices]" value="{$location.purchase_options.forum.fixed_custom_forum_prices}"
+                                        rows="5" autosize="true" />
+                                        <p class="formRow-explain">
+                                            Use this to specify custom prices based on NodeIds. {{ phrase('af_paidads_one_per_line') }}<br>
+                                            Format: Node ID = Price<br>
+                                            Example: 35 = 2.50<br>
+                                            That would set the price of Node ID 35 to <b>2.50</b>
+                                        </p>
+                                    </xf:dependent>
+                                </xf:option>
+                                <xf:option value="dynamic"
+                                    label="{{ phrase('af_paidads_dynamic_pricing_based_forum_post_count') }}">
+                                    <xf:dependent>
+                                        <div>{{ phrase('af_paidads_price_tiers:') }}</div>
+                                        <xf:textarea id="custom_prices" name="purchase_options[forum][dynamic_price_tiers]" value="{$location.purchase_options.forum.dynamic_price_tiers}"
+                                        rows="5" autosize="true" />
+                                        <p class="formRow-explain">
+                                            Format: Range Start - Range End = Price<br>
+                                            Example:<br>
+                                            0 - 1000 = 2.50<br>
+                                            1001 - 1000000 = 4.50<br>
+                                            That would set the price of forums with post counts between 0 and 1000 (inclusive) to <b>2.50</b> and everything above that to <b>4.50</b>
+                                        </p>
+                                    </xf:dependent>
+                                    <xf:dependent>
+                                        <div>{{ phrase('af_paidads_custom_tier_prices:') }}</div>
+                                        <xf:textarea name="purchase_options[forum][dynamic_custom_forum_price_tiers]" value="{$location.purchase_options.forum.dynamic_custom_forum_price_tiers}"
+                                        rows="5" autosize="true" />
+                                        <p class="formRow-explain">
+                                            Format: Node ID = Tier 1; Tier 2; etc.<br>
+                                            Example: 35 = 3.50; 5.50<br>
+                                            That would set the prices of Node ID 35 Tier 1 to <b>3.50</b> and Tier 2 to <b>5.50</b>
+                                        </p>
+                                    </xf:dependent>
+                                </xf:option>
+                            </xf:radio>
+                        </xf:dependent>
+                    </xf:option>
+                </xf:checkboxrow>
+
+                <hr class="formRowSep" />
+
+                <xf:checkboxrow label="{{ phrase('af_paidads_allow_non_forum_purchases') }}" rowclass="js-nonForumOptionsRow">
+                    <xf:option name="can_purchase_non_forum" selected="$location.can_purchase_non_forum"
+                        label="{{ phrase('yes') }}">
+                        <xf:dependent>
+                            <div>{{ phrase('af_paidads_max_rotations') }}</div>
+                            <xf:numberbox name="max_rotations_non_forum" value="{$location.max_rotations_non_forum}" min="1"
+                                label="{{ phrase('af_paidads_max_rotations') }}" />
+
+                            <xf:macro name="placeholder_display_probabilities" arg-type="non_forum"
+                                arg-probabilities="{$location.display_criteria.placeholder_probabilities.non_forum}" />
+
+                            <div>{{ phrase('af_paidads_price_per_day:') }}</div>
+                            <xf:textbox name="purchase_options[non_forum][fixed_price]" value="{{ $location.purchase_options.non_forum.fixed_price ?: '' }}"
+                                size="5" class="input--autoSize" dir="ltr" />
+                        </xf:dependent>
+                    </xf:option>
+                </xf:checkboxrow>
+
+            </div>
+
+            <h3 class="block-formSectionHeader">
+                <span class="collapseTrigger collapseTrigger--block is-active" data-xf-click="toggle" data-target="< :up:next">
+                    <span class="block-formSectionHeader-aligner">{{ phrase('af_paidads_misc_options') }}</span>
+                </span>
+            </h3>
+            <div class="block-body block-body--collapsible is-active">
+
+                <xf:numberboxrow name="misc_options[click_track_threshold]" value="{$location.misc_options.click_track_threshold}" min="0"
+                    label="{{ phrase('af_paidads_click_track_threshold') }}" units="{{ phrase('minutes') }}"
+                    explain="{{ phrase('af_paidads_click_track_threshold_explain') }}"
+                    hint="1 day = 1440 minutes" />
+
+                <xf:numberboxrow name="misc_options[view_track_threshold]" value="{$location.misc_options.view_track_threshold}" min="0"
+                    label="{{ phrase('af_paidads_view_track_threshold') }}" units="{{ phrase('minutes') }}"
+                    explain="{{ phrase('af_paidads_view_track_threshold_explain') }}"
+                    hint="1 day = 1440 minutes" />
+
+                <xf:radiorow name="misc_options[view_track_method]" value="{$location.misc_options.view_track_method}"
+                    label="{{ phrase('af_paidads_view_track_method') }}">
+
+                    <xf:option value="basic" label="{{ phrase('af_paidads_basic') }}">
+                        <xf:hint>
+                            {{ phrase('af_paidads_basic_hint') }}
+                        </xf:hint>
+                    </xf:option>
+                    <xf:option value="real" label="{{ phrase('af_paidads_real') }}">
+                        <xf:hint>
+                            {{ phrase('af_paidads_real_hint') }}
+                        </xf:hint>
+                    </xf:option>
+                    <xf:option value="scroll"
+                        label="{{ phrase('af_paidads_real_scroll') }}"
+                        hint="{{ phrase('af_paidads_real_scroll_hint') }}" />
+                </xf:radiorow>
+
+            </div>
+
+        </div>
+        <xf:submitrow sticky="true" icon="save" />
+    </div>
+</xf:form>
+
+<xf:js>
+document.getElementById('position_id').addEventListener('change', (e) => {
+    let val = e.target.value;
+
+    const regexForumOnly = /^(forum_view|post|thread_view)_/;
+    const regexNonForumOnly = /^(forum_overview|member_view)_/;
+
+    let forumOnly = regexForumOnly.test(val);
+    let nonForumOnly = regexNonForumOnly.test(val);
+
+    if (forumOnly) {
+        document.querySelectorAll('.js-forumOptionsRow').forEach(el => el.style.display = 'block');
+        document.querySelectorAll('.js-nonForumOptionsRow').forEach(el => el.style.display = 'none');
+    } else if (nonForumOnly) {
+        document.querySelectorAll('.js-forumOptionsRow').forEach(el => el.style.display = 'none');
+        document.querySelectorAll('.js-nonForumOptionsRow').forEach(el => el.style.display = 'block');
+    } else {
+        document.querySelectorAll('.js-forumOptionsRow').forEach(el => el.style.display = 'block');
+        document.querySelectorAll('.js-nonForumOptionsRow').forEach(el => el.style.display = 'block');
+    }
+});
+
+document.getElementById('position_id').dispatchEvent(new Event('change'));
+</xf:js>
+
+<xf:macro name="placeholder_display_probabilities" arg-type="!" arg-probabilities="!">
+    <div style="margin-top:20px;">{{ phrase('af_paidads_placeholder_display_probabilities:') }}</div>
+    <ul class="inputList">
+        <xf:foreach loop="$probabilities" key="$activeRotations" value="$probability">
+        <li dir="ltr">
+            <div class="inputGroup">
+                <span class="inputGroup-text">{{ phrase('af_paidads_active_rotations:') }}</span>
+                <xf:numberbox style="width:50px;" size="3" name="display_criteria[placeholder_probabilities][{$type}][active_rotations][]" value="{$activeRotations}" min="0" required="{{ false }}" />
+                <span class="inputGroup-splitter"></span>
+                <xf:numberbox style="width:50px;" size="3" name="display_criteria[placeholder_probabilities][{$type}][probability][]" value="{$probability}" min="0" max="100" required="{{ false }}" />
+                <span class="inputGroup-text">%</span>
+            </div>
+        </li>
+        </xf:foreach>
+        <li data-xf-init="field-adder" dir="ltr">
+            <div class="inputGroup">
+                <span class="inputGroup-text">{{ phrase('af_paidads_active_rotations:') }}</span>
+                <xf:numberbox style="width:50px;" size="3" name="display_criteria[placeholder_probabilities][{$type}][active_rotations][]" value="{$activeRotations}" min="0" required="{{ false }}" />
+                <span class="inputGroup-splitter"></span>
+                <xf:numberbox style="width:50px;" size="3" name="display_criteria[placeholder_probabilities][{$type}][probability][]" value="{$probability}" min="0" max="100" required="{{ false }}" />
+                <span class="inputGroup-text">%</span>
+            </div>
+        </li>
+    </ul>
+    <div style="margin-bottom:20px;"></div>
+</xf:macro>]]></template>
+  <template type="admin" title="af_paidads_location_list" version_id="1020073" version_string="1.2.0.3"><![CDATA[<xf:title>{{ phrase('af_paidads_ad_locations') }}</xf:title>
+
+<xf:pageaction>
+    <xf:button href="{{ link('paid-ads/locations/add') }}" icon="add">{{ phrase('af_paidads_create_ad_location') }}</xf:button>
+</xf:pageaction>
+
+<xf:if is="$locations is not empty">
+    <xf:form action="{{ link('paid-ads/locations/toggle') }}" class="block" ajax="true">
+        <div class="block-outer">
+            <xf:macro id="filter_macros::quick_filter" arg-key="af_paidads_locations" arg-class="block-outer-opposite" />
+        </div>
+        <div class="block-container">
+            <div class="block-body">
+                <xf:datalist>
+                    <colgroup>
+                        <col style="width: 12%">
+                        <col style="width: 12%">
+                        <col style="width: 1%">
+                        <col style="width: 1%">
+                        <col style="width: 1%">
+                        <col style="width: 1%">
+                        <col style="width: 1%">
+                    </colgroup>
+                    <thead>
+                    <xf:datarow rowtype="header">
+                        <xf:cell>{{ phrase('title') }}</xf:cell>
+                        <xf:cell>{{ phrase('type') }}</xf:cell>
+                        <xf:cell>{{ phrase('af_paidads_forum_rotations') }}</xf:cell>
+                        <xf:cell>{{ phrase('af_paidads_non_forum_rotations') }}</xf:cell>
+                        <xf:cell>{{ phrase('af_paidads_active_ads') }}</xf:cell>
+                        <xf:cell>{{ phrase('af_paidads_active') }}</xf:cell>
+                        <xf:cell></xf:cell>
+                    </xf:datarow>
+                    </thead>
+                    <xf:foreach loop="$positions" key="$positionId" value="$position">
+                        <xf:if is="{$locations.{$positionId}} is not empty">
+                            <tbody class="dataList-rowGroup">
+                                <xf:datarow
+                                    colspan="7"
+                                    label="{$position.title}"
+                                    explain="{$position.description|raw}"
+                                    rowtype="subsection"
+                                    rowclass="dataList-row--noHover" />
+                                <xf:foreach loop="{$locations.{$positionId}}" key="$locationId" value="$location">
+                                    <xf:datarow
+                                        label="{$location.title}"
+                                        hint="{$location.display_order}"
+                                        href="{{ link('paid-ads/locations/edit', $location) }}"
+                                        delete="{{ link('paid-ads/locations/delete', $location) }}">
+
+                                        <xf:cell>
+                                            <xf:if is="$location.can_purchase_forum AND $location.can_purchase_non_forum">
+                                                {{ phrase('af_paidads_forum') }} / {{ phrase('af_paidads_non_forum') }}
+                                            <xf:elseif is="$location.can_purchase_forum" />
+                                                {{ phrase('af_paidads_forum_only') }}
+                                            <xf:elseif is="$location.can_purchase_non_forum" />
+                                                {{ phrase('af_paidads_non_forum_only') }}
+                                            <xf:else />
+                                                None
+                                            </xf:if>
+                                        </xf:cell>
+                                        <xf:cell>
+                                            {$location.max_rotations_forum|number}
+                                            <xf:if is="!$location.can_purchase OR !$location.can_purchase_forum">
+                                                <span class="p-description">{{ phrase('(off)') }}</span>
+                                            </xf:if>
+                                        </xf:cell>
+                                        <xf:cell>
+                                            {$location.max_rotations_non_forum|number}
+                                            <xf:if is="!$location.can_purchase OR !$location.can_purchase_non_forum">
+                                                <span class="p-description">{{ phrase('(off)') }}</span>
+                                            </xf:if>
+                                        </xf:cell>
+                                        <xf:action href="{{ link('paid-ads/ads', null, {'status': 'active', 'location_id': $locationId}) }}">{$activeAds.{$locationId}|number} {{ phrase('active') }}</xf:action>
+
+                                        <xf:toggle name="active[{$locationId}]" selected="$location.active"
+                                            class="dataList-cell--separated" submit="true"
+                                            tooltip="{{ phrase('enable_disable_x', {'title': $location.title}) }}" />
+                                    </xf:datarow>
+                                </xf:foreach>
+                            </tbody>
+                        </xf:if>
+                    </xf:foreach>
+                </xf:datalist>
+                <div class="block-footer">
+                    <span class="block-footer-counter">{{ display_totals($totalAds) }}</span>
+                </div>
+            </div>
+        </div>
+    </xf:form>
+<xf:else />
+    <div class="blockMessage">{{ phrase('no_items_have_been_created_yet') }}</div>
+</xf:if>
+
+<xf:comment>
+    <xf:macro id="option_macros::option_form_block" arg-options="{$options}" />
+</xf:comment>]]></template>
+  <template type="email" title="af_paidads_ad_daysremaining_notification" version_id="1000070" version_string="1.0.0"><![CDATA[<mail:subject>{{ phrase('af_paidads_ad_daysremaining_notification_subject') }}</mail:subject>
+
+<p>{{ phrase('af_paidads_ad_daysremaining_notification_body', {'board_url': link('canonical:index'), 'manage_ads_url': link('canonical:paid-ads/manage'), 'days': $days, 'title': $ad.title}) }}</p>]]></template>
+  <template type="email" title="af_paidads_ad_expired_notification" version_id="1000070" version_string="1.0.0"><![CDATA[<mail:subject>{{ phrase('af_paidads_ad_expired_notification_subject') }}</mail:subject>
+
+<p>{{ phrase('af_paidads_ad_expired_notification_body', {'board_url': link('canonical:index'), 'buy_ads_url': link('canonical:paid-ads'), 'title': $ad.title}) }}</p>]]></template>
+  <template type="email" title="af_paidads_cart_receipt" version_id="1000070" version_string="1.0.0"><![CDATA[<mail:subject>{{ phrase('af_paidads_receipt_for_your_ads_purchase_at_x', {'board_title': $xf.options.boardTitle}) }}</mail:subject>
+
+<p>{{ phrase('af_paidads_thank_you_for_your_ads_purchase_at_x', {'board_url': link('canonical:index'), 'board_title': $xf.options.boardTitle}) }}</p>
+
+<table border="0" width="100%" cellpadding="0" cellspacing="0">
+<tr>
+	<td><b>{{ phrase('af_paidads_ad_location') }}</b></td>
+	<td align="right">{{ phrase('af_paidads_total_days') }}</td>
+	<td align="right"><b>{{ phrase('price') }}</b></td>
+</tr>
+<xf:foreach loop="$receiptItems" value="$item">
+	<tr>
+		<td><a href="{{ link('canonical:paid-ads/manage') }}">{$item.title}</a></td>
+		<td align="right">{$item.days|number}</td>
+		<td align="right">{$item.cost_phrase}</td>
+	</tr>
+</xf:foreach>
+</table>
+
+<p><a href="{{ link('canonical:paid-ads/manage') }}" class="button">{{ phrase('af_paidads_manage_your_ads') }}</a></p>
+
+<xf:if is="$xf.toUser.canUseContactForm()">
+	<p>{{ phrase('thank_you_for_your_purchase_questions_contact_us', {'contacturl': link('canonical:misc/contact') }) }}</p>
+<xf:else />
+	<p>{{ phrase('thank_you_for_your_purchase') }}</p>
+</xf:if>]]></template>
+  <template type="public" title="af_paidads.less" version_id="1000070" version_string="1.0.0"><![CDATA[.button--icon
+{
+    &--shopping-cart
+    {
+        .m-buttonIcon(@fa-var-shopping-cart, .7em);
+    }
+}]]></template>
+  <template type="public" title="af_paidads_ad_display_macros" version_id="1020073" version_string="1.2.0.3"><![CDATA[<xf:macro name="display_ads" arg-ads="!">
+    <xf:js src="addonflare/pa/core.js" addon="AddonFlare/PaidAds" min="1" />
+
+	<xf:foreach loop="$ads" value="$ad">
+        <xf:set var="$uniqueId">{{ unique_id() }}</xf:set>
+        <xf:set var="$miscOptions" value="{$ad.misc_options}" />
+
+		<xf:if is="$miscOptions.view_track_method == 'real'">
+            <xf:set var="$dataOnLoad" value="true" />
+        <xf:elseif is="$miscOptions.view_track_method == 'scroll'" />
+            <xf:set var="$dataOnScroll" value="true" />
+        </xf:if>
+
+        <xf:if is="$ad.ad_options.inline_css">
+            <xf:css>
+                #{$uniqueId}
+                {
+                    {$ad.ad_options.inline_css|raw}
+                }
+            </xf:css>
+        </xf:if>
+
+		<xf:css>
+            #{$uniqueId} img
+            {
+                opacity: 1;
+                -webkit-transition: opacity 0.1s;
+                -o-transition: opacity 0.1s;
+                transition: opacity 0.1s;
+            }
+            #{$uniqueId} img[data-src]
+            {
+                opacity: 0;
+            }
+        </xf:css>
+
+		<div id="{$uniqueId}" style="{{ $ad.ad_options.alignment ? 'text-align:' . $ad.ad_options.alignment . ';' : '' }}">
+            <xf:if is="$ad.bannerHtml">
+                {$ad.bannerHtml|raw}
+            <xf:else />
+                <a href="{$ad.bannerLink}" rel="noopener nofollow" target="_blank" data-a-id="{$ad.ad_id}" data-xf-init="afpa-track-view" data-on-load="{$dataOnLoad}" data-on-scroll="{$dataOnScroll}" data-track-view-threshold="{$miscOptions.view_track_threshold}" data-xf-click="afpa-track-click" data-track-click-threshold="{$miscOptions.click_track_threshold}"><noscript data-xf-init="afpa-lazyload" data-src="{$ad.bannerImageUrl}"><img src="{$ad.bannerImageUrl}" data-src="" alt="" /></noscript></a>
+            </xf:if>
+        </div>
+    </xf:foreach>
+</xf:macro>]]></template>
+  <template type="public" title="af_paidads_ad_edit" version_id="1000070" version_string="1.0.0"><![CDATA[<xf:title>{{ phrase('af_paidads_edit_ad:') }} {$title}</xf:title>
+
+<xf:breadcrumb href="{{ link('paid-ads/manage') }}">{{ phrase('af_paidads_manage_ads') }}</xf:breadcrumb>
+
+<xf:form action="{{ link('paid-ads/manage/edit' . ($multiple ? '-multiple' : ''), $ad) }}" ajax="true" upload="true" class="block">
+
+    <div class="block-container">
+        <div class="block-body">
+
+            <xf:textboxrow name="url" value="{$ad.url}" maxlength="{{ max_length($ad, 'url') }}" type="url"
+                label="{{ phrase('url') }}"
+                dir="ltr" />
+
+            <xf:if is="$ad.banner_url">
+                <xf:formrow label="{{ phrase('af_paidads_existing_banner_image') }}">
+                    <img src="{$ad.banner_url}" />
+                </xf:formrow>
+            </xf:if>
+
+            <xf:uploadrow name="upload" accept=".{$extensions|join(',.')}"
+                label="Upload Banner Image">
+                <xf:explain>
+                    {{ phrase('af_paidads_allowed_extensions:') }} .{$extensions|join(' .')}<br>
+                    {{ phrase('af_paidads_max_file_size:') }} {$adOptions.max_file_size} {{ phrase('units_kb') }}<br>
+                    {{ phrase('af_paidads_dimensions:') }} {$adOptions.ad_width} x {$adOptions.ad_height} {{ phrase('units_pixels') }}
+                </xf:explain>
+            </xf:uploadrow>
+
+            <xf:set var="$terms" value="{$xf.options.af_paidads_ad_terms}" />
+
+            <xf:if is="!$multiple AND $ad.Location.purchase_options.terms">
+                <xf:set var="$terms" value="{$ad.Location.purchase_options.terms}" />
+            </xf:if>
+
+            <xf:if is="$terms">
+                <xf:formrow label="{{ phrase('terms_and_rules') }}">
+                    {$terms|raw}
+                </xf:formrow>
+            </xf:if>
+
+        </div>
+
+        <xf:if is="$multiple">
+            <xf:foreach loop="$adIds" value="$adId">
+                <xf:hiddenval name="ad_ids[]">{$adId}</xf:hiddenval>
+            </xf:foreach>
+        </xf:if>
+
+        <xf:hiddenval name="submit">1</xf:hiddenval>
+
+        <xf:submitrow icon="save" rowtype="simple" />
+    </div>
+</xf:form>]]></template>
+  <template type="public" title="af_paidads_ad_stats" version_id="1000070" version_string="1.0.0"><![CDATA[<xf:title>{{ phrase('af_paidads_stats:') }} {$ad.title}</xf:title>
+
+<xf:form action="" class="block" ajax="true">
+    <div class="block-container">
+        <div class="block-body">
+            <xf:formrow label="{{ phrase('af_paidads_total_views') }}">{$ad.total_views|number}</xf:formrow>
+            <xf:formrow label="{{ phrase('af_paidads_total_clicks') }}">{$ad.total_clicks|number}</xf:formrow>
+            <xf:formrow label="{{ phrase('af_paidads_total_clicks_in_last_24hrs') }}">{$last24HrsClickCount|number}</xf:formrow>
+        </div>
+    </div>
+</xf:form>]]></template>
+  <template type="public" title="af_paidads_banner_preview.less" version_id="1000070" version_string="1.0.0"><![CDATA[.bannerPrev
+{
+    position: relative;
+    z-index: 0;
+}
+
+.bannerPrev:hover
+{
+    background-color: transparent;
+    z-index: 50;
+}
+
+.bannerPrev span
+{
+    position: absolute;
+    visibility: hidden;
+    display: none;
+    color: black;
+    text-decoration: none;
+}
+
+.bannerPrev span img
+{
+    border-width: 0;
+    padding: 2px;
+    max-width: 400px;
+}
+
+.bannerPrev:hover span
+{
+    visibility: visible;
+    display: inherit;
+    top: -9px;
+    right: 65px;
+}]]></template>
+  <template type="public" title="af_paidads_buy_ads" version_id="1020071" version_string="1.2.0.1"><![CDATA[<xf:title>{{ phrase('af_paidads_buy_ads') }}</xf:title>
+
+<xf:css src="af_paidads.less" />
+
+<xf:js src="addonflare/pa/simple.timer.js" addon="AddonFlare/PaidAds" min="1" />
+
+<xf:css>
+    .jst-timeout {
+      color: red;
+    }
+</xf:css>
+
+<xf:pageaction>
+    <xf:button href="{{ link('paid-ads/cart') }}" class="button--cta button button--icon button--icon--shopping-cart">
+        {{ phrase('af_paidads_cart') }} (<span id="js-adsCartCount">{{ $cart ? $cart.total_items : 0 }}</span>)
+    </xf:button>
+    <xf:button href="{{ link('paid-ads/manage') }}" icon="config">{{ phrase('af_paidads_manage_ads') }}</xf:button>
+</xf:pageaction>
+
+<xf:if is="$locations is not empty">
+    <div class="block">
+        <div class="block-container">
+            <div class="block-body">
+                <xf:selectrow id="location_id" name="location_id" value="" autocomplete="off"
+                    data-xf-init="desc-loader paidads-change-inserter"
+                    data-desc-url="{{ link('paid-ads/get-location-description') }}"
+                    data-href="{{ link('paid-ads/get-location-types') }}"
+                    data-replace=".js-paidads-locationTypes"
+                    data-empty=".js-paidads-forums, .js-paidads-calendar"
+                    label="{{ phrase('af_paidads_choose_ad_location') }}">
+                    <xf:option
+                        data-href="none"
+                        data-empty=".js-paidads-locationTypes, .js-paidads-forums, .js-paidads-calendar">
+                    </xf:option>
+                    <xf:foreach loop="$locations" key="$location_id" value="$location">
+                        <xf:option value="{$location_id}"
+                            data-href="{{ link('paid-ads/get-location-types', null, {'location_id' : $location.location_id}) }}">
+                            {$location.title}
+                        </xf:option>
+                    </xf:foreach>
+                    <xf:html>
+                        <div class="js-descTarget formRow-explain"></div>
+                    </xf:html>
+                </xf:selectrow>
+
+                <div class="js-paidads-locationTypes"></div>
+                <div class="js-paidads-forums"></div>
+            </div>
+        </div>
+        <div class="js-paidads-calendar"></div>
+    </div>
+<xf:else />
+    <div class="blockMessage">{{ phrase('af_paidads_no_ads_available_for_purchase') }}</div>
+</xf:if>
+
+<xf:js>
+XF.PaidAdsChangeInserter = XF.extend(XF.Inserter, {
+    __backup: {
+        'onLoad': '_onLoad',
+    },
+
+    onEvent: function (e) {
+        e.preventDefault();
+
+        if (this.loading)
+            return;
+
+        this.loading = true;
+
+        const replaceElem = document.querySelector(this.options.replace);
+
+        if (replaceElem)
+            replaceElem.classList.add('is-active');
+
+        let selected;
+
+        if (e.target.tagName === 'SELECT') {
+            selected = e.target.options[e.target.selectedIndex];
+        } else if (e.target.tagName === 'INPUT') {
+            selected = e.target;
+        }
+
+        this.href = selected.dataset.href || this.href;
+        this.options.replace = selected.dataset.replace || this.options.replace;
+
+        const empty = selected.dataset.empty || this.target.dataset.empty;
+
+        if (empty) {
+            empty.split(',').forEach(selector => {
+                document.querySelector(selector.trim()).innerHTML = '';
+            });
+        }
+
+        if (this.href === 'none') {
+            this.loading = false;
+            return;
+        }
+
+        XF.ajax('get', this.href, {}, XF.proxy(this, 'onLoad'))
+            .then(() => { this.loading = false; })
+            .catch((e) => { this.loading = false; console.error(e) });
+    },
+});
+
+XF.PaidAdsInserterChange = XF.Element.newHandler({
+    options: { ...XF._baseInserterOptions },
+    inserter: null,
+
+    init: function () {
+        this.inserter = new XF.PaidAdsChangeInserter(this.target, this.options);
+        this.target.addEventListener('change', XF.proxy(this.inserter, 'onEvent'));
+    },
+});
+
+XF.Element.register('paidads-change-inserter', 'XF.PaidAdsInserterChange');
+XF.phrases.af_paidads_cart_has_expired = "{{ phrase('af_paidads_cart_has_expired')|escape('js') }}";
+</xf:js>]]></template>
+  <template type="public" title="af_paidads_buy_ads_calendar" version_id="1020071" version_string="1.2.0.1"><![CDATA[<xf:title>{$pageTitle}</xf:title>
+<xf:css src="af_paidads_buy_ads_calendar.less" />
+
+<div class="block-container js-paidads-calendar">
+    <xf:inforow>
+        <ul class="listPlain listColumnsCalendar">
+            <xf:if is="$isAdmin">
+                <li>{{ phrase('af_paidads_forum_days_remaining') }}: {$ad.days_remaining_forum|number}</li>
+                <li>{{ phrase('af_paidads_non_forum_days_remaining') }}: {$ad.days_remaining_non_forum|number}</li>
+            <xf:else />
+                <li>{{ phrase('af_paidads_min_days') }}: {$location.purchase_options.min_days|number}</li>
+                <li>{{ phrase('af_paidads_max_days') }}: {$location.purchase_options.max_days|number}</li>
+                <xf:if is="$showForumOptions">
+                    <li>{{ phrase('forum:') }} <a target="_blank" href="{{ link('forums', $cartAd.Forum) }}">{$cartAd.Forum.title}</a></li>
+                    <li>{{ phrase('af_paidads_forum_price') }}: {{ $location.getCostPerDayPhrase($forumPricePerDay) }}</li>
+                </xf:if>
+                <xf:if is="$showNonForumOptions">
+                    <li>{{ phrase('af_paidads_non_forum_price') }}: {{ $location.getCostPerDayPhrase($nonForumPricePerDay) }}</li>
+                </xf:if>
+                <li data-xf-init="tooltip" title="{{ phrase('af_paidads_time_remaining_tooltip')|for_attr }}">{{ phrase('af_paidads_time_remaining:') }} <span class="af-pa-timer" data-expire="{$cartAd.expire_time}"></span></li>
+                <li>{{ phrase('af_paidads_total_days_added') }}: <span class="{{ $withingDayLimits ? '' : 'outOfDayLimits' }}">{$cartAd.total_days|number}</span></li>
+                <li>{{ phrase('af_paidads_total_amount') }}: {{ $location.getCostPhrase($cartAd.total_amount) }}</li>
+            </xf:if>
+        </ul>
+    </xf:inforow>
+    <table class="calendar">
+        <caption>
+            <xf:if is="$calendar.showPrevLink">
+                <div class="monthSwitcher monthSwitcher--prev"><a data-switchdir="prev">&lt; {{ phrase('af_paidads_previous_month') }}</a></div>
+            </xf:if>
+            <div class="monthSwitcher monthSwitcher--next"><a data-switchdir="next">{{ phrase('af_paidads_next_month') }} &gt;</a></div>
+            {$calendar.monthFull} {$calendar.year}
+            <div class="calendarLegend">
+                <xf:if is="$showForumOptions">
+                    <div class="dayForum">
+                        <input id="addAll-forum" class="js-addAll" type="checkbox" name="" {{ ($calendar.allDaysAdded.forum OR ($isAdmin AND $calendar.allDaysPurchased.forum)) ? 'checked="checked"' : '' }} />
+                        <label for="addAll-forum">{{ snippet($isAdmin ? $ad.Forum.title : $cartAd.Forum.title, 14) }}</label>
+                    </div>
+                </xf:if>
+                <xf:if is="$showNonForumOptions">
+                    <div class="dayNonForum">
+                        <input id="addAll-nonForum" class="js-addAll" type="checkbox" name="" {{ ($calendar.allDaysAdded.non_forum OR ($isAdmin AND $calendar.allDaysPurchased.non_forum)) ? 'checked="checked"' : '' }} />
+                        <label for="addAll-nonForum">{{ phrase('af_paidads_non_forum_pages') }}</label>
+                    </div>
+                </xf:if>
+            </div>
+        </caption>
+
+        <tr>
+            <xf:foreach loop="$calendar.daysOfWeek" value="$day">
+                <th>{$day}</th>
+            </xf:foreach>
+        </tr>
+
+        <xf:set var="$startOfWeekIsSunday" value="{$calendar.startOfWeekIsSunday}" />
+        <xf:set var="$currentDayNumeric" value="{$calendar.currentDayNumeric}" />
+        <xf:set var="$firstDayNumeric" value="{$calendar.firstDayNumeric}" />
+        <xf:set var="$lastDayNumeric" value="{$calendar.lastDayNumeric}" />
+
+        <tr>
+
+            <xf:if is="$startOfWeekIsSunday">
+                <xf:if is="$firstDayNumeric > 0">
+                    <xf:set var="$startColSpan">{$firstDayNumeric}</xf:set>
+                </xf:if>
+            <xf:else />
+                <xf:if is="$firstDayNumeric == 0">
+                    <xf:set var="$startColSpan">6</xf:set>
+                <xf:elseif is="$firstDayNumeric == 2" />
+                    <xf:set var="$startColSpan">1</xf:set>
+                <xf:elseif is="$firstDayNumeric == 3" />
+                    <xf:set var="$startColSpan">2</xf:set>
+                <xf:elseif is="$firstDayNumeric == 4" />
+                    <xf:set var="$startColSpan">3</xf:set>
+                <xf:elseif is="$firstDayNumeric == 5" />
+                    <xf:set var="$startColSpan">4</xf:set>
+                <xf:elseif is="$firstDayNumeric == 6" />
+                    <xf:set var="$startColSpan">5</xf:set>
+                </xf:if>
+            </xf:if>
+
+
+            <xf:if is="$startColSpan">
+                <td class="noHover" colspan="{$startColSpan}"></td>
+            </xf:if>
+
+            <xf:foreach loop="$calendar.days" value="$day">
+                <xf:if is="$day.calendar_day_number != 1 AND $day.week_day_number == $calendar.startOfWeekDayNumber">
+                    <tr>
+                </xf:if>
+                <td class="day {{ $day.unavailable ? 'day--unavailable' : '' }}">
+                    <div class="dayNumber">{$day.calendar_day_number}</div>
+                    <xf:if is="!$day.unavailable">
+                        <table class="daysContainer">
+                            <xf:if is="$showForumOptions">
+                                <tr>
+                                    <td class="dayForum {{ ($day.forum_added OR ($isAdmin AND $day.forum_purchased)) ? 'day--added' : '' }} {{ $day.forum_purchased ? 'day--purchased' : '' }} {{ $day.forum_available ? 'day--open' : '' }}" data-date="{$day.full_date}">
+                                        <xf:if is="$day.forum_purchased">
+                                            {{ $isAdmin ? phrase('af_paidads_day_active') : phrase('af_paidads_day_purchased') }}
+                                        <xf:else />
+                                            {$day.forum_rotations_open|number} {{ phrase('af_paidads_day_open') }}
+                                        </xf:if>
+                                    </td>
+                                </tr>
+                            </xf:if>
+                            <xf:if is="$showNonForumOptions">
+                                <tr>
+                                    <td class="dayNonForum {{ ($day.non_forum_added OR ($isAdmin AND $day.non_forum_purchased)) ? 'day--added' : '' }} {{ $day.non_forum_purchased ? 'day--purchased' : '' }} {{ $day.non_forum_available ? 'day--open' : '' }}" data-date="{$day.full_date}">
+                                        <xf:if is="$day.non_forum_purchased">
+                                            {{ $isAdmin ? phrase('af_paidads_day_active') : phrase('af_paidads_day_purchased') }}
+                                        <xf:else />
+                                            {$day.non_forum_rotations_open|number} {{ phrase('af_paidads_day_open') }}
+                                        </xf:if>
+                                    </td>
+                                </tr>
+                            </xf:if>
+                        </table>
+                    </xf:if>
+                </td>
+                <xf:if is="$day.calendar_day_number != $calendar.monthDays AND $day.week_day_number == $calendar.endOfWeekDayNumber">
+                    </tr>
+                </xf:if>
+            </xf:foreach>
+
+            <xf:if is="$startOfWeekIsSunday">
+                <xf:if is="$currentDayNumeric != 7">
+                    <xf:set var="$endColSpan">{{ 7 - $currentDayNumeric }}</xf:set>
+                </xf:if>
+            <xf:else />
+                <xf:if is="$lastDayNumeric > 0">
+                    <xf:set var="$endColSpan">{{ 7 - $lastDayNumeric }}</xf:set>
+                </xf:if>
+            </xf:if>
+
+            <xf:if is="$endColSpan">
+                <td class="noHover" colspan="{$endColSpan}"></td>
+            </xf:if>
+
+        </tr>
+
+    </table>
+
+    <xf:if is="$cartAd AND $cartAd.status == 'session'">
+        <xf:inforow rowclass="formInfoRow--close formInfoRow--confirm">
+            {{ phrase('af_paidads_select_days_info')|raw }}
+        </xf:inforow>
+        <xf:submitrow id="js-addToCart" data-url="{{ link('paid-ads/add-to-cart', null, {'cart_ad_id': $cartAd.cart_ad_id}) }}" submit="{{ phrase('af_paidads_add_to_cart') }} - {{ $location.getCostPhrase($cartAd.total_amount) }}" rowtype="simple" icon="add" onclick="return addToCart(event)">
+            <xf:html></xf:html>
+        </xf:submitrow>
+    </xf:if>
+</div>
+
+<xf:js>
+let year = {$calendar.year},
+    month = {$calendar.month};
+
+async function updateCalendar(url, dataParams = {}, onError) {
+    try {
+        const defaultParams = {
+            view_month: month,
+            view_year: year,
+        };
+
+        const {response, data, error} = await XF.ajax('POST', url, { ...defaultParams, ...dataParams })
+            .catch(onError);
+
+        if ((typeof error !== "undefined") || !response.ok) {
+            onError();
+            return;
+        }
+
+        if (data.html.content) {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(data.html.content, 'text/html');
+            const calendarHtml = doc.querySelector('.js-paidads-calendar') || doc;
+
+            if (calendarHtml) {
+                document.querySelector('.js-paidads-calendar').replaceWith(calendarHtml);
+            }
+        }
+
+        if (data.cart_ad_id) {
+            document.getElementById(`js-cartad-totalDaysForum-${data.cart_ad_id}`).textContent = data.cart_ad_total_days_forum || '';
+            document.getElementById(`js-cartad-totalDaysNonForum-${data.cart_ad_id}`).textContent = data.cart_ad_total_days_non_forum || '';
+            document.getElementById(`js-cartad-totalDays-${data.cart_ad_id}`).textContent = data.cart_ad_total_days || '';
+            document.getElementById(`js-cartad-totalAmount-${data.cart_ad_id}`).textContent = data.cart_ad_total_amount || '';
+            document.querySelector('#js-cart-buyNow .button-text').textContent = data.cart_total_amount || '';
+        }
+
+        if (data.ad_id) {
+            document.getElementById(`js-ad-daysRemainingForum-${data.ad_id}`).textContent = data.ad_days_remaining_forum || '';
+            document.getElementById(`js-ad-daysRemainingNonForum-${data.ad_id}`).textContent = data.ad_days_remaining_non_forum || '';
+        }
+    } catch (error) {
+        if (onError)
+            onError();
+    }
+}
+
+function emptyAll() {
+    const elements = document.querySelectorAll('.js-descTarget, .js-paidads-locationTypes, .js-paidads-forums, .js-paidads-calendar');
+
+    elements.forEach(el => {
+        XF.Animate.fadeUp(el, {
+            complete: function() {
+                el.innerHTML = '';
+            },
+
+            speed: XF.config.speed.fast
+        });
+    });
+}
+
+document.body.addEventListener('click', async e => {
+    if (e.target.matches('.day--open, .day--added')) {
+        const date = e.target.dataset.date;
+        const dayType = e.target.classList.contains('dayForum') ? 'forum' : 'non_forum';
+        const url = e.target.classList.contains('day--open') ? '{$addDaysUrl|escape("js")}' : '{$removeDaysUrl|escape("js")}';
+
+        return updateCalendar(url, { dates: date, day_type: dayType });
+    }
+
+    if (e.target.matches('.monthSwitcher a')) {
+        e.preventDefault();
+
+        const switchdir = e.target.dataset.switchdir;
+
+        if (switchdir === 'prev') {
+            month = month === 1 ? 12 : month - 1;
+            if (month === 12) year--;
+        } else if (switchdir === 'next') {
+            month = month === 12 ? 1 : month + 1;
+            if (month === 1) year++;
+        }
+
+        return updateCalendar('{$calendarUrl|escape("js")}');
+    }
+});
+
+async function addToCart(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const button = document.querySelector('#js-addToCart');
+    button.disabled = true;
+
+    const {response, data, error} = await XF.ajax('GET', button.dataset.url);
+
+    if (typeof error !== "undefined")
+        return;
+
+    if (response.ok && data.message) {
+        XF.hideOverlays();
+        XF.flashMessage(data.message, 5000, () => button.disabled = false);
+    } else {
+        button.disabled = false;
+    }
+
+    if (data.empty_all) {
+        emptyAll();
+        document.getElementById('location_id').selectedIndex = 0;
+        document.getElementById('js-adsCartCount').textContent = data.cart_total_items || '';
+    }
+}
+
+document.body.addEventListener('change', e => {
+    if (e.target.matches('input.js-addAll')) {
+        const dayType = e.target.id === 'addAll-forum' ? 'forum' : 'non_forum';
+        const url = e.target.checked ? '{$addDaysUrl|escape("js")}' : '{$removeDaysUrl|escape("js")}';
+        const selectorPrefix = e.target.id === 'addAll-forum' ? '.dayForum' : '.dayNonForum';
+        const datesSelector = e.target.checked ? `${selectorPrefix}.day--open` : `${selectorPrefix}.day--added`;
+        const dates = [...document.querySelectorAll(datesSelector)].map(el => el.dataset.date).join('|');
+
+        if (!dates)
+            return;
+
+        return updateCalendar(url, { dates, day_type: dayType }, () => e.target.checked = !e.target.checked);
+    }
+});
+
+const timers = document.querySelectorAll('.js-paidads-calendar .af-pa-timer');
+
+timers.forEach(element => {
+    Timer.start(element, {
+        onComplete: () => {
+            XF.alert(XF.phrase('af_paidads_cart_has_expired'), 'message');
+            document.getElementById('location_id').selectedIndex = 0;
+            emptyAll();
+        }
+    });
+});
+
+Object.assign(window, { updateCalendar, emptyAll, addToCart });
+</xf:js>]]></template>
+  <template type="public" title="af_paidads_buy_ads_calendar.less" version_id="1000070" version_string="1.0.0"><![CDATA[.calendar
+{
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  table-layout: fixed;
+
+  caption
+  {
+    position: relative;
+    margin-bottom: 10px;
+    font-size: @xf-fontSizeLarger;
+    font-weight: @xf-fontWeightHeavy;
+  }
+
+  >tbody
+  {
+    >tr
+    {
+      &:nth-child(even)
+      {
+        background: @xf-afPaidAdsRowAltBg;
+      }
+
+      >th, >td
+      {
+        border-color: @xf-borderColorLight;
+        border-width: @xf-borderSize;
+        border-style: solid;
+        width: 14.285714285714285714285714285714%;
+      }
+
+      >th
+      {
+        text-overflow: ellipsis;
+        word-wrap: normal;
+        overflow: hidden;
+        .xf-afPaidAdsCalHeader();
+      }
+
+      >td
+      {
+        vertical-align: top;
+
+        &:hover:not(.noHover)
+        {
+          // background: fade(@xf-contentHighlightBg, 50%);
+        }
+
+        .dayNumber
+        {
+          font-size: @xf-fontSizeSmall;
+          position: absolute;
+          margin-top: 1px;
+          margin-left: 3px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: @xf-responsiveMedium)
+{
+  .calendar td
+  {
+    font-size: @xf-fontSizeSmall;
+  }
+}
+
+.daysContainer
+{
+    border-collapse: collapse;
+    width: 80%;
+    float: right;
+    text-align: center;
+}
+
+.daysContainer td
+{
+    padding: 2px;
+    border: 1px solid;
+    border-left: none;
+    border-right: none;
+}
+
+.daysContainer tr:first-child td
+{
+    border-top: none;
+}
+
+.daysContainer tr:last-child td
+{
+    border-bottom: none;
+}
+
+.calendarLegend
+{
+    display: inline-block;
+    position: absolute;
+    font-size: 12px;
+    margin-left: 25px;
+
+    >div
+    {
+      display: inline-block;
+      padding: 5px;
+    }
+}
+
+.dayForum
+{
+  color: @xf-afPaidAdsCalForumDayColor;
+  background: @xf-afPaidAdsCalForumDayBg;
+  cursor: pointer;
+}
+
+.dayNonForum
+{
+    color: @xf-afPaidAdsCalNonForumDayColor;
+    background-color: @xf-afPaidAdsCalNonForumDayBg;
+    cursor: pointer;
+}
+
+.day
+{
+  .dayForum:not(.day--open):not(.day--added),
+  .dayNonForum:not(.day--open):not(.day--added)
+  {
+    opacity: .35;
+  }
+  [data-app=admin] &
+  {
+    .dayForum.day--purchased,
+    .dayNonForum.day--purchased
+    {
+      opacity: 1;
+    }
+  }
+  &.day--unavailable
+  {
+    color: @xf-afPaidAdsCalUnavailableDayColor;
+    background-color: @xf-afPaidAdsCalUnavailableDayBg;
+    cursor: initial;
+  }
+
+  &.day--unavailable::after
+  {
+    content: "";
+    display: block;
+    height: 25px;
+    visibility: hidden;
+  }
+}
+
+.has-no-touchevents .day .day--open
+{
+  &.dayForum:hover
+  {
+    color: @xf-afPaidAdsCalForumDayHoverColor;
+    background: @xf-afPaidAdsCalForumDayHoverBg;
+  }
+  &.dayNonForum:hover
+  {
+    color: @xf-afPaidAdsCalNonForumDayHoverColor;
+    background: @xf-afPaidAdsCalNonForumDayHoverBg;
+  }
+}
+
+.day .day--added
+{
+  &.dayForum
+  {
+    color: @xf-afPaidAdsCalForumDaySelectedColor;
+    background: @xf-afPaidAdsCalForumDaySelectedBg;
+  }
+  &.dayNonForum
+  {
+    color: @xf-afPaidAdsCalNonForumDaySelectedColor;
+    background: @xf-afPaidAdsCalNonForumDaySelectedBg;
+  }
+}
+
+[data-app=admin] .day .day--purchased
+{
+  &.dayForum
+  {
+    color: @xf-afPaidAdsCalForumDaySelectedColor;
+    background: @xf-afPaidAdsCalForumDaySelectedBg;
+  }
+  &.dayNonForum
+  {
+    color: @xf-afPaidAdsCalNonForumDaySelectedColor;
+    background: @xf-afPaidAdsCalNonForumDaySelectedBg;
+  }
+}
+
+.monthSwitcher
+{
+  position: absolute;
+  top: -22px;
+  font-size: @xf-fontSizeSmall;
+  font-weight: normal;
+
+  a {
+    cursor: pointer;
+  }
+
+  &.monthSwitcher--prev
+  {
+    left: 1%;
+  }
+  &.monthSwitcher--next
+  {
+    right: 1%;
+  }
+}
+
+
+.listColumnsCalendar
+{
+  margin: 0 auto;
+  width: 85%;
+  text-align: center;
+
+  .m-columns(3, @xf-responsiveNarrow);
+
+  > li
+  {
+    .m-columnBreakAvoid();
+    position: relative; // workaround Chrome quirk with hover triggers in visitor menu
+  }
+
+  &.listColumns--spaced
+  {
+    > li
+    {
+      margin-bottom: .5em;
+    }
+  }
+
+  &.listColumns--narrow
+  {
+    .m-columns(3);
+  }
+
+  &.listColumns--together
+  {
+    -moz-column-gap: 0;
+    -webkit-column-gap: 0;
+    column-gap: 0;
+  }
+
+  &.listColumns--collapsed
+  {
+    display: inline-block;
+  }
+}
+
+.outOfDayLimits
+{
+  color: red;
+}
+
+
+@media (max-width: @xf-responsiveWide)
+{
+  .daysContainer
+  {
+    float: none;
+    width: 100%;
+    margin-top: 27px;
+  }
+
+  .calendarLegend
+  {
+    position: relative;
+  }
+
+  .listColumnsCalendar
+  {
+    width: 100%;
+  }
+}]]></template>
+  <template type="public" title="af_paidads_buy_ads_forums" version_id="1020071" version_string="1.2.0.1"><![CDATA[<div class="js-paidads-forums">
+    <xf:selectrow name="node_ids" id="node_ids" value="" autocomplete="off"
+        label="{{ phrase('forum') }}"
+        explain="{{ phrase('af_paidads_choose_forum_explain') }}"
+        data-xf-init="paidads-change-inserter"
+        data-inserter-href="{{ link('paid-ads/calendar') }}"
+        data-replace=".js-paidads-calendar"
+        data-animate-replace="false"
+        data-scroll-target=".js-paidads-calendar">
+
+        <xf:option value=""
+            data-href="none"
+            data-empty=".js-paidads-calendar">
+            {{ phrase('(none)') }}
+        </xf:option>
+        <xf:foreach loop="$nodeTree.getFlattened(0)" value="$treeEntry">
+            <xf:if is="in_array($treeEntry.record.node_id, $availableNodeIds)">
+                <xf:option value="{$treeEntry.record.node_id}" disabled="{{ $treeEntry.record.node_type_id != 'Forum' }}"
+                    data-href="{{ link('paid-ads/calendar', null, {'location_id' : $locationId, 'a_type' : $adType, 'node_id' : {$treeEntry.record.node_id}}) }}"
+                    data-replace=".js-paidads-calendar"
+                    data-empty="">
+                    {{ repeat('&nbsp;&nbsp;', $treeEntry.depth)|raw }} {$treeEntry.record.title}
+                </xf:option>
+            </xf:if>
+        </xf:foreach>
+    </xf:selectrow>
+</div>]]></template>
+  <template type="public" title="af_paidads_buy_ads_location_types" version_id="1020071" version_string="1.2.0.1"><![CDATA[<div class="js-paidads-locationTypes">
+    <xf:if is="($showForumOptions OR $showNonForumOptions) AND $location.canPurchase()">
+        <xf:if is="$showForumOptions AND !$showNonForumOptions">
+            <xf:set var="$defaultSelection" value="forum" />
+        <xf:elseif is="!$showForumOptions AND $showNonForumOptions" />
+            <xf:set var="$defaultSelection" value="non_forum" />
+        </xf:if>
+
+        <xf:radiorow id="location_type" name="location_type" value="" listclass="_listColumns"
+            data-xf-init="paidads-change-inserter"
+            data-inserter-href="{{ link('paid-ads/calendar') }}"
+            data-replace=".js-paidads-calendar"
+            data-animate-replace="false"
+            data-scroll-target=".js-paidads-calendar"
+            label="Type">
+
+            <xf:if is="$showForumOptions">
+                <xf:option label="{{ phrase('af_paidads_forum_only') }}" value="forum"
+                    autocomplete="off"
+                    data-href="{{ link('paid-ads/get-forums', null, {'location_id' : $location.location_id, 'a_type' : 'forum'}) }}"
+                    data-replace=".js-paidads-forums"
+                    data-empty=".js-paidads-calendar"
+                    hint="{{ phrase('af_paidads_forum_only_hint') }}" />
+            </xf:if>
+            <xf:if is="$showNonForumOptions">
+                <xf:option label="{{ phrase('af_paidads_non_forum_only') }}" value="non_forum"
+                    autocomplete="off"
+                    data-href="{{ link('paid-ads/calendar', null, {'location_id' : $location.location_id, 'a_type' : 'non_forum'}) }}"
+                    data-replace=".js-paidads-calendar"
+                    data-empty=".js-paidads-forums"
+                    hint="{{ phrase('af_paidads_non_forum_only_hint') }}" />
+            </xf:if>
+            <xf:if is="$showForumOptions AND $showNonForumOptions">
+                <xf:option label="{{ phrase('af_paidads_both') }}" value="both"
+                    autocomplete="off"
+                    data-href="{{ link('paid-ads/get-forums', null, {'location_id' : $location.location_id, 'a_type' : 'both'}) }}"
+                    data-replace=".js-paidads-forums"
+                    data-empty=".js-paidads-calendar"
+                    hint="{{ phrase('af_paidads_both_hint') }}" />
+            </xf:if>
+        </xf:radiorow>
+    </xf:if>
+</div>]]></template>
+  <template type="public" title="af_paidads_cart" version_id="1020072" version_string="1.2.0.2"><![CDATA[<xf:title>{{ phrase('af_paidads_cart') }}</xf:title>
+
+<xf:css src="af_paidads.less" />
+<xf:js src="addonflare/pa/simple.timer.js" addon="AddonFlare/PaidAds" min="1" />
+
+<xf:css>
+    .jst-timeout {
+      color: red;
+    }
+</xf:css>
+
+<xf:pageaction>
+    <xf:button href="{{ link('paid-ads') }}" class="button--primary" icon="purchase">{{ phrase('af_paidads_buy_ads') }}</xf:button>
+    <xf:button href="{{ link('paid-ads/manage') }}" icon="config">{{ phrase('af_paidads_manage_ads') }}</xf:button>
+</xf:pageaction>
+
+<xf:if is="$cartAds is not empty">
+    <xf:form id="cartForm" action="{{ link('purchase', $cart) }}" ajax="true" data-xf-init="payment-provider-container">
+        <div class="block-container">
+            <div class="block-body">
+                <xf:datalist data-xf-init="responsive-data-list">
+                    <colgroup>
+                        <col style="width: 1%">
+                        <col style="width: 15%">
+                        <col style="width: 15%">
+                        <col style="width: 15%">
+                        <col style="width: 10%">
+                        <col style="width: 1%">
+                        <col style="width: 1%">
+                        <col style="width: 1%">
+                    </colgroup>
+                    <thead>
+                    <xf:datarow rowtype="header">
+                        <xf:cell></xf:cell>
+                        <xf:cell>{{ phrase('af_paidads_location') }}</xf:cell>
+                        <xf:cell>{{ phrase('forum') }}</xf:cell>
+                        <xf:cell>
+                            {{ phrase('af_paidads_price_per_day') }}<br>
+                            ({{ phrase('af_paidads_forum') }} | {{ phrase('af_paidads_non_forum') }})
+                        </xf:cell>
+                        <xf:cell>
+                            {{ phrase('af_paidads_total_days') }}<br>
+                            ({{ phrase('af_paidads_forum') }} | {{ phrase('af_paidads_non_forum') }})
+                        </xf:cell>
+                        <xf:cell>{{ phrase('af_paidads_total_amount') }}</xf:cell>
+                        <xf:cell>{{ phrase('af_paidads_time_remaining') }}</xf:cell>
+                        <xf:cell>{{ phrase('remove') }}</xf:cell>
+                    </xf:datarow>
+                    </thead>
+                    <xf:set var="$counter" value="0" />
+                    <xf:foreach loop="$cartAds" key="$cart_ad_id" value="$cartAd">
+                        <xf:set var="$counter" value="{{ $counter + 1 }}" />
+                        <xf:set var="$location" value="{$cartAd.Location}" />
+                        <xf:set var="$pricesPerDay" value="{$cartAd.prices_per_day}" />
+                        <xf:set var="$isForumType" value="{{ in_array($cartAd.type, ['forum', 'both']) }}" />
+                        <xf:set var="$isNonForumType" value="{{ in_array($cartAd.type, ['non_forum', 'both']) }}" />
+                        <xf:datarow>
+                            <xf:cell>#{$counter|number}</xf:cell>
+                            <xf:cell>{$cartAd.Location.title}</xf:cell>
+                            <xf:cell>
+                                <xf:if is="$isForumType">
+                                    <a target="_blank" href="{{ link('forums', $cartAd.Forum) }}">{$cartAd.Forum.title}</a>
+                                <xf:else />
+                                    {{ phrase('af_paidads_non_forum') }}
+                                </xf:if>
+                            </xf:cell>
+                            <xf:cell>{{ $isForumType ? $location.getCostPhrase($pricesPerDay.forum) : phrase('n_a') }} / {{ $isNonForumType ? $location.getCostPhrase($pricesPerDay.non_forum) : phrase('n_a') }}</xf:cell>
+                            <xf:action href="{{ link('paid-ads/calendar', null, {'cart_ad_id': $cartAd.cart_ad_id}) }}" overlay="true" overlaycache="false">
+                                <xf:if is="$isForumType"><span id="js-cartad-totalDaysForum-{$cartAd.cart_ad_id}">{$cartAd.total_days_forum|number}</span><xf:else />{{ phrase('n_a') }}</xf:if> | <xf:if is="$isNonForumType"><span id="js-cartad-totalDaysNonForum-{$cartAd.cart_ad_id}">{$cartAd.total_days_non_forum|number}</span><xf:else />{{ phrase('n_a') }}</xf:if> {{ phrase('(edit)') }}
+                            </xf:action>
+                            <xf:cell><span id="js-cartad-totalAmount-{$cartAd.cart_ad_id}">{{ $location.getCostPhrase($cartAd.total_amount) }}</span></xf:cell>
+                            <xf:cell><span class="af-pa-timer" data-expire="{$cartAd.expire_time}"></span></xf:cell>
+                            <xf:action class="js-cartad-remove" href="{{ link('paid-ads/remove-from-cart', null, {'cart_ad_id': $cartAd.cart_ad_id}) }}">{{ phrase('remove') }}</xf:action>
+                        </xf:datarow>
+                    </xf:foreach>
+                </xf:datalist>
+            </div>
+            <xf:if is="$cart AND $cart.total_amount">
+                <xf:set var="$paymentProfileIds" value="{$xf.options.af_paidads_payment_profile_ids}" />
+                <dl class="formRow formSubmitRow formSubmitRow--simple">
+                    <dt></dt>
+                    <dd>
+                        <div class="formSubmitRow-main">
+                            <div class="formSubmitRow-bar"></div>
+                            <div class="formSubmitRow-controls">
+                                <xf:if is="{{ count($paymentProfileIds) > 1 }}">
+                                    <xf:select name="payment_profile_id" class="input--inline">
+                                        <xf:option>{{ phrase('(choose_payment_method)') }}</xf:option>
+                                        <xf:foreach loop="$paymentProfileIds" value="$profileId">
+											<xf:if is="{{ $profiles.{$profileId} }}">
+												<xf:option value="{$profileId}">
+													{{ $profiles.{$profileId}.display_title ?: $profiles.{$profileId}.title }}
+												</xf:option>
+											</xf:if>
+                                        </xf:foreach>
+                                    </xf:select>
+                                <xf:else />
+                                    <xf:hiddenval name="payment_profile_id">{$paymentProfileIds|first}</xf:hiddenval>
+                                </xf:if>
+                                <xf:button type="submit" class="button--primary" icon="purchase" id="js-cart-buyNow">{{ phrase('af_paidads_buy_now_x', {'price': $location.getCostPhrase($cart.total_amount)}) }}</xf:button>
+                            </div>
+                        </div>
+                    </dd>
+                </dl>
+            </xf:if>
+        </div>
+    </xf:form>
+    <div class="js-paymentProviderReply-user_upgrade{$upgrade.user_upgrade_id}"></div>
+<xf:else />
+    <div class="blockMessage">{{ phrase('no_items_to_display') }}</div>
+</xf:if>
+
+<xf:js>
+document.body.addEventListener('click', async e => {
+	if (e.target.matches('.js-cartad-remove')) {
+		e.preventDefault();
+
+		const link = button.querySelector('a').href;
+
+		if (!link)
+			return;
+
+		const {response, error} = await XF.ajax('get', link, {}, undefined, { cache: false, skipDefaultSuccess: true });
+
+		if (typeof error !== "undefined")
+			return;
+
+		if (response.ok) {
+			if (response.redirect) {
+				XF.redirect(response.redirect);
+			}
+
+			const row = button.closest('tr');
+
+			if (row) {
+				row.style.transition = "opacity 0.5s";
+				row.style.opacity = 0;
+				row.addEventListener('transitionend', () => row.remove());
+			}
+
+			if ('cart_total_amount' in response) {
+				document.querySelector('#js-cart-buyNow .button-text').textContent = response.cart_total_amount;
+			}
+		}
+	}
+});
+
+const timer = document.querySelector('#cartForm .af-pa-timer');
+
+if (timer) {
+	Timer.start(timer, {
+		onComplete: () => {
+			const button = timer.closest('tr').querySelector('.js-cartad-remove');
+
+			if (button)
+				button.click();
+		}
+	});
+}
+
+XF.phrases.af_paidads_cart_has_expired = "{{ phrase('af_paidads_cart_has_expired')|escape('js') }}";
+</xf:js>]]></template>
+  <template type="public" title="af_paidads_cart_purchase" version_id="1000070" version_string="1.0.0"><![CDATA[<xf:title>{{ phrase('thanks_for_your_purchase') }}</xf:title>
+
+<div class="blockMessage">{{ phrase('af_paidads_thank_you_for_your_ads_purchase', {'manage_ads_url': link('paid-ads/manage') }) }}</div>]]></template>
+  <template type="public" title="af_paidads_manage" version_id="1020073" version_string="1.2.0.3"><![CDATA[<xf:title>{{ phrase('af_paidads_manage_ads') }}</xf:title>
+
+<xf:css src="af_paidads.less" />
+<xf:css src="af_paidads_banner_preview.less" />
+<xf:js src="addonflare/pa/simple.timer.js" addon="AddonFlare/PaidAds" min="1" />
+
+<xf:pageaction>
+    <xf:button href="{{ link('paid-ads') }}" class="button--primary" icon="purchase">{{ phrase('af_paidads_buy_ads') }}</xf:button>
+    <xf:button href="{{ link('paid-ads/cart') }}" class="button--cta button button--icon button--icon--shopping-cart">
+        {{ phrase('af_paidads_cart') }} (<span id="js-adsCartCount">{{ $cart ? $cart.total_items : 0 }}</span>)
+    </xf:button>
+</xf:pageaction>
+
+<xf:if is="$ads is not empty">
+    <xf:form action="{{ link('paid-ads/manage/edit-multiple') }}" ajax="true">
+        <div class="block-container">
+            <div class="block-body">
+                <xf:datalist data-xf-init="responsive-data-list">
+                    <colgroup>
+                        <col style="width: 10%">
+                        <col style="width: 10%">
+                        <col style="width: 10%">
+                        <col style="width: 10%">
+                        <col style="width: 10%">
+                        <col style="width: 10%">
+                        <col style="width: 1%">
+                        <col style="width: 1%">
+                    </colgroup>
+                    <thead>
+                    <xf:datarow rowtype="header">
+                        <xf:cell>{{ phrase('af_paidads_purchase_date') }}</xf:cell>
+                        <xf:cell>{{ phrase('af_paidads_location') }}</xf:cell>
+                        <xf:cell>{{ phrase('af_paidads_forum') }}</xf:cell>
+                        <xf:cell>{{ phrase('af_paidads_non_forum') }}</xf:cell>
+                        <xf:cell>
+                            {{ phrase('af_paidads_price_per_day') }}<br>
+                            ({{ phrase('af_paidads_forum') }} | {{ phrase('af_paidads_non_forum') }})
+                        </xf:cell>
+                        <xf:cell>
+                            {{ phrase('af_paidads_days_remaining') }}<br>
+                            ({{ phrase('af_paidads_forum') }} | {{ phrase('af_paidads_non_forum') }})
+                        </xf:cell>
+                        <xf:cell>{{ phrase('af_paidads_banner_url') }}</xf:cell>
+                        <xf:cell></xf:cell>
+                        <xf:cell><xf:checkbox standalone="true"><xf:option check-all="< .block-container" data-xf-init="tooltip" title="{{ phrase('select_all')|for_attr }}" /></xf:checkbox></xf:cell>
+                    </xf:datarow>
+                    </thead>
+                    <xf:set var="$counter" value="0" />
+                    <xf:foreach loop="$ads" key="$ad_id" value="$ad">
+                        <xf:set var="$counter" value="{{ $counter + 1 }}" />
+                        <xf:set var="$location" value="{$ad.Location}" />
+                        <xf:set var="$pricesPerDay" value="{$ad.prices_per_day}" />
+                        <xf:set var="$isForumType" value="{{ in_array($ad.type, ['forum', 'both']) }}" />
+                        <xf:set var="$isNonForumType" value="{{ in_array($ad.type, ['non_forum', 'both']) }}" />
+                        <xf:datarow>
+                            <xf:cell>{{ date($ad.create_date) }}</xf:cell>
+                            <xf:cell>{$ad.Location.title}</xf:cell>
+                            <xf:cell>
+                                <xf:if is="$isForumType">
+                                    <a target="_blank" href="{{ link('forums', $ad.Forum) }}">{$ad.Forum.title}</a>
+                                <xf:else />
+                                    {{ phrase('n_a') }}
+                                </xf:if>
+                            </xf:cell>
+                            <xf:cell>
+                                <xf:if is="$isNonForumType">
+                                    {{ phrase('yes') }}
+                                <xf:else />
+                                    {{ phrase('no') }}
+                                </xf:if>
+                            </xf:cell>
+                            <xf:cell>{{ $isForumType ? $location.getCostPhrase($pricesPerDay.forum) : phrase('n_a') }} | {{ $isNonForumType ? $location.getCostPhrase($pricesPerDay.non_forum) : phrase('n_a') }}</xf:cell>
+                            <xf:if is="!$ad.url">
+                                <xf:action>{$ad.days_remaining_forum|number} | {$ad.days_remaining_non_forum|number} {{ phrase('(edit)') }}</xf:action>
+                                <xf:action href="{{ link('paid-ads/manage/edit', $ad) }}" overlay="true" overlaycache="false">{{ phrase('af_paidads_submit_banner_url') }}</xf:action>
+                            <xf:elseif is="$ad.status == 'pending'" />
+                                <xf:action>{$ad.days_remaining_forum|number} | {$ad.days_remaining_non_forum|number}</xf:action>
+                                <xf:action>{{ phrase('af_paidads_pending_approval') }}</xf:action>
+                            <xf:else />
+                                <xf:action href="{{ link('paid-ads/calendar', null, {'location_id': $ad.location_id, 'a_type': $ad.type, 'node_id': $ad.node_id, 'ad_id': $ad.ad_id}) }}" overlay="true" overlaycache="false">
+                                    {$ad.days_remaining_forum|number} | {$ad.days_remaining_non_forum|number} {{ phrase('(edit)') }}
+                                </xf:action>
+
+                                <xf:cell class="dataList-cell--action">
+                                    <a class="bannerPrev" href="{{ link('paid-ads/manage/edit', $ad) }}" data-xf-click="overlay" data-cache="false">{{ phrase('edit') }}<span><img src="{$ad.banner_url}" /></span></a>
+                                </xf:cell>
+                            </xf:if>
+
+                            <xf:cell>
+                                <xf:button href="{{ link('paid-ads/manage/stats', $ad) }}" overlay="true" data-cache="false"
+                                class="button--link">
+                                    <xf:fa icon="fa-chart-bar" />
+                                </xf:button>
+                            </xf:cell>
+
+                            <xf:toggle name="ad_ids[]" value="{$ad.ad_id}" disabled="{{ ($ad.url AND $ad.status == 'pending') ? true : false }}" />
+                        </xf:datarow>
+                    </xf:foreach>
+                </xf:datalist>
+            </div>
+
+            <div class="block-footer block-footer--split">
+                <span class="block-footer-counter">{{ display_totals($ads, $total) }}</span>
+                <span class="block-footer-select"><xf:checkbox standalone="true"><xf:option check-all="< .block-container" label="{{ phrase('select_all') }}" /></xf:checkbox></span>
+                <span class="block-footer-controls">
+                    <xf:button type="submit" icon="add">{{ phrase('af_paidads_mass_set_banner_url') }}</xf:button>
+                </span>
+            </div>
+        </div>
+        <xf:pagenav page="{$page}" perpage="{$perPage}" total="{$total}"
+            link="paid-ads/manage"
+            wrapperclass="js-filterHide block-outer block-outer--after" />
+    </xf:form>
+<xf:else />
+    <div class="blockMessage">{{ phrase('no_items_to_display') }}</div>
+</xf:if>
+
+<xf:css>
+    .bannerPrev:hover span {
+        right: 120px;
+    }
+</xf:css>]]></template>
+  <template type="public" title="alert_af_paidads_ad_approved" version_id="1000070" version_string="1.0.0"><![CDATA[{{ phrase('af_paidads_your_ad_has_been_approved_x', {'ad_link': '<a href="' . link('paid-ads/manage') . '" class="fauxBlockLink-blockLink">' . $content.title . '</a>'}) }}]]></template>
+  <template type="public" title="alert_af_paidads_ad_daysRemaining" version_id="1000070" version_string="1.0.0"><![CDATA[{{ phrase('af_paidads_your_ad_has_x_days_remaining', {'ad_link': '<a href="' . link('paid-ads/manage') . '" class="fauxBlockLink-blockLink">' . $content.title . '</a>', 'days': number($extra.days)}) }}]]></template>
+  <template type="public" title="alert_af_paidads_ad_expired" version_id="1000070" version_string="1.0.0"><![CDATA[{{ phrase('af_paidads_your_ad_has_expired_x', {'ad_link': '<a href="' . link('paid-ads/manage') . '" class="fauxBlockLink-blockLink">' . $content.title . '</a>'}) }}]]></template>
+  <template type="public" title="alert_af_paidads_ad_rejected" version_id="1000070" version_string="1.0.0"><![CDATA[{{ phrase('af_paidads_your_ad_has_been_rejected_x', {'ad_link': '<a href="' . link('paid-ads/manage') . '" class="fauxBlockLink-blockLink">' . $content.title . '</a>'}) }}]]></template>
+</templates>

@@ -1,0 +1,9 @@
+{
+    "template": "message_macros",
+    "description": "Receive Post Variable in Message Macro",
+    "execution_order": 10,
+    "enabled": true,
+    "action": "str_replace",
+    "find": "<xf:macro name=\"user_info\"",
+    "replace": "$0\narg-post=\"\"\n"
+}

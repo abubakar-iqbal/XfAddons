@@ -1,0 +1,14 @@
+{
+    "legacy_addon_id": "",
+    "title": "[AddonFlare] Paid Ads",
+    "description": "Allow users to easily purchase ads by location, placement, duration, etc.",
+    "version_id": 1020074,
+    "version_string": "1.2.0.4",
+    "dev": "AddonFlare",
+    "dev_url": "https://www.addonflare.com",
+    "faq_url": "https://www.addonflare.com",
+    "support_url": "https://www.addonflare.com",
+    "extra_urls": [],
+    "require": [],
+    "icon": "icon.png"
+}

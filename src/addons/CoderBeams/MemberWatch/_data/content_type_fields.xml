@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<content_type_fields>
+  <field content_type="cb_watch_alerts" field_name="alert_handler_class">CoderBeams\MemberWatch\Alert\MemberWatch</field>
+</content_type_fields>

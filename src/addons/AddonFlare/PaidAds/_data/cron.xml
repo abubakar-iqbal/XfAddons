@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cron>
+  <entry entry_id="afpaidadsCleanUpHourly" cron_class="AddonFlare\PaidAds\Cron\Cleanup" cron_method="runHourlyCleanUp" active="1"><![CDATA[{"day_type":"dom","dom":[-1],"hours":[-1],"minutes":[1]}]]></entry>
+</cron>

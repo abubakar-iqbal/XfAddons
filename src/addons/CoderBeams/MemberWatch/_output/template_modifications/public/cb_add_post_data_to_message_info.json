@@ -1,0 +1,9 @@
+{
+    "template": "post_macros",
+    "description": "Add post info to the message template",
+    "execution_order": 10,
+    "enabled": true,
+    "action": "str_replace",
+    "find": "/<xf:macro template=\"message_macros\" name=\"user_info\"(.*)\\/>/isU",
+    "replace": "<xf:macro template=\"message_macros\" name=\"user_info\" arg-user=\"{$post.User}\"\n\t\t\t\t\t\t\targ-fallbackName=\"{$post.username}\" arg-post=\"{$post}\"/>\n"
+}

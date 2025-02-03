@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template_modifications>
+  <modification type="public" template="member_macros" modification_key="cb_add_followers" description="Add followers tab in the member view section." execution_order="10" enabled="1" action="str_replace">
+    <find><![CDATA[	<!--[XF:stat_pairs:above_trophies]-->]]></find>
+    <replace><![CDATA[$0
+<xf:if is="$xf.options.cb_show_followers">
+<dl class="pairs pairs--rows pairs--rows--centered">
+		<dt>{{ phrase('followers') }}</dt>
+		<dd>
+			<a href="{{ link('members/watched', $user) }}">{$user.getFollower($user)|number}</a>
+		</dd>
+	</dl>
+</xf:if>
+
+<dl class="pairs pairs--rows pairs--rows--centered">
+		<dt>{{ phrase('cb_watched_to') }}</dt>
+		<dd>
+			<a href="{{ link('members/watchedto', $user) }}">{$user.getFollowing($user)|number}</a>
+		</dd>
+	</dl>]]></replace>
+  </modification>
+  <modification type="public" template="member_macros" modification_key="cb_add_member_watch_button" description="Add member watch button on member profile." execution_order="10" enabled="1" action="str_replace">
+    <find><![CDATA[<!--[XF:action_group_1:end]-->]]></find>
+    <replace><![CDATA[$0
+<xf:button  href="{{ link('members/watch', $user) }}"
+					class="button--link"
+					data-xf-click="overlay"
+					>
+					{{ $xf.visitor.isWatching($user) ? phrase('cb_unwatch') : phrase('cb_watch') }}
+				</xf:button>
+	]]></replace>
+  </modification>
+  <modification type="public" template="message_macros" modification_key="cb_recieve_post_variable_in_message_template" description="Receive Post Variable in Message Macro" execution_order="10" enabled="1" action="str_replace">
+    <find><![CDATA[<xf:macro name="user_info"]]></find>
+    <replace><![CDATA[$0
+arg-post=""
+]]></replace>
+  </modification>
+  <modification type="public" template="message_macros" modification_key="cb_show_followers_thread_view_page" description="Show Followers in thread view page." execution_order="10" enabled="1" action="preg_replace">
+    <find><![CDATA[/<h4 class="message-name(.*)\/>/isU]]></find>
+    <replace><![CDATA[$0	
+<xf:if is="$xf.reply.template=='thread_view'">
+<xf:if is="$post.post_id==$post.Thread.first_post_id && $user.user_id">
+						<xf:button style="margin: 6px;" href="{{ link('members/watch', $user) }}"
+					class="button--link {{ $xf.visitor.isWatching($user) ? 'cb_unwatch_btn' : 'cb_watch_btn' }}"
+					data-xf-click="overlay"
+					>
+					{{ $xf.visitor.isWatching($user) ? phrase('cb_unwatch') : phrase('cb_watch') }}
+				</xf:button>
+
+<xf:if is="$xf.options.cb_show_followers_on_thread_view && $user.getFollowerLimit()">
+						<dl class="pairs pairs--justified cb_tw_followers">
+							<dt class="cb_followers">{{ phrase('Follower') }}</dt>
+							<dd class="cb_total_followers">{{$user.getFollower()}}</dd>
+						</dl>
+					</xf:if>
+
+</xf:if>
+</xf:if>]]></replace>
+  </modification>
+  <modification type="public" template="post_macros" modification_key="cb_add_post_data_to_message_info" description="Add post info to the message template" execution_order="10" enabled="1" action="str_replace">
+    <find><![CDATA[/<xf:macro template="message_macros" name="user_info"(.*)\/>/isU]]></find>
+    <replace><![CDATA[<xf:macro template="message_macros" name="user_info" arg-user="{$post.User}"
+							arg-fallbackName="{$post.username}" arg-post="{$post}"/>
+]]></replace>
+  </modification>
+  <modification type="public" template="post_macros" modification_key="cb_add_watch_on_thread_view" description="Add watch member button on thread view page." execution_order="10" enabled="0" action="str_replace">
+    <find><![CDATA[<xf:macro template="message_macros" name="user_info" arg-user="{$post.User}"
+							arg-fallbackName="{$post.username}"/>]]></find>
+    <replace><![CDATA[$0		
+<xf:if is="$post.post_id==$thread.first_post_id">
+						<xf:button style="margin: 6px;" href="{{ link('members/watch', $post.User) }}"
+					class="button--link cb_tw_button"
+					data-xf-click="overlay"
+					>
+					{{ $xf.visitor.isWatching($post.User) ? phrase('cb_unwatch') : phrase('cb_watch') }}
+				</xf:button>
+						</xf:if>]]></replace>
+  </modification>
+</template_modifications>

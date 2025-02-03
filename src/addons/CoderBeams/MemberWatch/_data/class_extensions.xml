@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<class_extensions>
+  <extension from_class="XF\Alert\User" to_class="CoderBeams\MemberWatch\XF\Alert\User" execute_order="10" active="1"/>
+  <extension from_class="XF\Entity\User" to_class="CoderBeams\MemberWatch\XF\Entity\User" execute_order="10" active="1"/>
+  <extension from_class="XF\Pub\Controller\Member" to_class="CoderBeams\MemberWatch\XF\Pub\Controller\Member" execute_order="10" active="1"/>
+  <extension from_class="XF\Service\Thread\Creator" to_class="CoderBeams\MemberWatch\XF\Service\Thread\Creator" execute_order="10" active="1"/>
+  <extension from_class="XF\Service\Thread\Replier" to_class="CoderBeams\MemberWatch\XF\Service\Thread\Replier" execute_order="10" active="1"/>
+</class_extensions>

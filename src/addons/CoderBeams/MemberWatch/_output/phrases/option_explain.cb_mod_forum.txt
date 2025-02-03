@@ -1,0 +1,1 @@
+If selected, these forums creation and reply alerts will not sent to followers.
