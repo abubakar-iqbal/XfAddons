@@ -43,8 +43,11 @@ class Watch extends AbstractService
     {
         $this->silent = (bool)$silent;
     }
-    
 
+    /**
+     * @return \CoderBeams\MemberWatch:MemberWatch|\XF\Mvc\Entity\Entity|null
+     * @throws \XF\PrintableException
+     */
     public function watch()
     {
         $interestType= $this->app->request->filter('interest_type', 'str');
