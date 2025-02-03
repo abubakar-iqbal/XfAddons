@@ -81,6 +81,9 @@ class Watch extends AbstractService
         return $memberWatch;
     }
 
+    /**
+     * @return void
+     */
     protected function sendFollowingAlert()
     {
         if ($this->silent)
