@@ -1,12 +1,91 @@
-data/
-internal_data/
-js/swfupload/
-js/vendor/
-js/videojs/
-js/xf/*.min.js
-js/xf/*-compiled.js
-library/
+### XenForo 2.x .gitignore ###
+
+# Ignore everything
+/*
+
+# Do not ignore the following directories
+!/src/
+!/src/XF/
+!/src/addons/
+
+# Ignore sensitive config files
+/src/config.php
+/src/internal_data/config.php
+
+# Ignore internal data and cache directories
+/internal_data/
+/data/
+
+# Ignore logs
+/logs/
+
+# Ignore compiled templates and asset cache
+/src/cache/
+/js/internal-data/
+
+# Ignore backups
+/backups/
+
+# Ignore third-party libraries (if managed outside Git)
+/vendor/
+/src/vendor/
+
+# Ignore temporary files
+*.tmp
+*.log
+*.swp
+*.bak
+.DS_Store
+Thumbs.db
+
+# Ignore IDE/project files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Ignore node modules (if using frontend build tools)
+/node_modules/
+
+# Ignore environment files
+.env
+.env.*
+
+# Ignore package lock files (optional based on team preference)
+package-lock.json
+yarn.lock
+
+# Additional Files/Folders to Ignore
+.DS_Store
+.history/
+.idea/
+admin.php
+cmd.php
+connected_account.php
+css.php
+embed.php
+htaccess.txt
+index.php
+install/
+job.php
+js/
+oembed.php
+payment_callback.php
+proxy.php
+service_worker.js
+sitemap.php
+src/.DS_Store
+src/.htaccess
+src/XF.php
+src/XF/
+src/config.php
+src/config.php.default
+src/index.html
+src/styles/
+src/utf8.php
+src/vendor-patch/
 src/vendor/
-styles/fonts/fa/
-styles/fonts/videojs/
-index.html
+src/addons/index.html
+styles/
+unfurl.php
+webmanifest.php
