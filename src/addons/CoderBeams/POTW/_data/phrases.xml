@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<phrases>
+  <phrase title="cb_most_liked_posts_month" version_id="1" version_string="1.0.0"><![CDATA[Posts with more reaction score of {month}]]></phrase>
+  <phrase title="cb_most_liked_posts_week" version_id="5" version_string="1.0.5"><![CDATA[Week of]]></phrase>
+  <phrase title="cb_potw_generator_extra_post_ids" version_id="3" version_string="1.0.3"><![CDATA[Extra posts IDs]]></phrase>
+  <phrase title="cb_potw_index_title" version_id="5" version_string="1.0.5"><![CDATA[Posts of the Week]]></phrase>
+  <phrase title="cb_potw_newsletter_generator_date_limit_explain" version_id="3" version_string="1.0.3"><![CDATA[Fetch posts in X Weeks base on the reaction score.]]></phrase>
+  <phrase title="cb_potw_newsletter_generator_extra_thread_ids_explain" version_id="3" version_string="1.0.3"><![CDATA[Always include these posts in newsletter its inject to top of results. Each post ID should be separate by comma (,).]]></phrase>
+  <phrase title="cb_potw_style_expanded" version_id="1" version_string="1.0.0"><![CDATA[Expanded]]></phrase>
+  <phrase title="cb_potw_style_full" version_id="1" version_string="1.0.0"><![CDATA[Full]]></phrase>
+  <phrase title="cb_potw_style_simple" version_id="1" version_string="1.0.0"><![CDATA[Simple]]></phrase>
+  <phrase title="cb_potw_tl_alltime" version_id="1" version_string="1.0.0"><![CDATA[All time]]></phrase>
+  <phrase title="cb_potw_tl_month" version_id="1" version_string="1.0.0"><![CDATA[Month]]></phrase>
+  <phrase title="cb_potw_tl_today" version_id="1" version_string="1.0.0"><![CDATA[Today]]></phrase>
+  <phrase title="cb_potw_tl_week" version_id="1" version_string="1.0.0"><![CDATA[Week]]></phrase>
+  <phrase title="cb_potw_tl_year" version_id="1" version_string="1.0.0"><![CDATA[Year]]></phrase>
+  <phrase title="nav.cb_potw" version_id="1" version_string="1.0.0"><![CDATA[POTW]]></phrase>
+  <phrase title="option.cb_enable_potw_on_pub_nav" version_id="8" version_string="1.0.8"><![CDATA[Enable POTW On Public Navigation]]></phrase>
+  <phrase title="option.cb_limit_post_per_week" version_id="1" version_string="1.0.0"><![CDATA[Posts Per Week]]></phrase>
+  <phrase title="option.cb_posts_weeks" version_id="1" version_string="1.0.0"><![CDATA[Post Weeks]]></phrase>
+  <phrase title="option.cb_potw_applicable_forum" version_id="1" version_string="1.0.0"><![CDATA[Applicable Forum]]></phrase>
+  <phrase title="option.cb_potw_per_page" version_id="1" version_string="1.0.0"><![CDATA[Post Per Page]]></phrase>
+  <phrase title="option.cb_potw_reaction_limit" version_id="1" version_string="1.0.0"><![CDATA[Reaction Limit]]></phrase>
+  <phrase title="option.cb_time_lapse" version_id="1" version_string="1.0.0"><![CDATA[TimeLapse]]></phrase>
+  <phrase title="option_explain.cb_enable_potw_on_pub_nav" version_id="8" version_string="1.0.8"><![CDATA[If enabled, it will show on the public navigation.]]></phrase>
+  <phrase title="option_explain.cb_limit_post_per_week" version_id="1" version_string="1.0.0"><![CDATA[Number of post want to show in one week.]]></phrase>
+  <phrase title="option_explain.cb_posts_weeks" version_id="1" version_string="1.0.0"><![CDATA[Please enter the number of weeks you want to show their weeks.]]></phrase>
+  <phrase title="option_explain.cb_potw_applicable_forum" version_id="1" version_string="1.0.0"><![CDATA[Select the applicable forums. If select "None" all forum will be considered.]]></phrase>
+  <phrase title="option_explain.cb_potw_per_page" version_id="1" version_string="1.0.0"><![CDATA[Please enter the number you want to show on the homepage.]]></phrase>
+  <phrase title="option_explain.cb_potw_reaction_limit" version_id="1" version_string="1.0.0"><![CDATA[Please enter the minimum reaction limit of the POTW.]]></phrase>
+  <phrase title="option_explain.cb_time_lapse" version_id="1" version_string="1.0.0"><![CDATA[Select the timeLapse to show the more reaction post on the page.]]></phrase>
+  <phrase title="option_group.cb_potw" version_id="1" version_string="1.0.0"><![CDATA[Post of the week]]></phrase>
+  <phrase title="option_group_description.cb_potw" version_id="1" version_string="1.0.0"><![CDATA[All settings regarding POTW are listed here.]]></phrase>
+</phrases>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<options>
+  <option option_id="cb_enable_potw_on_pub_nav" edit_format="onoff" data_type="boolean" advanced="0">
+    <default_value>1</default_value>
+    <relation group_id="cb_potw" display_order="1"/>
+  </option>
+  <option option_id="cb_limit_post_per_week" edit_format="spinbox" data_type="integer" advanced="0">
+    <default_value>5</default_value>
+    <relation group_id="cb_potw" display_order="2"/>
+  </option>
+  <option option_id="cb_posts_weeks" edit_format="spinbox" data_type="integer" advanced="0">
+    <default_value>5</default_value>
+    <relation group_id="cb_potw" display_order="3"/>
+  </option>
+  <option option_id="cb_potw_applicable_forum" edit_format="callback" data_type="array" advanced="0">
+    <default_value>[]</default_value>
+    <edit_format_params>\XF\Option\Forum::renderSelectMultiple</edit_format_params>
+    <sub_options>*</sub_options>
+    <relation group_id="cb_potw" display_order="1"/>
+  </option>
+  <option option_id="cb_potw_per_page" edit_format="spinbox" data_type="integer" advanced="0">
+    <default_value>10</default_value>
+    <relation group_id="cb_potw" display_order="2"/>
+  </option>
+  <option option_id="cb_potw_reaction_limit" edit_format="spinbox" data_type="integer" advanced="0">
+    <default_value>1</default_value>
+    <relation group_id="cb_potw" display_order="1"/>
+  </option>
+  <option option_id="cb_time_lapse" edit_format="radio" data_type="string" advanced="0">
+    <default_value>week</default_value>
+    <edit_format_params>week = {{ phrase('cb_potw_tl_week') }}</edit_format_params>
+    <relation group_id="cb_potw" display_order="1"/>
+  </option>
+</options>

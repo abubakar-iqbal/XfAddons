@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation>
+  <navigation_entry navigation_id="cb_potw" display_order="600" navigation_type_id="basic" enabled="1"><![CDATA[{"link":"{{ link('potw') }}","display_condition":"$xf.options.cb_enable_potw_on_pub_nav","extra_attributes":[]}]]></navigation_entry>
+</navigation>

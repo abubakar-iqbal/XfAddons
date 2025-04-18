@@ -1,0 +1,14 @@
+{
+    "legacy_addon_id": "",
+    "title": "Post of the Week",
+    "description": "This addon is used to show the post of last X weeks.",
+    "version_id": 10,
+    "version_string": "1.0.1",
+    "dev": "CoderBeams",
+    "dev_url": "https://coderbeams.com/",
+    "faq_url": "https://coderbeams.com/",
+    "support_url": "https://coderbeams.com/",
+    "extra_urls": [],
+    "require": [],
+    "icon": "logo.png"
+}

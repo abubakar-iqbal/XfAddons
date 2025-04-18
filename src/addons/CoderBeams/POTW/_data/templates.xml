@@ -1,0 +1,594 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates>
+  <template type="admin" title="cb_potw_newsletter_item_edit" version_id="3" version_string="1.0.3"><![CDATA[<xf:title>{{ $item.exists() ? phrase('newsletter_generator_item_edit') : phrase('newsletter_generator_item_add') }}</xf:title>
+
+<xf:form action="{{ link($linkPrefix . '/save', $item) }}" class="block" ajax="true">
+    <div class="block-container">
+        <h2 class="block-tabHeader tabs hScroller" data-xf-init="tabs h-scroller" role="tablist">
+			<span class="hScroller-scroll">
+				<a class="tabs-tab is-active" role="tab" tabindex="0"
+                   aria-controls="basic-options">{{ phrase('newsletter_generator_basic_options') }}</a>
+                <a class="tabs-tab" role="tab" tabindex="0"
+                   aria-controls="sendy-integration">{{ phrase('newsletter_generator_sendy_integration') }}</a>
+                <a class="tabs-tab" role="tab" tabindex="0" aria-controls="cron-integration">
+                    {{ phrase('newsletter_generator_cron_integration') }}
+                </a>
+			</span>
+        </h2>
+
+        <ul class="tabPanes block-body">
+            <li class="is-active" role="tabpanel" id="basic-options">
+                <xf:textboxrow name="title" value="{$item.title}" maxlength="{{ max_length($item, 'title') }}"
+                               label="{{ phrase('title') }}" />
+
+                <xf:radiorow name="active" value="{$item.active}"
+                             label="{{ phrase('newsletter_generator_item_is_active') }}">
+                    <xf:option value="1">{{ phrase('yes') }}</xf:option>
+                    <xf:option value="0">{{ phrase('no') }}</xf:option>
+                </xf:radiorow>
+
+                <xf:if contentcheck="true">
+                    <hr class="formRowSep" />
+                    <xf:contentcheck>
+                        <xf:if is="$item.Handler">
+                            {$item.Handler.renderOptions()|raw}
+                        </xf:if>
+                    </xf:contentcheck>
+                    <hr class="formRowSep" />
+                </xf:if>
+
+                <xf:textarearow name="footer_html"
+                                label="{{ phrase('newsletter_generator_inject_footer_html') }}"
+                                rows="3" explain="{{ phrase('newsletter_generator_inject_footer_html_explain') }}"
+                                value="{$item.options.footer_html}" />
+                <hr class="formRowSep" />
+                <xf:textboxrow name="utm_id"
+                               label="{{ phrase('newsletter_generator_tracking_utm_id') }}"
+                               value="{$item.options.tracking.utm_id}" />
+                <xf:textboxrow name="utm_source"
+                               label="{{ phrase('newsletter_generator_tracking_utm_source') }}"
+                               value="{$item.options.tracking.utm_source}" />
+                <xf:textboxrow name="utm_medium"
+                               label="{{ phrase('newsletter_generator_tracking_utm_medium') }}"
+                               value="{$item.options.tracking.utm_medium}" />
+                <xf:textboxrow name="utm_campaign"
+                               label="{{ phrase('newsletter_generator_tracking_utm_campaign') }}"
+                               value="{$item.options.tracking.utm_campaign}" />
+            </li>
+            <li role="tab-panel" id="sendy-integration">
+                <xf:checkboxrow label="">
+                    <xf:option name="sendy_campaign[is_enabled]" value="1"
+                               selected="{$item.options.sendy.is_enabled}">{{ phrase('newsletter_generator_enable_sendy_campaign_integration') }}</xf:option>
+                </xf:checkboxrow>
+
+                <xf:textboxrow name="sendy_campaign[api_base_url]"
+                               label="{{ phrase('newsletter_generator_sendy_installation_url') }}"
+                                value="{$item.options.sendy.api_base_url}" />
+
+                <xf:textboxrow name="sendy_campaign[api_key]"
+                               label="{{ phrase('newsletter_generator_sendy_api_key') }}"
+                                value="{$item.options.sendy.api_key}" />
+
+                <xf:textboxrow name="sendy_campaign[from_name]"
+                               label="{{ phrase('newsletter_generator_sendy_from_name') }}"
+                                value="{$item.options.sendy.from_name}" />
+
+                <xf:textboxrow name="sendy_campaign[from_email]"
+                               label="{{ phrase('newsletter_generator_sendy_from_email') }}"
+                               value="{$item.options.sendy.from_email}" />
+
+                <xf:textboxrow name="sendy_campaign[reply_to]"
+                            label="{{ phrase('newsletter_generator_sendy_reply_to') }}"
+                            value="{$item.options.sendy.reply_to}" />
+
+                <xf:textboxrow name="sendy_campaign[title]"
+                               label="{{ phrase('newsletter_generator_sendy_title') }}"
+                               explain="{{ phrase('newsletter_generator_sendy_title_explain') }}"
+                                value="{$item.options.sendy.title}" />
+
+                <xf:textboxrow name="sendy_campaign[subject]"
+                               label="{{ phrase('newsletter_generator_sendy_subject') }}"
+                                value="{$item.options.sendy.subject}" />
+
+                <xf:textboxrow name="sendy_campaign[list_ids]"
+                               label="{{ phrase('newsletter_generator_sendy_list_ids') }}"
+                               explain="{{ phrase('newsletter_generator_ids_separator_comma') }}"
+                                value="{$item.options.sendy.list_ids}" />
+
+                <xf:textboxrow name="sendy_campaign[segment_ids]"
+                               label="{{ phrase('newsletter_generator_sendy_segment_ids') }}"
+                               explain="{{ phrase('newsletter_generator_ids_separator_comma') }}"
+                                value="{$item.options.sendy.segment_ids}" />
+
+                <xf:textboxrow name="sendy_campaign[exclude_list_ids]"
+                               label="{{ phrase('newsletter_generator_sendy_exclude_list_ids') }}"
+                               explain="{{ phrase('newsletter_generator_ids_separator_comma') }}"
+                                value="{$item.options.sendy.exclude_list_ids}" />
+
+                <xf:textboxrow name="sendy_campaign[exclude_segment_ids]"
+                               label="{{ phrase('newsletter_generator_sendy_exclude_segment_ids') }}"
+                               explain="{{ phrase('newsletter_generator_ids_separator_comma') }}"
+                                value="{$item.options.sendy.exclude_segment_ids}" />
+
+                <xf:textboxrow name="sendy_campaign[brand_id]"
+                            label="{{ phrase('newsletter_generator_sendy_brand_id') }}"
+                            value="{$item.options.sendy.brand_id}" />
+
+                <xf:checkboxrow label="">
+                    <xf:option name="sendy_campaign[send_campaign]"
+                               hint="{{ phrase('newsletter_generator_sendy_send_campaign_explain') }}"
+                               selected="{$item.options.sendy.send_campaign}"
+                               value="1">{{ phrase('newsletter_generator_sendy_send_campaign') }}</xf:option>
+                </xf:checkboxrow>
+                <xf:macro name="track" arg-name="track_opens" arg-value="{$item.options.sendy.track_opens}"
+                          arg-label="{{ phrase('newsletter_generator_sendy_track_opens') }}" />
+                <xf:macro name="track" arg-name="track_clicks" arg-value="{$item.options.sendy.track_clicks}"
+                          arg-label="{{ phrase('newsletter_generator_sendy_track_clicks') }}" />
+            </li>
+            <li role="tab-panel" id="cron-integration">
+                <xf:macro name="cron" arg-rules="{$item.options.cron_run_rules}" />
+            </li>
+        </ul>
+
+        <xf:submitrow icon="save" sticky="true" />
+    </div>
+
+    <xf:if is="!$item.item_id">
+        <xf:hiddenval name="handler_class">{$item.handler_class}</xf:hiddenval>
+    </xf:if>
+</xf:form>
+
+<xf:macro name="track" arg-name="!" arg-value="!" arg-label="!">
+    <xf:radiorow label="{$label}" name="sendy_campaign[{$name}]" value="{$value}">
+        <xf:option value="0">{{ phrase('newsletter_generator_track_disable') }}</xf:option>
+        <xf:option value="1">{{ phrase('newsletter_generator_track_enable') }}</xf:option>
+        <xf:option value="2">{{ phrase('newsletter_generator_track_anonymous_tracking') }}</xf:option>
+    </xf:radiorow>
+</xf:macro>
+
+<xf:macro name="cron" arg-rules="!">
+    <xf:radiorow name="run_rules[day_type]" value="{$rules.day_type}"
+                 label="{{ phrase('run_on_type_of_day') }}">
+
+        <xf:option value="dom" label="{{ phrase('day_of_month:') }}">
+            <xf:select name="run_rules[dom]"
+                       value="{$rules.dom|raw}"
+                       multiple="true" size="8" style="width: 200px">
+
+                <xf:option value="-1">{{ phrase('any') }}</xf:option>
+                <xf:option value="1">1</xf:option>
+                <xf:option value="2">2</xf:option>
+                <xf:option value="3">3</xf:option>
+                <xf:option value="4">4</xf:option>
+                <xf:option value="5">5</xf:option>
+                <xf:option value="6">6</xf:option>
+                <xf:option value="7">7</xf:option>
+                <xf:option value="8">8</xf:option>
+                <xf:option value="9">9</xf:option>
+                <xf:option value="10">10</xf:option>
+                <xf:option value="11">11</xf:option>
+                <xf:option value="12">12</xf:option>
+                <xf:option value="13">13</xf:option>
+                <xf:option value="14">14</xf:option>
+                <xf:option value="15">15</xf:option>
+                <xf:option value="16">16</xf:option>
+                <xf:option value="17">17</xf:option>
+                <xf:option value="18">18</xf:option>
+                <xf:option value="19">19</xf:option>
+                <xf:option value="20">20</xf:option>
+                <xf:option value="21">21</xf:option>
+                <xf:option value="22">22</xf:option>
+                <xf:option value="23">23</xf:option>
+                <xf:option value="24">24</xf:option>
+                <xf:option value="25">25</xf:option>
+                <xf:option value="26">26</xf:option>
+                <xf:option value="27">27</xf:option>
+                <xf:option value="28">28</xf:option>
+                <xf:option value="29">29</xf:option>
+                <xf:option value="30">30</xf:option>
+                <xf:option value="31">31</xf:option>
+            </xf:select>
+        </xf:option>
+        <xf:option value="dow" label="{{ phrase('day_of_week:') }}">
+            <xf:select name="run_rules[dow]"
+                       value="{$rules.dow|raw}"
+                       multiple="true" size="8" style="width: 200px">
+
+                <xf:option value="-1">{{ phrase('any') }}</xf:option>
+                <xf:option value="0">{{ phrase('day_sunday') }}</xf:option>
+                <xf:option value="1">{{ phrase('day_monday') }}</xf:option>
+                <xf:option value="2">{{ phrase('day_tuesday') }}</xf:option>
+                <xf:option value="3">{{ phrase('day_wednesday') }}</xf:option>
+                <xf:option value="4">{{ phrase('day_thursday') }}</xf:option>
+                <xf:option value="5">{{ phrase('day_friday') }}</xf:option>
+                <xf:option value="6">{{ phrase('day_saturday') }}</xf:option>
+            </xf:select>
+        </xf:option>
+    </xf:radiorow>
+
+    <xf:selectrow name="run_rules[hours]"
+                  value="{$rules.hours|raw}"
+                  multiple="true" size="8" style="width: 200px"
+                  label="{{ phrase('run_at_hours') }}">
+
+        <xf:option value="-1">{{ phrase('any') }}</xf:option>
+        <xf:option value="0">0 {{ phrase('(midnight)') }}</xf:option>
+        <xf:option value="1">1</xf:option>
+        <xf:option value="2">2</xf:option>
+        <xf:option value="3">3</xf:option>
+        <xf:option value="4">4</xf:option>
+        <xf:option value="5">5</xf:option>
+        <xf:option value="6">6</xf:option>
+        <xf:option value="7">7</xf:option>
+        <xf:option value="8">8</xf:option>
+        <xf:option value="9">9</xf:option>
+        <xf:option value="10">10</xf:option>
+        <xf:option value="11">11</xf:option>
+        <xf:option value="12">12 {{ phrase('(noon)') }}</xf:option>
+        <xf:option value="13">13</xf:option>
+        <xf:option value="14">14</xf:option>
+        <xf:option value="15">15</xf:option>
+        <xf:option value="16">16</xf:option>
+        <xf:option value="17">17</xf:option>
+        <xf:option value="18">18</xf:option>
+        <xf:option value="19">19</xf:option>
+        <xf:option value="20">20</xf:option>
+        <xf:option value="21">21</xf:option>
+        <xf:option value="22">22</xf:option>
+        <xf:option value="23">23</xf:option>
+
+        <xf:explain>{{ phrase('run_times_based_on_utc_time_zone') }}</xf:explain>
+    </xf:selectrow>
+
+    <xf:selectrow name="run_rules[minutes]"
+                  value="{$rules.minutes|raw}"
+                  multiple="true" size="8" style="width: 200px"
+                  label="{{ phrase('run_at_minutes') }}">
+
+        <xf:option value="-1">{{ phrase('any') }}</xf:option>
+        <xf:option value="0">0</xf:option>
+        <xf:option value="1">1</xf:option>
+        <xf:option value="2">2</xf:option>
+        <xf:option value="3">3</xf:option>
+        <xf:option value="4">4</xf:option>
+        <xf:option value="5">5</xf:option>
+        <xf:option value="6">6</xf:option>
+        <xf:option value="7">7</xf:option>
+        <xf:option value="8">8</xf:option>
+        <xf:option value="9">9</xf:option>
+        <xf:option value="10">10</xf:option>
+        <xf:option value="11">11</xf:option>
+        <xf:option value="12">12</xf:option>
+        <xf:option value="13">13</xf:option>
+        <xf:option value="14">14</xf:option>
+        <xf:option value="15">15</xf:option>
+        <xf:option value="16">16</xf:option>
+        <xf:option value="17">17</xf:option>
+        <xf:option value="18">18</xf:option>
+        <xf:option value="19">19</xf:option>
+        <xf:option value="20">20</xf:option>
+        <xf:option value="21">21</xf:option>
+        <xf:option value="22">22</xf:option>
+        <xf:option value="23">23</xf:option>
+        <xf:option value="24">24</xf:option>
+        <xf:option value="25">25</xf:option>
+        <xf:option value="26">26</xf:option>
+        <xf:option value="27">27</xf:option>
+        <xf:option value="28">28</xf:option>
+        <xf:option value="29">29</xf:option>
+        <xf:option value="30">30</xf:option>
+        <xf:option value="31">31</xf:option>
+        <xf:option value="32">32</xf:option>
+        <xf:option value="33">33</xf:option>
+        <xf:option value="34">34</xf:option>
+        <xf:option value="35">35</xf:option>
+        <xf:option value="36">36</xf:option>
+        <xf:option value="37">37</xf:option>
+        <xf:option value="38">38</xf:option>
+        <xf:option value="39">39</xf:option>
+        <xf:option value="40">40</xf:option>
+        <xf:option value="41">41</xf:option>
+        <xf:option value="42">42</xf:option>
+        <xf:option value="43">43</xf:option>
+        <xf:option value="44">44</xf:option>
+        <xf:option value="45">45</xf:option>
+        <xf:option value="46">46</xf:option>
+        <xf:option value="47">47</xf:option>
+        <xf:option value="48">48</xf:option>
+        <xf:option value="49">49</xf:option>
+        <xf:option value="50">50</xf:option>
+        <xf:option value="51">51</xf:option>
+        <xf:option value="52">52</xf:option>
+        <xf:option value="53">53</xf:option>
+        <xf:option value="54">54</xf:option>
+        <xf:option value="55">55</xf:option>
+        <xf:option value="56">56</xf:option>
+        <xf:option value="57">57</xf:option>
+        <xf:option value="58">58</xf:option>
+        <xf:option value="59">59</xf:option>
+    </xf:selectrow>
+
+    <xf:checkboxrow label="">
+        <xf:option name="run_rules[enabled]" value="1"
+                   selected="{$rules.enabled}">{{ phrase('newsletter_generator_allow_run_automatically_when_scheduled') }}</xf:option>
+    </xf:checkboxrow>
+</xf:macro>]]></template>
+  <template type="admin" title="cb_potw_newsletter_item_options_thread" version_id="3" version_string="1.0.3"><![CDATA[<xf:numberboxrow name="options[limit]" value="{$options.limit}" min="1"
+                 label="{{ phrase('maximum_entries') }}" />
+
+<xf:selectrow name="options[node_ids][]" value="{{ $options.node_ids ?: '' }}" multiple="multiple" size="7"
+              label="{{ phrase('forum_limit') }}"
+              explain="{{ phrase('only_include_threads_in_selected_forums') }}">
+
+    <xf:option value="">{{ phrase('all_forums') }}</xf:option>
+    <xf:foreach loop="$nodeTree.getFlattened(0)" value="$treeEntry">
+        <xf:option value="{$treeEntry.record.node_id}" disabled="{{ $treeEntry.record.node_type_id != 'Forum' }}">
+            {{ repeat('&nbsp;&nbsp;', $treeEntry.depth)|raw }} {$treeEntry.record.title}
+        </xf:option>
+    </xf:foreach>
+</xf:selectrow>
+
+<xf:checkboxrow label="{{ phrase('only_include_posts_with') }}..." rowtype="noColon">
+
+    <xf:option label="{{ phrase('reaction_score_at_least_x') }}" selected="$options.min_reaction_score !== null">
+        <xf:numberbox name="options[min_reaction_score]" value="{{ $options.min_reaction_score ?: 0 }}" />
+    </xf:option>
+
+</xf:checkboxrow>
+
+<hr class="formRowSep" />
+
+<xf:textboxrow name="options[extra_post_ids]" value="{$options.extra_post_ids}"
+               explain="{{ phrase('cb_potw_newsletter_generator_extra_thread_ids_explain') }}"
+               label="{{ phrase('cb_potw_generator_extra_post_ids') }}" />
+
+
+<xf:numberboxrow name="options[date_limit]" value="{$options.date_limit}" min="0"
+                 units="{{ phrase('units_weeks') }}"
+                 explain="{{ phrase('cb_potw_newsletter_generator_date_limit_explain') }}"
+                 label="{{ phrase('newsletter_generator_date_limit') }}" />
+
+<xf:textarearow name="options[hooks][before_threads]"
+                label="{{ phrase('newsletter_generator_inject_html_before_threads') }}"
+                rows="3" explain="{{ phrase('you_may_use_html') }}"
+                value="{$options.hooks.before_threads}" />
+<xf:textarearow name="options[hooks][below_threads]"
+                label="{{ phrase('newsletter_generator_inject_html_below_threads') }}"
+                rows="3" explain="{{ phrase('you_may_use_html') }}"
+                value="{$options.hooks.below_threads}" />
+
+<xf:checkboxrow label="">
+    <xf:option name="options[first_thread_as_newsletter_title]"
+               selected="{$options.first_thread_as_newsletter_title}"
+               value="1">{{ phrase('newsletter_generator_use_first_thread_title_as_newsletter_title') }}</xf:option>
+    <xf:option name="options[first_thread_as_newsletter_subject]"
+               selected="{$options.first_thread_as_newsletter_subject}"
+               value="1">{{ phrase('newsletter_generator_use_first_thread_title_as_newsletter_subject') }}</xf:option>
+</xf:checkboxrow>]]></template>
+  <template type="email" title="cb_potw_newsletter_generator_item_posts" version_id="5" version_string="1.0.5"><![CDATA[<xf:if is="$posts is not empty">
+    <xf:macro template="activity_summary_macros" name="outer_header"
+              arg-title="{$title}" />
+
+    <!-- HOOK:BEFORE_THREADS -->
+    <xf:foreach loop="$posts" value="$post">
+        <xf:set var="$header">
+		<a href="{{ link('canonical:posts', $post,$trackingParams ) }}">{$post.Thread.title}</a>
+        </xf:set>
+        <xf:set var="$attribution">
+   
+                {$post.username} &middot; {{ date_time($post.post_date) }} &middot; {{ phrase('replies:') }} {$post.Thread.reply_count|number_short}
+        </xf:set>
+        <xf:set var="$footer">
+            {{ phrase('forum:') }} <a href="{{ link('canonical:forums', $post.Thread.Forum, $trackingParams) }}">{$post.Thread.Forum.title}</a>
+        </xf:set>
+        <xf:set var="$footerOpposite">
+            <a href="{{ link('canonical:posts', $post,$trackingParams ) }}" class="button button--link">{{ phrase('read_more') }}</a>
+        </xf:set>
+        <xf:set var="$content">
+                {{ bb_code_type_snippet('emailHtml', $post.message, 'post', $thread.FirstPost, 0) }}
+        </xf:set>
+
+        <xf:macro template="activity_summary_macros" name="block"
+                  arg-header="{$header}"
+                  arg-attribution="{$attribution}"
+                  arg-content="{$content}"
+                  arg-footer="{$footer}"
+                  arg-footerOpposite="{$footerOpposite}" />
+    </xf:foreach>
+    <!-- HOOK:BELOW_THREADS -->
+</xf:if>]]></template>
+  <template type="public" title="cb_potw_index" version_id="5" version_string="1.0.5"><![CDATA[<xf:title>{{phrase('cb_potw_index_title')}}</xf:title>
+<xf:if is="$allPosts is not empty">
+			<xf:css src="message.less" />
+
+		<div class="blocks">
+		<xf:foreach loop="$allPosts" value="$post">
+			<xf:foreach loop="$weekendArray" key="$key"value="$week">
+				<xf:if is="$post.post_id==$week">
+				<h3 class="block-header" style="margin-bottom:5px;">{{ phrase('cb_most_liked_posts_week')}} {{date($key)}}</h3>
+				</xf:if>
+			</xf:foreach>
+<div class="block">
+				<div class="block-container recent_news"
+					data-xf-init="lightbox">
+
+					<h4 class="block-header">
+						<a href="{{ link('threads/post', $post.Thread, {'post_id': $post.post_id}) }}">{$post.Thread.title}</a>
+					</h4>
+					<div class="block-body">
+						<div class="message message--post">
+							<div class="message-inner">
+								<div class="message-cell message-cell--main">
+									<div class="message-content js-messageContent">
+										<header class="message-attribution">
+											<ul class="listInline listInline--bullet u-muted">
+												<xf:avatar user="$post.User" size="xxs" defaultname="{$post.username}" />
+												<li><xf:username user="{$post.User}" rich="true" /></li>
+												<li><xf:date time="{$post.post_date}" /></li>
+												<li><a href="{{ link('forums', $post.Thread.Forum) }}">{$post.Thread.Forum.title}</a></li>
+											</ul>
+										</header>
+										<div class="message-userContent lbContainer js-lbContainer"
+											data-lb-id="post-{$post.post_id}"
+											data-lb-caption-desc="{{ $post.User ? $post.User.username : $post.username }} &middot; {{ date_time($post.post_date) }}">
+
+											<article class="message-body">
+												<xf:if is="$options.limit_char > 0">
+													<xf:set var="$snippetPost" value="{{ snippet($post.message, {$options.limit_char}) }}" />
+												    {{ bb_code($snippetPost, 'post', $post) }}
+													<div><a href="{{ link('threads/post', $post.Thread, {'post_id': $post.post_id}) }}">{{ phrase('continue_reading') }}</a></div>
+												<xf:else />
+												    {{ bb_code($post.message, 'post', $post) }}
+												</xf:if>
+												<footer class="message-footer">
+													<div class="reactionsBar js-reactionsList {{ $post.reactions ? 'is-active' : '' }}">
+														<xf:reactions content="{$post}" link="posts/reactions" />
+													</div>
+												</footer>
+											</article>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</xf:foreach>
+			<xf:pagenav page="{$page}" perpage="{$perPage}" total="{$total}"
+		link="potw"
+		wrapperclass="block-outer block-outer--after" />
+	</div>
+	<xf:else/>
+{{ phrase('there_no_posts_matching_your_filters') }}
+</xf:if>]]></template>
+  <template type="public" title="cb_widget_posts_list" version_id="1" version_string="1.0.0"><![CDATA[<div class="contentRow">
+	<div class="contentRow-figure">
+		<xf:avatar user="$post.User" size="xxs" defaultname="{$post.username}" />
+	</div>
+	<div class="contentRow-main contentRow-main--close">
+			<a href="{{ link('threads/post', $post.Thread, {'post_id': $post.post_id}) }}">{{ prefix('thread', $post.Thread) }}{$post.Thread.title}</a>
+		<xf:if is="!$minimal">
+			<div class="contentRow-minor contentRow-minor--hideLinks">
+				<ul class="listInline listInline--bullet">
+					<li>{{ phrase('by_user_x', {'name': $post.username}) }}</li>
+					<li><xf:date time="{$post.post_date}" /></li>
+					<li>{{ phrase('reaction_score') }} {$post.reaction_score|number}</li>
+				</ul>
+			</div>
+			<div class="contentRow-minor contentRow-minor--hideLinks">
+				<a href="{{ link('forums', $post.Thread.Forum) }}">{$post.Thread.Forum.title}</a>
+			</div>
+		</xf:if>
+	</div>
+</div>]]></template>
+  <template type="public" title="cb_widget_posts_list_full" version_id="1" version_string="1.0.0"><![CDATA[<xf:css src="structured_list.less" />
+
+<div class="structItem structItem--thread{{ $post.Thread.prefix_id ? ' is-prefix' . $post.Thread.prefix_id : '' }}{{ $post.Thread.isIgnored() ? ' is-ignored' : '' }}{{ ($post.Thread.isUnread() AND !$forceRead) ? ' is-unread' : '' }}{{ $post.Thread.discussion_state == 'moderated' ? ' is-moderated' : '' }}{{ $post.Thread.discussion_state == 'deleted' ? ' is-deleted' : '' }} js-inlineModContainer js-threadListItem-{$post.Thread.thread_id}" data-author="{{ $post.Thread.User.username ?: $post.Thread.username }}">
+	<div class="structItem-cell structItem-cell--icon">
+		<div class="structItem-iconContainer">
+			<xf:avatar user="$post.Thread.User" size="s" defaultname="{$post.Thread.username}" />
+			<xf:if is="$post.Thread.getUserPostCount()">
+				<xf:avatar user="$xf.visitor" size="s"
+					href=""
+					class="avatar--separated structItem-secondaryIcon"
+					title="{{ phrase('you_have_posted_x_messages_in_this_thread', {'count': $post.Thread.getUserPostCount() }) }}" />
+			</xf:if>
+		</div>
+	</div>
+	<div class="structItem-cell structItem-cell--main" data-xf-init="touch-proxy">
+		<xf:if contentcheck="true">
+			<ul class="structItem-statuses">
+			<xf:contentcheck>
+				<xf:if is="$post.Thread.sticky">
+					<li>
+						<i class="structItem-status structItem-status--sticky" aria-hidden="true" title="{{ phrase('sticky') }}"></i>
+						<span class="u-srOnly">{{ phrase('sticky') }}</span>
+					</li>
+				</xf:if>
+				<xf:if is="!$post.Thread.discussion_open">
+					<li>
+						<i class="structItem-status structItem-status--locked" aria-hidden="true" title="{{ phrase('locked') }}"></i>
+						<span class="u-srOnly">{{ phrase('locked') }}</span>
+					</li>
+				</xf:if>
+				<xf:if is="$post.Thread.discussion_type == 'poll'" >
+					<li>
+						<i class="structItem-status structItem-status--poll" aria-hidden="true" title="{{ phrase('poll') }}"></i>
+						<span class="u-srOnly">{{ phrase('poll') }}</span>
+					</li>
+				</xf:if>
+				<xf:if is="{$showWatched} AND {$xf.visitor.user_id}">
+					<xf:if is="{$post.Thread.Watch.{$xf.visitor.user_id}}">
+						<li>
+							<i class="structItem-status structItem-status--watched" aria-hidden="true" title="{{ phrase('thread_watched') }}"></i>
+							<span class="u-srOnly">{{ phrase('thread_watched') }}</span>
+						</li>
+					<xf:elseif is="!$post.Thread.Forum AND {$post.Thread.Forum.Watch.{$xf.visitor.user_id}}" />
+						<li>
+							<i class="structItem-status structItem-status--watched" aria-hidden="true" title="{{ phrase('forum_watched') }}"></i>
+							<span class="u-srOnly">{{ phrase('forum_watched') }}</span>
+						</li>
+					</xf:if>
+				</xf:if>
+			</xf:contentcheck>
+			</ul>
+		</xf:if>
+
+		<div class="structItem-title">
+			<xf:set var="$canPreview" value="{{ false }}" />
+			<xf:if is="$post.Thread.prefix_id">
+				<xf:if is="$post.Thread.Forum">
+					<a href="{{ link('forums', $post.Thread.Forum, {'prefix_id': $post.Thread.prefix_id}) }}" class="labelLink">{{ prefix('thread', $post.Thread, 'html', '') }} </a>
+				<xf:else />
+					{{ prefix('thread', $post.Thread, 'html', '') }}
+				</xf:if>
+			</xf:if>
+			<a href="{{ link('threads/post', $post.Thread, {'post_id': $post.post_id}) }}" >{$post.Thread.title}ds </a>
+		</div>
+	<div class="structItem-minor">
+		<ul class="structItem-parts">
+			<li><xf:username user="$post.Thread.User" defaultname="{$post.Thread.username}" /></li>
+			<li class="structItem-startDate"><a href="{{ link('threads', $post.Thread) }}" rel="nofollow"><xf:date time="{$post.Thread.post_date}" /></a></li>
+			<xf:if is="!$forum">
+				<li><a href="{{ link('forums', $post.Thread.Forum) }}">{$post.Thread.Forum.title}</a></li>
+			</xf:if>
+		</ul>
+		<xf:if is="$post.Thread.discussion_type != 'redirect' && $post.Thread.reply_count >= $xf.options.messagesPerPage && $xf.options.lastPageLinks">
+			<span class="structItem-pageJump">
+			<xf:foreach loop="{{ last_pages($post.Thread.reply_count + 1, $xf.options.messagesPerPage, $xf.options.lastPageLinks) }}" value="$p">
+				<a href="{{ link('threads', $post.Thread, {'page': $p}) }}">{$p}</a>
+			</xf:foreach>
+			</span>
+		</xf:if>
+	</div>
+	</div>
+	<div class="structItem-cell structItem-cell--meta">
+		<dl class="pairs pairs--justified">
+			<dt>{{ phrase('reaction_score') }}</dt>
+			<dd>{$post.reaction_score|number}</dd>
+		</dl>
+		<dl class="pairs pairs--justified structItem-minor">
+			<dt>{{ phrase('views') }}</dt>
+			<dd>{{ $post.Thread.discussion_type == 'redirect' ? '&ndash;' : ($post.Thread.view_count > $post.Thread.reply_count ? $post.Thread.view_count|number_short : number_short($post.Thread.reply_count+1)) }}</dd>
+		</dl>
+	</div>
+	<div class="structItem-cell structItem-cell--latest">
+		<xf:if is="$post.Thread.discussion_type == 'redirect'">
+			{{ phrase('n_a') }}
+		<xf:else />
+			<a href="{{ link('threads/post', $post.Thread, {'post_id': $post.post_id}) }}" rel="nofollow"><xf:date time="{$post.post_date}" class="structItem-latestDate" /></a>
+			<div class="structItem-minor">{$post.username}</div>
+		</xf:if>
+	</div>
+	<div class="structItem-cell structItem-cell--icon structItem-cell--iconEnd">
+		<div class="structItem-iconContainer">
+			<xf:if is="$xf.visitor.isIgnoring($post.User.user_id) OR $post.Thread.discussion_type == 'redirect'">
+				<xf:avatar user="{{ null }}" size="xxs" />
+			<xf:else />
+				<xf:avatar user="{$post.User}" size="xxs" />
+			</xf:if>
+		</div>
+	</div>
+</div>]]></template>
+</templates>
