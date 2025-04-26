@@ -1,0 +1,1 @@
+If selected, the images of the post will hide from the post.

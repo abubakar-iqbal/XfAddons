@@ -1,0 +1,1 @@
+Entered the number of words will be shown by default.

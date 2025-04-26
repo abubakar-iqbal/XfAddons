@@ -1,0 +1,86 @@
+<xf:title>{{ phrase('cb_potw_index_title') }}</xf:title>
+
+<xf:if is="$xf.options.cb_potw_hide_images_on_potw_page">
+    <xf:css src="cb_potw_hide_img.less"/>
+</xf:if>
+
+<xf:if is="$allPosts is not empty">
+    <xf:css src="message.less" />
+
+    <div class="blocks">
+        <xf:foreach loop="$weekendArray" key="$weekKey" value="$postIds">
+            <h2 class=" block-header block-formSectionHeader">
+                <span class="collapseTrigger collapseTrigger--block is-active"
+                      data-xf-click="toggle"
+                      data-target="< :up :next">
+                    <span>{{ phrase('cb_most_liked_posts_week') }} {{ date($weekKey) }}</span>
+                </span>
+            </h2>
+
+            <div class="block-body block-body--collapsible is-active">
+                <xf:foreach loop="$allPosts" value="$post">
+                    <xf:if is="{{ in_array($post.post_id, $postIds) }}">
+                        <div class="block-container recent_news" data-xf-init="lightbox">
+                            <h4 class="block-header">
+                                <a href="{{ link('threads/post', $post.Thread, {'post_id': $post.post_id}) }}">
+                                    {$post.Thread.title}
+                                </a>
+                            </h4>
+
+                            <div class="block-body">
+                                <div class="message message--post">
+                                    <div class="message-inner">
+                                        <div class="message-cell message-cell--main">
+                                            <div class="message-content js-messageContent">
+                                                <header class="message-attribution">
+                                                    <ul class="listInline listInline--bullet u-muted">
+                                                        <xf:avatar user="$post.User" size="xxs" defaultname="{$post.username}" />
+                                                        <li><xf:username user="{$post.User}" rich="true" /></li>
+                                                        <li><xf:date time="{$post.post_date}" /></li>
+                                                        <li><a href="{{ link('forums', $post.Thread.Forum) }}">{$post.Thread.Forum.title}</a></li>
+                                                    </ul>
+                                                </header>
+
+                                                <div class="message-userContent lbContainer js-lbContainer"
+                                                    data-lb-id="post-{$post.post_id}"
+                                                    data-lb-caption-desc="{{ $post.User ? $post.User.username : $post.username }} &middot; {{ date_time($post.post_date) }}">
+                                                    
+                                                    <article class="message-body">
+                                                        <xf:if is="$xf.options.cb_potw_limit_char > 0">
+                                                            <xf:set var="$snippetPost" value="{{ snippet($post.message, $xf.options.cb_potw_limit_char) }}" />
+                                                            {{ bb_code($snippetPost, 'post', $post) }}
+                                                            <div>
+                                                                <a href="{{ link('threads/post', $post.Thread, {'post_id': $post.post_id}) }}">
+                                                                    {{ phrase('continue_reading') }}
+                                                                </a>
+                                                            </div>
+                                                        <xf:else />
+                                                            {{ bb_code($post.message, 'post', $post) }}
+                                                        </xf:if>
+
+                                                        <footer class="message-footer">
+                                                            <div class="reactionsBar js-reactionsList {{ $post.reactions ? 'is-active' : '' }}">
+                                                                <xf:reactions content="{$post}" link="posts/reactions" />
+                                                            </div>
+                                                        </footer>
+                                                    </article>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </xf:if>
+                </xf:foreach>
+            </div>
+        </xf:foreach>
+
+        <xf:pagenav page="{$page}" perpage="{$perPage}" total="{$total}"
+            link="potw"
+            wrapperclass="block-outer block-outer--after" />
+    </div>
+
+<xf:else />
+    {{ phrase('there_no_posts_matching_your_filters') }}
+</xf:if>

@@ -1,0 +1,26 @@
+{
+    "option.cb_potw_hide_images_on_potw_page.txt": {
+        "global_cache": false,
+        "version_id": 10,
+        "version_string": "1.0.1",
+        "hash": "393bce775e855d1bd412cf9f83139272"
+    },
+    "option.cb_potw_limit_char.txt": {
+        "global_cache": false,
+        "version_id": 10,
+        "version_string": "1.0.1",
+        "hash": "025f396810c3210b604e4671e44a1049"
+    },
+    "option_explain.cb_potw_hide_images_on_potw_page.txt": {
+        "global_cache": false,
+        "version_id": 10,
+        "version_string": "1.0.1",
+        "hash": "3d67d45af9cf3d9b08bd2961104c9c1e"
+    },
+    "option_explain.cb_potw_limit_char.txt": {
+        "global_cache": false,
+        "version_id": 10,
+        "version_string": "1.0.1",
+        "hash": "639fefb6295a7e5529e50ead035f0e84"
+    }
+}

@@ -1,0 +1,12 @@
+/* Hide all images in posts */
+.message-body img,
+.bbImage {
+  display: none !important;
+}
+
+/* Optional: Show a placeholder (e.g., "[Image Hidden]") */
+.message-body img:before,
+.bbImage:before {
+  content: "[Image Hidden]";
+  color: @xf-textColorMuted;
+}

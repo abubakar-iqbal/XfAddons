@@ -1,0 +1,12 @@
+{
+    "public/cb_potw_hide_img.less": {
+        "version_id": 10,
+        "version_string": "1.0.1",
+        "hash": "0f31267475757c53a46914b744813e3d"
+    },
+    "public/cb_potw_index.html": {
+        "version_id": 10,
+        "version_string": "1.0.1",
+        "hash": "b980153228294064081b645588a1d6b1"
+    }
+}
