@@ -7,4 +7,4 @@
 !/src/addons/
 
 # Track everything within src/addons
-!/src/addons/**
+!/src/addons/CoderBeams**

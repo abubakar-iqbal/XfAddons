@@ -35,19 +35,20 @@ class Week
                 $config['postsInWeeks'],
                 $config['nodeIds']
             );
+
             if (!empty($weekPosts)) {
                 $weekIdentifier = $this->getWeekIdentifier(-$i, $visitor);
-                foreach ($weekPosts as $post) {
-                    $weekendArray[$weekIdentifier] = $post->post_id ?? null;
-                    break;
-                }
-            
+
+                //  Collect all post IDs for this week
+                $weekendArray[$weekIdentifier] = array_column($weekPosts, 'post_id');
+                // Merge posts for final display
                 $allPosts = array_merge($allPosts, $weekPosts);
             }
         }
 
         return [$allPosts, $weekendArray];
     }
+
 
     protected function getPostsForWeek(
         User $visitor,
