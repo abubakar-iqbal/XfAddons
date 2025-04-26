@@ -50,7 +50,6 @@ class Potw extends AbstractController
             ($config['page'] - 1) * $config['perPage'],
             $config['perPage']
         );
-
         $viewParams = [
             'allPosts' => $paginatedPosts,
             'perPage' => $config['perPage'],

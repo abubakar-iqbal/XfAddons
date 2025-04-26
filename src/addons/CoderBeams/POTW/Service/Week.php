@@ -15,7 +15,7 @@ class Week
     {
         $this->controller = $controller;
     }
- 
+
     public function processWeeklyPosts(
         User $visitor,
         array $config
@@ -35,10 +35,13 @@ class Week
                 $config['postsInWeeks'],
                 $config['nodeIds']
             );
-
             if (!empty($weekPosts)) {
                 $weekIdentifier = $this->getWeekIdentifier(-$i, $visitor);
-                $weekendArray[$weekIdentifier] = $weekPosts[0]->post_id ?? null;
+                foreach ($weekPosts as $post) {
+                    $weekendArray[$weekIdentifier] = $post->post_id ?? null;
+                    break;
+                }
+            
                 $allPosts = array_merge($allPosts, $weekPosts);
             }
         }
