@@ -27,7 +27,7 @@ class Potw extends AbstractController
         );
     }
 
-    protected function getConfigFromOptions(\XF\Options $options, ParameterBag $params): array
+    protected function getConfigFromOptions($options, ParameterBag $params): array
     {
         return [
             'page' => $this->filterPage($params->page),
