@@ -1,0 +1,19 @@
+<hr class="formRowSep" />
+
+<xf:numberboxrow name="options[limit]" value="{$options}"
+	label="{{ phrase('maximum_usernames') }}"
+	explain="{{ phrase('maximum_usernames_explain') }}" />
+
+<xf:checkboxrow>
+	<xf:option name="options[followedOnline]" selected="$options.followedOnline"
+		label="{{ phrase('enable_people_you_follow_row') }}" />
+
+	<xf:option name="options[staffOnline]" selected="$options.staffOnline"
+		label="{{ phrase('enable_staff_online_block') }}">
+		<xf:checkbox>
+			<xf:option name="options[staffQuery]" selected="$options.staffQuery"
+				label="{{ phrase('run_dedicated_staff_query_when_necessary') }}"
+				hint="{{ phrase('run_dedicated_staff_query_explain') }}" />
+		</xf:checkbox>
+	</xf:option>
+</xf:checkboxrow>

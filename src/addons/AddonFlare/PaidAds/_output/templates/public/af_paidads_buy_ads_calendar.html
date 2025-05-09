@@ -1,0 +1,294 @@
+<xf:title>{$pageTitle}</xf:title>
+<xf:css src="af_paidads_buy_ads_calendar.less" />
+
+<div class="block-container js-paidads-calendar">
+    <xf:inforow>
+        <ul class="listPlain listColumnsCalendar">
+            <xf:if is="$isAdmin">
+                <li>{{ phrase('af_paidads_forum_days_remaining') }}: {$ad.days_remaining_forum|number}</li>
+                <li>{{ phrase('af_paidads_non_forum_days_remaining') }}: {$ad.days_remaining_non_forum|number}</li>
+            <xf:else />
+                <li>{{ phrase('af_paidads_min_days') }}: {$location.purchase_options.min_days|number}</li>
+                <li>{{ phrase('af_paidads_max_days') }}: {$location.purchase_options.max_days|number}</li>
+                <xf:if is="$showForumOptions">
+                    <li>{{ phrase('forum:') }} <a target="_blank" href="{{ link('forums', $cartAd.Forum) }}">{$cartAd.Forum.title}</a></li>
+                    <li>{{ phrase('af_paidads_forum_price') }}: {{ $location.getCostPerDayPhrase($forumPricePerDay) }}</li>
+                </xf:if>
+                <xf:if is="$showNonForumOptions">
+                    <li>{{ phrase('af_paidads_non_forum_price') }}: {{ $location.getCostPerDayPhrase($nonForumPricePerDay) }}</li>
+                </xf:if>
+                <li data-xf-init="tooltip" title="{{ phrase('af_paidads_time_remaining_tooltip')|for_attr }}">{{ phrase('af_paidads_time_remaining:') }} <span class="af-pa-timer" data-expire="{$cartAd.expire_time}"></span></li>
+                <li>{{ phrase('af_paidads_total_days_added') }}: <span class="{{ $withingDayLimits ? '' : 'outOfDayLimits' }}">{$cartAd.total_days|number}</span></li>
+                <li>{{ phrase('af_paidads_total_amount') }}: {{ $location.getCostPhrase($cartAd.total_amount) }}</li>
+            </xf:if>
+        </ul>
+    </xf:inforow>
+    <table class="calendar">
+        <caption>
+            <xf:if is="$calendar.showPrevLink">
+                <div class="monthSwitcher monthSwitcher--prev"><a data-switchdir="prev">&lt; {{ phrase('af_paidads_previous_month') }}</a></div>
+            </xf:if>
+            <div class="monthSwitcher monthSwitcher--next"><a data-switchdir="next">{{ phrase('af_paidads_next_month') }} &gt;</a></div>
+            {$calendar.monthFull} {$calendar.year}
+            <div class="calendarLegend">
+                <xf:if is="$showForumOptions">
+                    <div class="dayForum">
+                        <input id="addAll-forum" class="js-addAll" type="checkbox" name="" {{ ($calendar.allDaysAdded.forum OR ($isAdmin AND $calendar.allDaysPurchased.forum)) ? 'checked="checked"' : '' }} />
+                        <label for="addAll-forum">{{ snippet($isAdmin ? $ad.Forum.title : $cartAd.Forum.title, 14) }}</label>
+                    </div>
+                </xf:if>
+                <xf:if is="$showNonForumOptions">
+                    <div class="dayNonForum">
+                        <input id="addAll-nonForum" class="js-addAll" type="checkbox" name="" {{ ($calendar.allDaysAdded.non_forum OR ($isAdmin AND $calendar.allDaysPurchased.non_forum)) ? 'checked="checked"' : '' }} />
+                        <label for="addAll-nonForum">{{ phrase('af_paidads_non_forum_pages') }}</label>
+                    </div>
+                </xf:if>
+            </div>
+        </caption>
+
+        <tr>
+            <xf:foreach loop="$calendar.daysOfWeek" value="$day">
+                <th>{$day}</th>
+            </xf:foreach>
+        </tr>
+
+        <xf:set var="$startOfWeekIsSunday" value="{$calendar.startOfWeekIsSunday}" />
+        <xf:set var="$currentDayNumeric" value="{$calendar.currentDayNumeric}" />
+        <xf:set var="$firstDayNumeric" value="{$calendar.firstDayNumeric}" />
+        <xf:set var="$lastDayNumeric" value="{$calendar.lastDayNumeric}" />
+
+        <tr>
+
+            <xf:if is="$startOfWeekIsSunday">
+                <xf:if is="$firstDayNumeric > 0">
+                    <xf:set var="$startColSpan">{$firstDayNumeric}</xf:set>
+                </xf:if>
+            <xf:else />
+                <xf:if is="$firstDayNumeric == 0">
+                    <xf:set var="$startColSpan">6</xf:set>
+                <xf:elseif is="$firstDayNumeric == 2" />
+                    <xf:set var="$startColSpan">1</xf:set>
+                <xf:elseif is="$firstDayNumeric == 3" />
+                    <xf:set var="$startColSpan">2</xf:set>
+                <xf:elseif is="$firstDayNumeric == 4" />
+                    <xf:set var="$startColSpan">3</xf:set>
+                <xf:elseif is="$firstDayNumeric == 5" />
+                    <xf:set var="$startColSpan">4</xf:set>
+                <xf:elseif is="$firstDayNumeric == 6" />
+                    <xf:set var="$startColSpan">5</xf:set>
+                </xf:if>
+            </xf:if>
+
+
+            <xf:if is="$startColSpan">
+                <td class="noHover" colspan="{$startColSpan}"></td>
+            </xf:if>
+
+            <xf:foreach loop="$calendar.days" value="$day">
+                <xf:if is="$day.calendar_day_number != 1 AND $day.week_day_number == $calendar.startOfWeekDayNumber">
+                    <tr>
+                </xf:if>
+                <td class="day {{ $day.unavailable ? 'day--unavailable' : '' }}">
+                    <div class="dayNumber">{$day.calendar_day_number}</div>
+                    <xf:if is="!$day.unavailable">
+                        <table class="daysContainer">
+                            <xf:if is="$showForumOptions">
+                                <tr>
+                                    <td class="dayForum {{ ($day.forum_added OR ($isAdmin AND $day.forum_purchased)) ? 'day--added' : '' }} {{ $day.forum_purchased ? 'day--purchased' : '' }} {{ $day.forum_available ? 'day--open' : '' }}" data-date="{$day.full_date}">
+                                        <xf:if is="$day.forum_purchased">
+                                            {{ $isAdmin ? phrase('af_paidads_day_active') : phrase('af_paidads_day_purchased') }}
+                                        <xf:else />
+                                            {$day.forum_rotations_open|number} {{ phrase('af_paidads_day_open') }}
+                                        </xf:if>
+                                    </td>
+                                </tr>
+                            </xf:if>
+                            <xf:if is="$showNonForumOptions">
+                                <tr>
+                                    <td class="dayNonForum {{ ($day.non_forum_added OR ($isAdmin AND $day.non_forum_purchased)) ? 'day--added' : '' }} {{ $day.non_forum_purchased ? 'day--purchased' : '' }} {{ $day.non_forum_available ? 'day--open' : '' }}" data-date="{$day.full_date}">
+                                        <xf:if is="$day.non_forum_purchased">
+                                            {{ $isAdmin ? phrase('af_paidads_day_active') : phrase('af_paidads_day_purchased') }}
+                                        <xf:else />
+                                            {$day.non_forum_rotations_open|number} {{ phrase('af_paidads_day_open') }}
+                                        </xf:if>
+                                    </td>
+                                </tr>
+                            </xf:if>
+                        </table>
+                    </xf:if>
+                </td>
+                <xf:if is="$day.calendar_day_number != $calendar.monthDays AND $day.week_day_number == $calendar.endOfWeekDayNumber">
+                    </tr>
+                </xf:if>
+            </xf:foreach>
+
+            <xf:if is="$startOfWeekIsSunday">
+                <xf:if is="$currentDayNumeric != 7">
+                    <xf:set var="$endColSpan">{{ 7 - $currentDayNumeric }}</xf:set>
+                </xf:if>
+            <xf:else />
+                <xf:if is="$lastDayNumeric > 0">
+                    <xf:set var="$endColSpan">{{ 7 - $lastDayNumeric }}</xf:set>
+                </xf:if>
+            </xf:if>
+
+            <xf:if is="$endColSpan">
+                <td class="noHover" colspan="{$endColSpan}"></td>
+            </xf:if>
+
+        </tr>
+
+    </table>
+
+    <xf:if is="$cartAd AND $cartAd.status == 'session'">
+        <xf:inforow rowclass="formInfoRow--close formInfoRow--confirm">
+            {{ phrase('af_paidads_select_days_info')|raw }}
+        </xf:inforow>
+        <xf:submitrow id="js-addToCart" data-url="{{ link('paid-ads/add-to-cart', null, {'cart_ad_id': $cartAd.cart_ad_id}) }}" submit="{{ phrase('af_paidads_add_to_cart') }} - {{ $location.getCostPhrase($cartAd.total_amount) }}" rowtype="simple" icon="add" onclick="return addToCart(event)">
+            <xf:html></xf:html>
+        </xf:submitrow>
+    </xf:if>
+</div>
+
+<xf:js>
+let year = {$calendar.year},
+    month = {$calendar.month};
+
+async function updateCalendar(url, dataParams = {}, onError) {
+    try {
+        const defaultParams = {
+            view_month: month,
+            view_year: year,
+        };
+
+        const {response, data, error} = await XF.ajax('POST', url, { ...defaultParams, ...dataParams })
+            .catch(onError);
+
+        if ((typeof error !== "undefined") || !response.ok) {
+            onError();
+            return;
+        }
+
+        if (data.html.content) {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(data.html.content, 'text/html');
+            const calendarHtml = doc.querySelector('.js-paidads-calendar') || doc;
+
+            if (calendarHtml) {
+                document.querySelector('.js-paidads-calendar').replaceWith(calendarHtml);
+            }
+        }
+
+        if (data.cart_ad_id) {
+            document.getElementById(`js-cartad-totalDaysForum-${data.cart_ad_id}`).textContent = data.cart_ad_total_days_forum || '';
+            document.getElementById(`js-cartad-totalDaysNonForum-${data.cart_ad_id}`).textContent = data.cart_ad_total_days_non_forum || '';
+            document.getElementById(`js-cartad-totalDays-${data.cart_ad_id}`).textContent = data.cart_ad_total_days || '';
+            document.getElementById(`js-cartad-totalAmount-${data.cart_ad_id}`).textContent = data.cart_ad_total_amount || '';
+            document.querySelector('#js-cart-buyNow .button-text').textContent = data.cart_total_amount || '';
+        }
+
+        if (data.ad_id) {
+            document.getElementById(`js-ad-daysRemainingForum-${data.ad_id}`).textContent = data.ad_days_remaining_forum || '';
+            document.getElementById(`js-ad-daysRemainingNonForum-${data.ad_id}`).textContent = data.ad_days_remaining_non_forum || '';
+        }
+    } catch (error) {
+        if (onError)
+            onError();
+    }
+}
+
+function emptyAll() {
+    const elements = document.querySelectorAll('.js-descTarget, .js-paidads-locationTypes, .js-paidads-forums, .js-paidads-calendar');
+
+    elements.forEach(el => {
+        XF.Animate.fadeUp(el, {
+            complete: function() {
+                el.innerHTML = '';
+            },
+
+            speed: XF.config.speed.fast
+        });
+    });
+}
+
+document.body.addEventListener('click', async e => {
+    if (e.target.matches('.day--open, .day--added')) {
+        const date = e.target.dataset.date;
+        const dayType = e.target.classList.contains('dayForum') ? 'forum' : 'non_forum';
+        const url = e.target.classList.contains('day--open') ? '{$addDaysUrl|escape("js")}' : '{$removeDaysUrl|escape("js")}';
+
+        return updateCalendar(url, { dates: date, day_type: dayType });
+    }
+
+    if (e.target.matches('.monthSwitcher a')) {
+        e.preventDefault();
+
+        const switchdir = e.target.dataset.switchdir;
+
+        if (switchdir === 'prev') {
+            month = month === 1 ? 12 : month - 1;
+            if (month === 12) year--;
+        } else if (switchdir === 'next') {
+            month = month === 12 ? 1 : month + 1;
+            if (month === 1) year++;
+        }
+
+        return updateCalendar('{$calendarUrl|escape("js")}');
+    }
+});
+
+async function addToCart(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const button = document.querySelector('#js-addToCart');
+    button.disabled = true;
+
+    const {response, data, error} = await XF.ajax('GET', button.dataset.url);
+
+    if (typeof error !== "undefined")
+        return;
+
+    if (response.ok && data.message) {
+        XF.hideOverlays();
+        XF.flashMessage(data.message, 5000, () => button.disabled = false);
+    } else {
+        button.disabled = false;
+    }
+
+    if (data.empty_all) {
+        emptyAll();
+        document.getElementById('location_id').selectedIndex = 0;
+        document.getElementById('js-adsCartCount').textContent = data.cart_total_items || '';
+    }
+}
+
+document.body.addEventListener('change', e => {
+    if (e.target.matches('input.js-addAll')) {
+        const dayType = e.target.id === 'addAll-forum' ? 'forum' : 'non_forum';
+        const url = e.target.checked ? '{$addDaysUrl|escape("js")}' : '{$removeDaysUrl|escape("js")}';
+        const selectorPrefix = e.target.id === 'addAll-forum' ? '.dayForum' : '.dayNonForum';
+        const datesSelector = e.target.checked ? `${selectorPrefix}.day--open` : `${selectorPrefix}.day--added`;
+        const dates = [...document.querySelectorAll(datesSelector)].map(el => el.dataset.date).join('|');
+
+        if (!dates)
+            return;
+
+        return updateCalendar(url, { dates, day_type: dayType }, () => e.target.checked = !e.target.checked);
+    }
+});
+
+const timers = document.querySelectorAll('.js-paidads-calendar .af-pa-timer');
+
+timers.forEach(element => {
+    Timer.start(element, {
+        onComplete: () => {
+            XF.alert(XF.phrase('af_paidads_cart_has_expired'), 'message');
+            document.getElementById('location_id').selectedIndex = 0;
+            emptyAll();
+        }
+    });
+});
+
+Object.assign(window, { updateCalendar, emptyAll, addToCart });
+</xf:js>

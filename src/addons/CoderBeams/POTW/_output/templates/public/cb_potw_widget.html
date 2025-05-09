@@ -1,0 +1,90 @@
+<xf:if is="$allPosts is not empty && $weekendArray">
+    <xf:css src="message.less" />
+
+    <div class="block" {{ widget_data($widget) }}>
+        <div class="block-container">
+            <h3 class="block-header">
+                <a href="{{ link('potw') }}">{{ phrase('cb_post_of_the_week') }}</a>
+            </h3>
+
+            <xf:foreach loop="$weekendArray" key="$weekKey" value="$postIds" if="$loop.index == 0">
+                <h4 class="block-minorHeader">
+                    {{ phrase('cb_most_liked_posts_week') }} {{ date($weekKey) }}
+                </h4>
+
+                <div class="block-body">
+                    <xf:foreach loop="$allPosts" value="$post">
+                        <xf:if is="{{ in_array($post.post_id, $postIds) }}">
+                            <div class="block-row recent_news" data-xf-init="lightbox">
+                                <a href="{{ link('threads/post', $post.Thread, {'post_id': $post.post_id}) }}">
+                                    <strong>{$post.Thread.title}</strong>
+                                </a>
+
+                                <div class="message message--post">
+                                    <div class="message-inner">
+                                        <div class="message-cell message-cell--main">
+                                            <div class="message-content js-messageContent">
+                                                <header class="message-attribution">
+                                                    <ul class="listInline listInline--bullet u-muted">
+                                                        <xf:avatar user="$post.User" size="xxs" defaultname="{$post.username}" />
+                                                        <li><xf:username user="{$post.User}" rich="true" /></li>
+                                                        <li><xf:date time="{$post.post_date}" /></li>
+                                                        <li><a href="{{ link('forums', $post.Thread.Forum) }}">{$post.Thread.Forum.title}</a></li>
+                                                    </ul>
+                                                </header>
+
+                                                <div class="message-userContent lbContainer js-lbContainer"
+                                                     data-lb-id="post-{$post.post_id}"
+                                                     data-lb-caption-desc="{{ $post.User ? $post.User.username : $post.username }} &middot; {{ date_time($post.post_date) }}">
+
+                                                    <article class="message-body">
+                                                        <xf:if is="$xf.options.cb_potw_limit_char > 0">
+                                                            <xf:set var="$snippetPost" value="{{ snippet($post.message, $xf.options.cb_potw_limit_char) }}" />
+                                                            {{ bb_code($snippetPost, 'post', $post) }}
+                                                            <div>
+                                                                <a href="{{ link('threads/post', $post.Thread, {'post_id': $post.post_id}) }}">
+                                                                    {{ phrase('continue_reading') }}
+                                                                </a>
+                                                            </div>
+                                                        <xf:else />
+                                                            {{ bb_code($post.message, 'post', $post) }}
+                                                        </xf:if>
+
+                                                        <footer class="message-footer">
+                                                            <div class="reactionsBar js-reactionsList {{ $post.reactions ? 'is-active' : '' }}">
+                                                                <xf:reactions content="{$post}" link="posts/reactions" />
+                                                            </div>
+                                                        </footer>
+                                                    </article>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </xf:if>
+                    </xf:foreach>
+                </div>
+            </xf:foreach>
+
+            <div class="block-footer">
+                <span class="block-footer-controls">
+                    <xf:button href="{{ link('potw') }}" rel="nofollow">
+                        {{ phrase('view_all_posts_of_the_week') }}
+                    </xf:button>
+                </span>
+            </div>
+        </div>
+    </div>
+
+<xf:else />
+    <div class="block">
+        <div class="block-container">
+            <div class="block-body">
+                <div class="block-row">
+                    {{ phrase('there_no_posts_matching_your_filters') }}
+                </div>
+            </div>
+        </div>
+    </div>
+</xf:if>

@@ -1,0 +1,52 @@
+<xf:title>{{ phrase('af_paidads_edit_ad:') }} {$title}</xf:title>
+<xf:breadcrumb href="{{ link('paid-ads/manage') }}">{{ phrase('af_paidads_manage_ads') }}</xf:breadcrumb>
+
+<xf:form action="{{ link('paid-ads/manage/edit' . ($multiple ? '-multiple' : ''), $ad) }}" ajax="true" upload="true" class="block">
+
+    <div class="block-container">
+        <div class="block-body">
+
+            <xf:textboxrow name="url" value="{$ad.url}" maxlength="{{ max_length($ad, 'url') }}" type="url"
+                label="{{ phrase('url') }}"
+                dir="ltr" />
+
+            <xf:if is="$ad.banner_url">
+                <xf:formrow label="{{ phrase('af_paidads_existing_banner_image') }}">
+                    <img src="{$ad.banner_url}" />
+                </xf:formrow>
+            </xf:if>
+
+            <xf:uploadrow name="upload" accept=".{$extensions|join(',.')}"
+                label="Upload Banner Image">
+                <xf:explain>
+                    {{ phrase('af_paidads_allowed_extensions:') }} .{$extensions|join(' .')}<br>
+                    {{ phrase('af_paidads_max_file_size:') }} {$adOptions.max_file_size} {{ phrase('units_kb') }}<br>
+                    {{ phrase('af_paidads_dimensions:') }} {$adOptions.ad_width} x {$adOptions.ad_height} {{ phrase('units_pixels') }}
+                </xf:explain>
+            </xf:uploadrow>
+
+            <xf:set var="$terms" value="{$xf.options.af_paidads_ad_terms}" />
+
+            <xf:if is="!$multiple AND $ad.Location.purchase_options.terms">
+                <xf:set var="$terms" value="{$ad.Location.purchase_options.terms}" />
+            </xf:if>
+
+            <xf:if is="$terms">
+                <xf:formrow label="{{ phrase('terms_and_rules') }}">
+                    {$terms|raw}
+                </xf:formrow>
+            </xf:if>
+
+        </div>
+
+        <xf:if is="$multiple">
+            <xf:foreach loop="$adIds" value="$adId">
+                <xf:hiddenval name="ad_ids[]">{$adId}</xf:hiddenval>
+            </xf:foreach>
+        </xf:if>
+
+        <xf:hiddenval name="submit">1</xf:hiddenval>
+
+        <xf:submitrow icon="save" rowtype="simple" />
+    </div>
+</xf:form>
