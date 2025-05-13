@@ -1,0 +1,16 @@
+<hr class="formRowSep" />
+
+<xf:numberboxrow name="options[limit]" value="{$options.limit}"
+	label="{{ phrase('maximum_entries') }}"
+	min="1" />
+<xf:radiorow name="options[hide_images]" value="{$options.hide_images}"
+	label="Hide images in post content?">
+	<xf:option value="1" label="Yes" />
+	<xf:option value="0" label="No" />
+</xf:radiorow>
+
+
+<xf:numberboxrow name="options[snippet_length]" value="{$options.snippet_length}"
+	label="{{ phrase('snippet_length') }}"
+	explain="{{ phrase('snippet_length_explain') }}"
+	min="0" max="500" />
