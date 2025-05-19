@@ -811,8 +811,7 @@ document.getElementById('position_id').dispatchEvent(new Event('change'));
         </div>
     </xf:foreach>
 </xf:macro>]]></template>
-  <template type="public" title="af_paidads_ad_edit" version_id="1000070" version_string="1.0.0"><![CDATA[<xf:title>{{ phrase('af_paidads_edit_ad:') }} {$title}</xf:title>
-
+  <template type="public" title="af_paidads_ad_edit" version_id="1020074" version_string="1.2.0.4"><![CDATA[<xf:title>{{ phrase('af_paidads_edit_ad:') }} {$title}</xf:title>
 <xf:breadcrumb href="{{ link('paid-ads/manage') }}">{{ phrase('af_paidads_manage_ads') }}</xf:breadcrumb>
 
 <xf:form action="{{ link('paid-ads/manage/edit' . ($multiple ? '-multiple' : ''), $ad) }}" ajax="true" upload="true" class="block">
@@ -1027,7 +1026,7 @@ XF.PaidAdsInserterChange = XF.Element.newHandler({
 XF.Element.register('paidads-change-inserter', 'XF.PaidAdsInserterChange');
 XF.phrases.af_paidads_cart_has_expired = "{{ phrase('af_paidads_cart_has_expired')|escape('js') }}";
 </xf:js>]]></template>
-  <template type="public" title="af_paidads_buy_ads_calendar" version_id="1020071" version_string="1.2.0.1"><![CDATA[<xf:title>{$pageTitle}</xf:title>
+  <template type="public" title="af_paidads_buy_ads_calendar" version_id="1020074" version_string="1.2.0.4"><![CDATA[<xf:title>{$pageTitle}</xf:title>
 <xf:css src="af_paidads_buy_ads_calendar.less" />
 
 <div class="block-container js-paidads-calendar">

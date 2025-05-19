@@ -3,5 +3,10 @@
         "version_id": 2030470,
         "version_string": "2.3.4",
         "hash": "ceba0f58561c9c0c624e1eb24934590f"
+    },
+    "public/post_macros.html": {
+        "version_id": 2030470,
+        "version_string": "2.3.4",
+        "hash": "394a45e385302380d65a445fd8211204"
     }
 }

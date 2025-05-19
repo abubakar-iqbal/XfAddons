@@ -3,5 +3,15 @@
         "version_id": 1020073,
         "version_string": "1.2.0.3",
         "hash": "9d1e0a6125308d5f96ea6e9ae9c01560"
+    },
+    "public/af_paidads_ad_edit.html": {
+        "version_id": 1020074,
+        "version_string": "1.2.0.4",
+        "hash": "d4b49112a3a82dc952eb9c3e48899b58"
+    },
+    "public/af_paidads_buy_ads_calendar.html": {
+        "version_id": 1020074,
+        "version_string": "1.2.0.4",
+        "hash": "fbcdb31b5e3090825de44f7ea5a76ad6"
     }
 }

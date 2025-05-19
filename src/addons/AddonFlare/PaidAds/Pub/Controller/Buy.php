@@ -2,26 +2,12 @@
 
 namespace AddonFlare\PaidAds\Pub\Controller;
 
-use XF\Mvc\ParameterBag;
-use XF\Mvc\FormAction;
-use XF\Mvc\Reply\View;
-use XF\Pub\Controller\AbstractController;
-
 use AddonFlare\PaidAds\Calendar;
+use XF\Mvc\ParameterBag;
+use XF\Pub\Controller\AbstractController;
 
 class Buy extends AbstractController
 {
-    protected function preDispatchController($action, ParameterBag $params)
-    {
-        if (!\XF::visitor()->canPurchasePaidAds())
-        {
-            throw $this->exception($this->noPermission());
-        }
-
-        // alias to bypass adblock parameter names check
-        $this->request->set('ad_type', $this->request->get('a_type'));
-    }
-
     public function actionIndex()
     {
         $locationRepo = $this->getLocationRepo();
@@ -38,10 +24,20 @@ class Buy extends AbstractController
 
         $viewParams = [
             'locations' => $locations,
-            'cart'      => $cart,
+            'cart' => $cart,
         ];
 
         return $this->view('', 'af_paidads_buy_ads', $viewParams);
+    }
+
+    protected function getLocationRepo()
+    {
+        return $this->repository('AddonFlare\PaidAds:Location');
+    }
+
+    protected function getCartRepo()
+    {
+        return $this->repository('AddonFlare\PaidAds:Cart');
     }
 
     public function actionGetLocationTypes()
@@ -52,22 +48,37 @@ class Buy extends AbstractController
 
         $showForumOptions = $showNonForumOptions = false;
 
-        if ($location->canPurchaseForum())
-        {
+        if ($location->canPurchaseForum()) {
             $showForumOptions = true;
         }
-        if ($location->can_purchase_non_forum)
-        {
+        if ($location->can_purchase_non_forum) {
             $showNonForumOptions = true;
         }
 
         $viewParams = [
-            'location'             => $location,
-            'showForumOptions'     => $showForumOptions,
-            'showNonForumOptions'  => $showNonForumOptions,
+            'location' => $location,
+            'showForumOptions' => $showForumOptions,
+            'showNonForumOptions' => $showNonForumOptions,
         ];
 
         return $this->view('', 'af_paidads_buy_ads_location_types', $viewParams);
+    }
+
+    protected function assertPurchasableLocationExists($id, $with = null, $phraseKey = null)
+    {
+        $location = $this->em()->find('AddonFlare\PaidAds:Location', $id, $with);
+
+        if (!$location || !$location->canPurchase()) {
+            if (!$phraseKey) {
+                $phraseKey = 'requested_page_not_found';
+            }
+
+            throw $this->exception(
+                $this->notFound(\XF::phrase($phraseKey))
+            );
+        }
+
+        return $location;
     }
 
     public function actionGetForums()
@@ -79,8 +90,7 @@ class Buy extends AbstractController
 
         $purchaseOptions = $location->purchase_options;
 
-        if (!$location->canPurchaseForum(0, $availableNodeIds))
-        {
+        if (!$location->canPurchaseForum(0, $availableNodeIds)) {
             return $this->notFound();
         }
 
@@ -88,10 +98,10 @@ class Buy extends AbstractController
         $nodeTree = $nodeRepo->createNodeTree($nodeRepo->getFullNodeList());
 
         $viewParams = [
-            'location'   => $location,
-            'nodeTree'   => $nodeTree,
+            'location' => $location,
+            'nodeTree' => $nodeTree,
             'locationId' => $locationId,
-            'adType'     => $adType,
+            'adType' => $adType,
             'availableNodeIds' => $availableNodeIds,
         ];
 
@@ -101,7 +111,7 @@ class Buy extends AbstractController
     public function actionCalendar(ParameterBag $params)
     {
         $cartAdId = $params->cartAdId ?: $this->filter('cart_ad_id', 'uint');
-
+        
         $locationId = $this->filter('location_id', 'uint');
         $nodeId = $this->filter('node_id', 'uint');
 
@@ -111,15 +121,12 @@ class Buy extends AbstractController
         $visitor = \XF::visitor();
         $locationRepo = $this->getLocationRepo();
 
-        if ($cartAd = $locationRepo->findUserCartAd($cartAdId))
-        {
+        if ($cartAd = $locationRepo->findUserCartAd($cartAdId)) {
             $location = $cartAd->Location;
             $locationId = $cartAd->location_id;
             $nodeId = $cartAd->node_id;
             $adType = $cartAd->type;
-        }
-        else
-        {
+        } else {
             $location = $this->assertPurchasableLocationExists($locationId);
             $adType = $this->filter('ad_type', 'str');
         }
@@ -129,61 +136,45 @@ class Buy extends AbstractController
         $forumPricePerDay = $nonForumPricePerDay = 0;
         $showForumOptions = $showNonForumOptions = false;
 
-        if (in_array($adType, ['forum', 'both']))
-        {
-            if (!$forumPricePerDay = $pricesPerDay['forum'])
-            {
+        if (in_array($adType, ['forum', 'both'])) {
+            if (!$forumPricePerDay = $pricesPerDay['forum']) {
                 return $this->notFound();
-            }
-            else
-            {
+            } else {
                 $showForumOptions = true;
             }
         }
 
-        if (in_array($adType, ['non_forum', 'both']))
-        {
-            if (!$nonForumPricePerDay = $pricesPerDay['non_forum'])
-            {
+        if (in_array($adType, ['non_forum', 'both'])) {
+            if (!$nonForumPricePerDay = $pricesPerDay['non_forum']) {
                 return $this->notFound();
-            }
-            else
-            {
+            } else {
                 $showNonForumOptions = true;
             }
         }
 
-        if (!$showForumOptions && !$showNonForumOptions)
-        {
+        if (!$showForumOptions && !$showNonForumOptions) {
             return $this->notFound();
         }
 
-        if (!$showForumOptions)
-        {
+        if (!$showForumOptions) {
             // non-forums should always have this set as 0
             $nodeId = 0;
         }
 
-        if (!$cartAd)
-        {
+        if (!$cartAd) {
             $existingAdId = null;
 
-            if ($adId = $this->filter('ad_id', 'uint'))
-            {
-                if ($ad = $this->getAdRepo()->findUserAd($adId)->where('status', '=', 'active')->fetchOne())
-                {
+            if ($adId = $this->filter('ad_id', 'uint')) {
+                if ($ad = $this->getAdRepo()->findUserAd($adId)->where('status', '=', 'active')->fetchOne()) {
                     // make sure cart and ad are the same type, nodeid, etc
                     // we explicitly pass these in the manage ads "add days" link, this makes sure they're not modified
                     if (
                         ($ad->location_id == $locationId) &&
                         ($ad->type == $adType) &&
                         ($ad->node_id == $nodeId)
-                    )
-                    {
+                    ) {
                         $existingAdId = $adId;
-                    }
-                    else
-                    {
+                    } else {
                         return $this->notFound();
                     }
                 }
@@ -191,12 +182,12 @@ class Buy extends AbstractController
 
             $cartAd = $this->em()->create('AddonFlare\PaidAds:CartAd');
             $cartAd->bulkSet([
-                'location_id'     => $locationId,
-                'user_id'         => $visitor->user_id,
-                'node_id'         => $nodeId,
-                'status'          => 'session',
-                'type'            => $adType,
-                'existing_ad_id'  => $existingAdId,
+                'location_id' => $locationId,
+                'user_id' => $visitor->user_id,
+                'node_id' => $nodeId,
+                'status' => 'session',
+                'type' => $adType,
+                'existing_ad_id' => $existingAdId,
             ]);
             $cartAd->save();
         }
@@ -206,19 +197,19 @@ class Buy extends AbstractController
         $router = $this->app->router();
 
         $addDaysUrl = $router->buildLink('paid-ads/calendar-add-days', null, [
-            'cart_ad_id'  => $cartAd->cart_ad_id,
-            'view_month'  => $viewMonth,
-            'view_year'   => $viewYear,
+            'cart_ad_id' => $cartAd->cart_ad_id,
+            'view_month' => $viewMonth,
+            'view_year' => $viewYear,
         ]);
         $removeDaysUrl = $router->buildLink('paid-ads/calendar-remove-days', null, [
-            'cart_ad_id'  => $cartAd->cart_ad_id,
-            'view_month'  => $viewMonth,
-            'view_year'   => $viewYear,
+            'cart_ad_id' => $cartAd->cart_ad_id,
+            'view_month' => $viewMonth,
+            'view_year' => $viewYear,
         ]);
         $calendarUrl = $router->buildLink('paid-ads/calendar', null, [
-            'cart_ad_id'  => $cartAd->cart_ad_id,
-            'view_year'   => $viewYear,
-            'view_year'   => $viewYear,
+            'cart_ad_id' => $cartAd->cart_ad_id,
+            'view_year' => $viewYear,
+            'view_year' => $viewYear,
         ]);
 
         $purchaseOptions = $location->purchase_options;
@@ -228,34 +219,40 @@ class Buy extends AbstractController
         $cart = $this->getCartRepo()->findUserCart();
 
         $viewParams = [
-            'location'               => $location,
-            'calendar'               => $calendar->build(),
-            'showForumOptions'       => $showForumOptions,
-            'showNonForumOptions'    => $showNonForumOptions,
-            'forumPricePerDay'       => $forumPricePerDay,
-            'nonForumPricePerDay'    => $nonForumPricePerDay,
-            'withingDayLimits'       => $withingDayLimits,
-            'cartAd'                 => $cartAd,
-            'addDaysUrl'             => $addDaysUrl,
-            'removeDaysUrl'          => $removeDaysUrl,
-            'calendarUrl'            => $calendarUrl,
-            'cart'                   => $cart,
+            'location' => $location,
+            'calendar' => $calendar->build(),
+            'showForumOptions' => $showForumOptions,
+            'showNonForumOptions' => $showNonForumOptions,
+            'forumPricePerDay' => $forumPricePerDay,
+            'nonForumPricePerDay' => $nonForumPricePerDay,
+            'withingDayLimits' => $withingDayLimits,
+            'cartAd' => $cartAd,
+            'addDaysUrl' => $addDaysUrl,
+            'removeDaysUrl' => $removeDaysUrl,
+            'calendarUrl' => $calendarUrl,
+            'cart' => $cart,
         ];
 
         $language = $this->app()->language();
 
         $reply = $this->view('', 'af_paidads_buy_ads_calendar', $viewParams);
         $reply->setJsonParams([
-            'cart_ad_id'                   => $cartAd->cart_ad_id,
-            'cart_ad_total_days_forum'     => $language->numberFormat($cartAd->total_days_forum),
+            'cart_ad_id' => $cartAd->cart_ad_id,
+            'cart_ad_total_days_forum' => $language->numberFormat($cartAd->total_days_forum),
             'cart_ad_total_days_non_forum' => $language->numberFormat($cartAd->total_days_non_forum),
-            'cart_ad_total_days'           => $language->numberFormat($cartAd->total_days),
-            'cart_ad_total_amount'         => $location->getCostPhrase($cartAd->total_amount),
-            'cart_total_amount'            => \XF::phrase('af_paidads_buy_now_x', [
+            'cart_ad_total_days' => $language->numberFormat($cartAd->total_days),
+            'cart_ad_total_amount' => $location->getCostPhrase($cartAd->total_amount),
+            'cart_total_amount' => \XF::phrase('af_paidads_buy_now_x', [
                 'price' => $location->getCostPhrase($cart ? $cart->total_amount : 0),
             ]),
         ]);
+
         return $reply;
+    }
+
+    protected function getAdRepo()
+    {
+        return $this->repository('AddonFlare\PaidAds:Ad');
     }
 
     public function actionCalendarAddDays()
@@ -269,8 +266,7 @@ class Buy extends AbstractController
 
         $locationRepo = $this->getLocationRepo();
 
-        if ((!$cartAd = $locationRepo->findUserCartAd($cartAdId)) || !in_array($dayType, ['forum', 'non_forum']))
-        {
+        if ((!$cartAd = $locationRepo->findUserCartAd($cartAdId)) || !in_array($dayType, ['forum', 'non_forum'])) {
             return $this->notFound();
         }
 
@@ -278,8 +274,7 @@ class Buy extends AbstractController
 
         $pricesPerDay = $cartAd->getPricesPerDay();
 
-        if (($dayType == 'forum' && !$pricesPerDay['forum']) || ($dayType == 'non_forum' && !$pricesPerDay['non_forum']))
-        {
+        if (($dayType == 'forum' && !$pricesPerDay['forum']) || ($dayType == 'non_forum' && !$pricesPerDay['non_forum'])) {
             return $this->notFound();
         }
 
@@ -289,16 +284,11 @@ class Buy extends AbstractController
 
         $insertDays = [];
 
-        foreach ($dates as $date)
-        {
-            if (!$dateTime = $locationRepo->checkValidDate($date))
-            {
-                if ($multipleAdd)
-                {
+        foreach ($dates as $date) {
+            if (!$dateTime = $locationRepo->checkValidDate($date)) {
+                if ($multipleAdd) {
                     continue;
-                }
-                else
-                {
+                } else {
                     return $this->error(\XF::phrase('af_paidads_invalid_date'));
                 }
             }
@@ -308,10 +298,17 @@ class Buy extends AbstractController
             $day = $dateTime->format('j');
 
             // only retrieve on the first loop
-            if (!isset($adDays))
-            {
+            if (!isset($adDays)) {
                 // getAdDaysForCalendar() takes the local user month/day/year, so pass it as it is
-                $adDays = $locationRepo->getAdDaysForCalendar($cartAd->Location, $cartAdId, $cartAd->existing_ad_id, $year, $month, $multipleAdd ? 'all' : $day, $nodeId);
+                $adDays = $locationRepo->getAdDaysForCalendar(
+                    $cartAd->Location,
+                    $cartAdId,
+                    $cartAd->existing_ad_id,
+                    $year,
+                    $month,
+                    $multipleAdd ? 'all' : $day,
+                    $nodeId
+                );
             }
 
             $fullDate = $dateTime->format('Y-m-d');
@@ -335,68 +332,61 @@ class Buy extends AbstractController
                     $forumDayIsAdded ||
                     $forumDayIsPurchased
                 )
-            )
-            {
-                if ($multipleAdd)
-                {
+            ) {
+                if ($multipleAdd) {
                     continue;
-                }
-                else
-                {
+                } else {
                     return $this->error(\XF::phrase('af_paidads_day_not_available'));
                 }
-            }
-            else if ($dayType == 'non_forum' &&
-                (
-                    !in_array($cartAd->type, ['non_forum', 'both']) ||
-                    !$nonForumRotationsOpen ||
-                    $nonForumDayIsAdded ||
-                    $nonForumDayIsPurchased
-                )
-            )
-            {
-                if ($multipleAdd)
-                {
-                    continue;
-                }
-                else
-                {
-                    return $this->error(\XF::phrase('af_paidads_day_not_available'));
+            } else {
+                if ($dayType == 'non_forum' &&
+                    (
+                        !in_array($cartAd->type, ['non_forum', 'both']) ||
+                        !$nonForumRotationsOpen ||
+                        $nonForumDayIsAdded ||
+                        $nonForumDayIsPurchased
+                    )
+                ) {
+                    if ($multipleAdd) {
+                        continue;
+                    } else {
+                        return $this->error(\XF::phrase('af_paidads_day_not_available'));
+                    }
                 }
             }
 
             $insertDays[] = [
                 'cart_ad_id' => $cartAdId,
-                'date'       => $fullDateUTC,
-                'type'       => $dayType,
+                'date' => $fullDateUTC,
+                'type' => $dayType,
             ];
         }
 
-        if ($insertDays)
-        {
+        if ($insertDays) {
             $maxDays = $cartAd->Location->purchase_options['max_days'];
-            if (($cartAd->total_days + count($insertDays)) > $maxDays)
-            {
+            if (($cartAd->total_days + count($insertDays)) > $maxDays) {
                 return $this->error(\XF::phrase('af_paidads_max_amount_days_is_x', ['days' => $maxDays]));
             }
             $this->app->db()->insertBulk('xf_af_paidads_cart_ad_day', $insertDays, false, false, 'IGNORE');
             $this->getCartAdRepo()->rebuildCartAd($cartAd);
-            if ($cartAd->Cart)
-            {
+            if ($cartAd->Cart) {
                 $this->getCartRepo()->rebuildCart($cartAd->Cart);
             }
-        }
-        else
-        {
+        } else {
             // should never happen but incase
             return $this->error(\XF::phrase('af_paidads_unable_to_add_days'));
         }
 
         return $this->rerouteController(__CLASS__, 'Calendar', [
-            'cartAdId'   => $cartAdId,
-            'viewMonth'  => $viewMonth,
-            'viewYear'   => $viewYear,
+            'cartAdId' => $cartAdId,
+            'viewMonth' => $viewMonth,
+            'viewYear' => $viewYear,
         ]);
+    }
+
+    protected function getCartAdRepo()
+    {
+        return $this->repository('AddonFlare\PaidAds:CartAd');
     }
 
     public function actionCalendarRemoveDays()
@@ -410,8 +400,7 @@ class Buy extends AbstractController
 
         $locationRepo = $this->getLocationRepo();
 
-        if ((!$cartAd = $locationRepo->findUserCartAd($cartAdId)) || !in_array($dayType, ['forum', 'non_forum']))
-        {
+        if ((!$cartAd = $locationRepo->findUserCartAd($cartAdId)) || !in_array($dayType, ['forum', 'non_forum'])) {
             return $this->notFound();
         }
 
@@ -421,10 +410,8 @@ class Buy extends AbstractController
 
         $removeDays = [];
 
-        foreach ($dates as $date)
-        {
-            if (!$dateTime = $locationRepo->checkValidDate($date))
-            {
+        foreach ($dates as $date) {
+            if (!$dateTime = $locationRepo->checkValidDate($date)) {
                 continue;
             }
 
@@ -435,19 +422,17 @@ class Buy extends AbstractController
 
         $cartExpire = $this->options()->af_paidads_cartExpireMinutes * 60;
 
-        if ($removeDays)
-        {
-            if ($cartAd->status == 'cart')
-            {
+        if ($removeDays) {
+            if ($cartAd->status == 'cart') {
                 $minDays = $cartAd->Location->purchase_options['min_days'];
-                if (($cartAd->total_days - count($removeDays)) < $minDays)
-                {
+                if (($cartAd->total_days - count($removeDays)) < $minDays) {
                     return $this->error(\XF::phrase('af_paidads_min_amount_days_is_x', ['days' => $minDays]));
                 }
             }
 
             $db = $this->app->db();
-            $db->query("
+            $db->query(
+                "
                 DELETE cart_ad_day
                 FROM xf_af_paidads_cart_ad_day AS cart_ad_day
                 INNER JOIN xf_af_paidads_cart_ad AS cart_ad ON (cart_ad.cart_ad_id = cart_ad_day.cart_ad_id)
@@ -466,16 +451,15 @@ class Buy extends AbstractController
                 ]
             );
             $this->getCartAdRepo()->rebuildCartAd($cartAd);
-            if ($cartAd->Cart)
-            {
+            if ($cartAd->Cart) {
                 $this->getCartRepo()->rebuildCart($cartAd->Cart);
             }
         }
 
         return $this->rerouteController(__CLASS__, 'Calendar', [
-            'cartAdId'   => $cartAdId,
-            'viewMonth'  => $viewMonth,
-            'viewYear'   => $viewYear,
+            'cartAdId' => $cartAdId,
+            'viewMonth' => $viewMonth,
+            'viewYear' => $viewYear,
         ]);
     }
 
@@ -485,12 +469,12 @@ class Buy extends AbstractController
 
         $locationRepo = $this->getLocationRepo();
 
-        if (!$cartAd = $locationRepo->findUserCartAd($cartAdId))
-        {
+        if (!$cartAd = $locationRepo->findUserCartAd($cartAdId)) {
             $reply = $this->error(\XF::phrase('af_paidads_invalid_cart_ad'));
             $reply->setJsonParams([
                 'empty_all' => true,
             ]);
+
             return $reply;
         }
 
@@ -500,17 +484,17 @@ class Buy extends AbstractController
 
         $minDays = $purchaseOptions['min_days'];
         $maxDays = $purchaseOptions['max_days'];
-        if (!($cartAd->total_days >= $minDays && $cartAd->total_days <= $maxDays))
-        {
-            return $this->error(\XF::phrase('af_paidads_days_must_be_within_min_and_max', ['min' => $minDays, 'max' => $maxDays]));
+        if (!($cartAd->total_days >= $minDays && $cartAd->total_days <= $maxDays)) {
+            return $this->error(
+                \XF::phrase('af_paidads_days_must_be_within_min_and_max', ['min' => $minDays, 'max' => $maxDays])
+            );
         }
 
         $visitor = \XF::visitor();
 
         $cart = $this->getCartRepo()->findUserCart();
 
-        if (!$cart)
-        {
+        if (!$cart) {
             $cart = $this->em()->create('AddonFlare\PaidAds:Cart');
             $cart->bulkSet([
                 'user_id' => $visitor->user_id,
@@ -528,9 +512,10 @@ class Buy extends AbstractController
             'cartUrl' => $this->app->router()->buildLink('paid-ads/cart'),
         ]));
         $reply->setJsonParams([
-            'empty_all'        => true,
+            'empty_all' => true,
             'cart_total_items' => $this->app()->language()->numberFormat($cart->total_items),
         ]);
+
         return $reply;
     }
 
@@ -540,8 +525,7 @@ class Buy extends AbstractController
 
         $locationRepo = $this->getLocationRepo();
 
-        if ((!$cartAd = $locationRepo->findUserCartAd($cartAdId, false)) || (!$cart = clone $cartAd->Cart))
-        {
+        if ((!$cartAd = $locationRepo->findUserCartAd($cartAdId, false)) || (!$cart = clone $cartAd->Cart)) {
             return $this->notFound();
         }
 
@@ -558,6 +542,7 @@ class Buy extends AbstractController
                 'price' => $location->getCostPhrase($cart->total_amount),
             ]),
         ]);
+
         return $reply;
     }
 
@@ -573,23 +558,20 @@ class Buy extends AbstractController
 
         $forums = [];
 
-        foreach ($nodeTree->getFlattened() AS $entry)
-        {
+        foreach ($nodeTree->getFlattened() as $entry) {
             /** @var \XF\Entity\Node $node */
             $node = $entry['record'];
 
             $forums[$node->node_id] = $node->title;
         }
 
-        if ($cart)
-        {
+        if ($cart) {
             // quick rebuild incase any ads expired and get ads
             $cartAds = $cartRepo->rebuildCart($cart);
 
             // just checks if the addon is active
             $purchasable = $this->em()->find('XF:Purchasable', 'af_paidads_cart', 'AddOn');
-            if (!$purchasable->isActive())
-            {
+            if (!$purchasable->isActive()) {
                 return $this->message(\XF::phrase('af_paidads_no_ads_can_be_purchased_at_this_time'));
             }
 
@@ -598,11 +580,11 @@ class Buy extends AbstractController
         }
 
         $viewParams = [
-            'cartAds'      => $cartAds,
+            'cartAds' => $cartAds,
             'totalCartAds' => $cartAds ? $cartAds->count() : 0,
-            'forums'       => $forums,
-            'cart'         => $cart,
-            'profiles'     => $profiles,
+            'forums' => $forums,
+            'cart' => $cart,
+            'profiles' => $profiles,
         ];
 
         return $this->view('', 'af_paidads_cart', $viewParams);
@@ -616,46 +598,18 @@ class Buy extends AbstractController
     public function actionGetLocationDescription()
     {
         $plugin = $this->plugin('XF:DescLoader');
+
         return $plugin->actionLoadDescription('AddonFlare\PaidAds:Location');
     }
 
-    protected function getLocationRepo()
+    protected function preDispatchController($action, ParameterBag $params)
     {
-        return $this->repository('AddonFlare\PaidAds:Location');
-    }
-
-    protected function getAdRepo()
-    {
-        return $this->repository('AddonFlare\PaidAds:Ad');
-    }
-
-    protected function getCartAdRepo()
-    {
-        return $this->repository('AddonFlare\PaidAds:CartAd');
-    }
-
-    protected function getCartRepo()
-    {
-        return $this->repository('AddonFlare\PaidAds:Cart');
-    }
-
-    protected function assertPurchasableLocationExists($id, $with = null, $phraseKey = null)
-    {
-        $location = $this->em()->find('AddonFlare\PaidAds:Location', $id, $with);
-
-        if (!$location || !$location->canPurchase())
-        {
-            if (!$phraseKey)
-            {
-                $phraseKey = 'requested_page_not_found';
-            }
-
-            throw $this->exception(
-                $this->notFound(\XF::phrase($phraseKey))
-            );
+        if (!\XF::visitor()->canPurchasePaidAds()) {
+            throw $this->exception($this->noPermission());
         }
 
-        return $location;
+        // alias to bypass adblock parameter names check
+        $this->request->set('ad_type', $this->request->get('a_type'));
     }
 
     protected function assertLocationExists($id, $with = null, $phraseKey = null)
